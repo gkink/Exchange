@@ -90,7 +90,6 @@ create table ConversationUsers(
 	id int not null auto_increment primary key,
 	userID int,
 	ConvID int,
-	deleted tinyint(0),
 	constraint foreign key (userID) references users(ID),
 	constraint foreign key (ConvID) references Conversations(id)
 );
