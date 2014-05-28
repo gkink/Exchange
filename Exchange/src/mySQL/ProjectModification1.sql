@@ -116,5 +116,9 @@ Am gverdze gadmodixar an search-is dabrunebuli item-ebis listidan an boos damate
 itemsHave table. bevrs verafers vfiqrob am gverdze ubralod surati iqneba nivtis da description, vin atvirta .... magistvis erti select daiwereba 
 itemsHave-dan.
 */
+
 /*first change*/
+
+
+/*TESTER COMMENT*/
 --second change
