@@ -87,12 +87,27 @@ constraint foreign key (userID) references users(ID),
 constraint foreign key (transactionID) references transactions(ID)
 );
 
+-- Am xazis qvemot aris Inbox gverdis agwera da table-ebi romlebsac eg gverdi gamoiyelebs;
+
+/*
+Vizualurad didad datvirtuli gverdi araa. am gverdze aris chamonatvali bazashi arsebuli user-is yvela conversationis.
+Conversationebistvis gveqneba calke erti table -- Conversations -- erti veli eqneba am tables da yovel jerze, roca axali
+chat gaixsneba am tableshi daemateba axali row. Mtliani conversationis agsadgenad kide ori sxva table gveqneba. Conversations
+table periodulad ganaxldeba(es sheidzleba arc gavaketot ase) anu dzalian dzveli Conversationebi waishleba. Aseve users unda 
+mivcet sashualeba washalos romelime Conversation. amitom gverdis zeda zolshi iqneba ragac menubar-is msgavsi funqciit delete.
+Users sheedzeba monishnos bevri conversationi da washalos.
+*/
 
 create table Conversations(
 	id int not null auto_increment primary key,
 	ActivationDate datetime
 );
 
+/*
+es table userebs akavshirebs conversationebtan, deleted velshi weria washala tu ara am userma es conversation.
+tu romelime conversation yvela monawile userma washala, mashin ishleba Conversations tablidanac da kide mesame tablidanac
+magastan dakavshirebuli yvela row.
+*/
 
 create table ConversationUsers(
 	id int not null auto_increment primary key,
@@ -103,6 +118,10 @@ create table ConversationUsers(
 	constraint foreign key (ConvID) references Conversations(id)
 );
 
+/*
+am tabledan agdgeba mteli conversation. ConversationUsers-shi tuki yvela userma washala conversation, mashin shesabamisad ganaxldeba
+es tablec da conversations tablec.
+*/
 
 create table ConversationLines(
 	id bigint not null auto_increment primary key,
@@ -113,3 +132,9 @@ create table ConversationLines(
 	constraint foreign key (userID) references users(ID),
 	constraint foreign key (ConvID) references Conversations(id)
 )
+
+/*
+Am gverdze gadmodixar an search-is dabrunebuli item-ebis listidan an boos damatebuli item-ebis listidan. dasagenerireblad gchirdeba
+itemsHave table. bevrs verafers vfiqrob am gverdze ubralod surati iqneba nivtis da description, vin atvirta .... magistvis erti select daiwereba 
+itemsHave-dan.
+*/

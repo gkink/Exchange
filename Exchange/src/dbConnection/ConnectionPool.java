@@ -1,11 +1,11 @@
-package mySQL;
+package dbConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Stack;
 
-import mySQL.MyDBInfo;;
+import dbConnection.MyDBInfo;
 
 public class ConnectionPool {
 	

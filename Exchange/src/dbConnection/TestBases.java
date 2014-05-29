@@ -1,11 +1,9 @@
-package mySQL;
+package dbConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import mySQL.MyDBInfo;
 
 /**
  * am klass yuradgebas nu miaqcevt chemtvis davwere ro gametesta sworad tu mushaobda 
