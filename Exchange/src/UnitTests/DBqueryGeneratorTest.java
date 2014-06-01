@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import DBclasses.DBqueryGenerator;
-import DBclasses.clauseHelper;
+import dbClasses.DBqueryGenerator;
+import dbClasses.clauseHelper;
 
 public class DBqueryGeneratorTest {
 

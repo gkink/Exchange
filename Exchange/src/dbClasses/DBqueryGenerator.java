@@ -1,4 +1,4 @@
-package DBclasses;
+package dbClasses;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @author giorgi
  * this class does not yet include the update and delete queries.
  */
+
 public class DBqueryGenerator {
 	/**
 	 * method String
@@ -134,5 +135,27 @@ public class DBqueryGenerator {
 		
 		String res = colName + " " + cmp + " " + val + " ";
 		return res;
+	}
+	
+	
+	/**
+	 * @author Gio
+	 * Generates query string for getting last x transaction from databases.
+	 * Needs to be changed. Also all the methods below are temporary.
+	 */
+	public String getTransactionsQuery(){
+		return "select * from transactions order by ID desc limit 3";
+	}
+	
+	public String getTransactionInfoQuery(int ID){
+		return "select * from transactionInfo where transactionID = " + ID;
+	}
+	
+	public String getUserQuery(int ID){
+		return "select * from users where ID = " + ID;
+	}
+	
+	public String getItemQuery(int ID){
+		return "select * from itemsChanged where ID = " + ID;
 	}
 }

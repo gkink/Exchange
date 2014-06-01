@@ -1,4 +1,4 @@
-package DBclasses;
+package dbClasses;
 
 /**
  * @author giorgi
