@@ -158,4 +158,8 @@ public class DBqueryGenerator {
 	public String getItemQuery(int ID){
 		return "select * from itemsChanged where ID = " + ID;
 	}
+	
+	public String getUserUserQuery(int id){
+		return "select * from users where ID = " + id;
+	}
 }
