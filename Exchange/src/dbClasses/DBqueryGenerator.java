@@ -160,6 +160,18 @@ public class DBqueryGenerator {
 	}
 	
 	public String getUserUserQuery(int id){
-		return "select * from users where ID = " + id;
+		return "select * from users where ID = " + toValue("" + id);
+	}
+	
+	public String insertIntoUsers(int id, int ranking, String firstName, String lastName, String email){
+		String res = generateInsert("users", 
+				new String[]{"ID", "firstName", "lastName", "email", "ranking"}, 
+				new String[]{"" + id, firstName, lastName, email, "" + ranking});
+		
+		return res;
+	}
+	
+	public String deleteFromUsers(int id){
+		return "delete * from users where ID = " + toValue("" + id);
 	}
 }
