@@ -174,4 +174,18 @@ public class DBqueryGenerator {
 	public String deleteFromUsers(int id){
 		return "delete * from users where ID = " + toValue("" + id);
 	}
+
+	public String getTransactionQuery(int iD) {
+		//TODO
+		return null;
+	}
+
+	public String getItemChangedWithUser(int itemID) {
+		//TODO
+		return null;
+	}
+
+	public String getTrasactionsForUserQuery(int userID) {
+		return "select * from transactions where ID = " + userID;
+	}
 }
