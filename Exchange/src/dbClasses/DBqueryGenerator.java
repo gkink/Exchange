@@ -159,15 +159,21 @@ public class DBqueryGenerator {
 		return "select * from itemsChanged where ID = " + ID;
 	}
 	
-	public String getTrasactionsForUserQuery(int ID){
-		return "select * from transactions where ID = " + ID + " order by ID desc limit 3";
+	public String getUserUserQuery(int id){
+		return "select * from users where ID = " + id;
 	}
-	
-	public String getTransactionQuery(int ID){
-		return "select itemID from transactionInfo where transactionID = " + ID;
+
+	public String getTransactionQuery(int iD) {
+		//TODO
+		return null;
 	}
-	
-	public String getItemChangedWithUser(int ID){
-		return "select firstName, lastName, name from users join (select userID, name from itemsChanged where ID = " + ID + ") as A on A.userID = users.ID;";
+
+	public String getItemChangedWithUser(int itemID) {
+		//TODO
+		return null;
+	}
+
+	public String getTrasactionsForUserQuery(int userID) {
+		return "select * from transactions where ID = " + userID;
 	}
 }
