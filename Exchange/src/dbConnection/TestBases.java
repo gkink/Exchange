@@ -1,6 +1,8 @@
 package dbConnection;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,13 +29,23 @@ public class TestBases {
 		System.out.println(temp);
 	}
 	
-	public static void getDataFromBases(Statement stmt){
-		String query = "select users.ID, firstName, lastName, itemsHave.name from users join itemsHave on itemsHave.userID = users.ID join cycleInfo on cycleInfo.itemID = itemsHave.ID where cycleInfo.cycleID = '1'";
+	public static void getDataFromBases(Connection con){
+		//String query = "select users.ID, firstName, lastName, itemsHave.name from users join itemsHave on itemsHave.userID = users.ID join cycleInfo on cycleInfo.itemID = itemsHave.ID where cycleInfo.cycleID = '1'";
 		ResultSet set;
+		
 		try {
-			stmt.executeQuery("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
-			set = stmt.executeQuery(query);
-			displaySet(set);
+			PreparedStatement preparedStatementInsert = con.prepareStatement("USE " + MyDBInfo.MYSQL_DATABASE_NAME);
+			preparedStatementInsert.executeUpdate();
+			con.setAutoCommit(false);
+			preparedStatementInsert = con.prepareStatement("insert into transactions (transDate) values (current_time)");
+			preparedStatementInsert.executeUpdate();
+			
+			PreparedStatement select = con.prepareStatement("select max(ID) from transactions");
+			set = select.executeQuery();
+			set.next();
+			System.out.println(set.getString(1));
+			//displaySet(set);
+			con.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +57,7 @@ public class TestBases {
 		try {
 			pool = ConnectionPool.getInstance();
 			Connection con = pool.getConnectionFromPool();
-			getDataFromBases(con.createStatement());
+			getDataFromBases(con);
 			pool.returnConnectionToPool(con);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

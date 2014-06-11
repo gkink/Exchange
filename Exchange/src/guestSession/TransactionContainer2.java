@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dbClasses.DBqueryGenerator;
 import dbConnection.ConnectionPool;
@@ -15,11 +17,12 @@ import dbConnection.ConnectionPool;
  * transactions. It uses QueryGenerator to get corresponding query text.
  * Will it use ExecuteQuery class or not is not yet decided.
  */
-public class TransactionContainer {
+public class TransactionContainer2 {
 	
-	private List<Transaction> transactions;
+	private List<TransactionInterface> transactions;
+	private Map<Integer, String> IDs;
 	private DBqueryGenerator queryGenerator;
-	private int currentTransaction = 0;
+	private int size = 0;
 	private ResultSet transactionIDs;
 	
 	private ResultSet getTransactionIDSet(String query){
@@ -37,12 +40,10 @@ public class TransactionContainer {
 		return null;
 	}
 	
-	private void createTransactions(){
+	private void getTransactionIDs(){
 		try {
 			while(transactionIDs.next()){
-				DateTime dateTime = new DateTime(transactionIDs.getString(2));
-				Transaction tr = new Transaction(transactionIDs.getInt(1), dateTime);
-				transactions.add(tr);	
+				IDs.put(transactionIDs.getInt(1), transactionIDs.getString(2));	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,27 +60,37 @@ public class TransactionContainer {
 	}
 	
 	private void init(){
-		transactions = new ArrayList<Transaction>();
+		IDs = new HashMap<Integer, String>();
+		transactions = new ArrayList<TransactionInterface>();
 		queryGenerator = new DBqueryGenerator();
 	}
 	
-	public TransactionContainer(){
+	public TransactionContainer2(){
 		init();
 		transactionIDs = getTransactionIDSet(queryGenerator.getTransactionsQuery());
-		createTransactions();
+		getTransactionIDs();
 	}
 	
-	public TransactionContainer(int userID){
+	public TransactionContainer2(int userID){
 		init();
 		transactionIDs = getTransactionIDSet(queryGenerator.getTrasactionsForUserQuery(userID));
-		createTransactions();
+		getTransactionIDs();
 	}
 	
-	public Transaction getTransaction(int num){
+	public TransactionInterface getTransaction(int num){
 		return transactions.get(num);
 	}
 	
-	public Transaction getNextTransaction(){
-		return transactions.get(currentTransaction++);
+	public void addTransaction(TransactionInterface transaction){
+		transactions.add(transaction);
+		size++;
+	}
+	
+	public int size(){
+		return size;
+	}
+	
+	public Map<Integer, String> getIDsAndDate(){
+		return IDs;
 	}
 }

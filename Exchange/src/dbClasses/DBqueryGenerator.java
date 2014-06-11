@@ -20,26 +20,26 @@ public class DBqueryGenerator {
 	public String generateInsert(String tablename, String[] columns, String[] values){
 		if(columns.length != values.length)
 			return null;
-		
+
 		StringBuilder ret = new StringBuilder("insert into ");
 		ret.append(tablename);
-		
+
 		String toAppend = generateStringList(columns, false);
 		ret.append(" (");
 		ret.append(toAppend);
 		ret.append(")");
 
-		
+
 		ret.append(" values");
-		
+
 		toAppend = generateStringList(values, true);
 		ret.append(" (");
 		ret.append(toAppend);
 		ret.append(")");
-		
+
 		return ret.toString();
 	}
-	
+
 	/*
 	 * generates two types of String list without braces, depending on the value of Val boolean:
 	 * if it is false then generates a String like this one: id, name, password
@@ -63,11 +63,11 @@ public class DBqueryGenerator {
 				ret.append(list[i]);
 			}
 		}
-		
-		
+
+
 		return ret.toString();
 	}
-	
+
 	/*
 	 * takes an ordinary String, for instance: giorgi. and returns the same String in 
 	 * single quoteslike this: 'giorgi'
@@ -75,8 +75,8 @@ public class DBqueryGenerator {
 	private String toValue(String rawValue){
 		return "'" + rawValue + "'";
 	}
-	
-	
+
+
 	/**
 	 * method String
 	 * @param tableName - name of a table user wants to select from
@@ -99,7 +99,7 @@ public class DBqueryGenerator {
 
 		return ret.toString();
 	}
-	
+
 	/*
 	 * generates where clause using array of clauseCouples and connector String("and", "or" ..)
 	 */
@@ -125,19 +125,19 @@ public class DBqueryGenerator {
 		String colName = couple.getColumn();
 		String cmp = couple.getComparator();
 		String val = "";
-		
+
 		if(cmp.equals("like"))
 			val = "%" + couple.getValue() + "%";
 		else
 			val =  couple.getValue();
-		
+
 		val = toValue(val);// transfers val to 'val'
-		
+
 		String res = colName + " " + cmp + " " + val + " ";
 		return res;
 	}
-	
-	
+
+
 	/**
 	 * @author Gio
 	 * Generates query string for getting last x transaction from databases.
@@ -146,17 +146,47 @@ public class DBqueryGenerator {
 	public String getTransactionsQuery(){
 		return "select * from transactions order by ID desc limit 3";
 	}
-	
+
 	public String getTransactionInfoQuery(int ID){
 		return "select * from transactionInfo where transactionID = " + ID;
 	}
-	
+
 	public String getUserQuery(int ID){
 		return "select * from users where ID = " + ID;
 	}
-	
+
 	public String getItemQuery(int ID){
 		return "select * from itemsChanged where ID = " + ID;
+	}
+
+	public String getUserUserQuery(int id){
+		return "select * from users where ID = " + toValue("" + id);
+	}
+
+	public String insertIntoUsers(int id, int ranking, String firstName, String lastName, String email){
+		String res = generateInsert("users", 
+				new String[]{"ID", "firstName", "lastName", "email", "ranking"}, 
+				new String[]{"" + id, firstName, lastName, email, "" + ranking});
+
+		return res;
+	}
+
+	public String deleteFromUsers(int id){
+		return "delete * from users where ID = " + toValue("" + id);
+	}
+
+	public String getTransactionQuery(int iD) {
+		//TODO
+		return null;
+	}
+
+	public String getItemChangedWithUser(int itemID) {
+		//TODO
+		return null;
+	}
+
+	public String getTrasactionsForUserQuery(int userID) {
+		return "select * from transactions where ID = " + userID;
 	}
 	/**
 	 * @author Irakli
@@ -176,6 +206,4 @@ public class DBqueryGenerator {
 		return "select * from itemsHave where ID=" +Id;
 	}
 	//update-is queria dasamatebeli
-
-	
 }
