@@ -170,7 +170,7 @@ public class DBqueryGenerator {
 
 		return res;
 	}
-
+	
 	public String deleteFromUsers(int id){
 		return "delete * from users where ID = " + toValue("" + id);
 	}
@@ -205,5 +205,17 @@ public class DBqueryGenerator {
 	public String getItemSelectQuery(int Id){
 		return "select * from itemsHave where ID=" +Id;
 	}
+	public String getItemUpdateQuery(int type, String field, String update, int itemId){
+		String table=" itemsHave ";
+		if(type==1) table =" itemsNeed ";
+		return "update "+ table+"Set "+field+"="+"'"+update+"'"+" WHERE ID="+itemId;
+	}
+	public String getItemDeleteQuery(int type, int id){
+		String table=" itemsHave ";
+		if(type==1) table =" itemsNeed ";
+		return "DELETE * from "+ table+ " Where ID = " + id;
+		
+	}
+	
 	//update-is queria dasamatebeli
 }
