@@ -2,7 +2,9 @@ package dbConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Stack;
 
 import dbConnection.MyDBInfo;
@@ -60,5 +62,8 @@ public class ConnectionPool {
 		return DriverManager.getConnection("jdbc:mysql://"
 				+ MyDBInfo.MYSQL_DATABASE_SERVER, MyDBInfo.MYSQL_USERNAME, MyDBInfo.MYSQL_PASSWORD);
 
+	}
+	public static void main(String[] args) {
+	
 	}
 }

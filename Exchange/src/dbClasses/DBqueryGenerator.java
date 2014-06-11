@@ -158,4 +158,24 @@ public class DBqueryGenerator {
 	public String getItemQuery(int ID){
 		return "select * from itemsChanged where ID = " + ID;
 	}
+	/**
+	 * @author Irakli
+	 * Generates query string to insert an item into one of the 
+	 * tables of the database.
+	 * If type is 0 the itemsHave insert is generated, if type is 1
+	 * itemsNeed insert is generated.
+	 */
+	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw){
+		String table=" itemsHave ";
+		if(type==1) table =" itemsNeed ";
+		return "insert into"+ table+"(name, description, keywords, userID)"+"\n"+
+		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+")";
+	}
+	
+	public String getItemSelectQuery(int Id){
+		return "select * from itemsHave where ID=" +Id;
+	}
+	//update-is queria dasamatebeli
+
+	
 }
