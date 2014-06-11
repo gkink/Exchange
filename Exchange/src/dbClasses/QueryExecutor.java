@@ -4,8 +4,14 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 public class QueryExecutor {
+<<<<<<< HEAD
 	private DataSource datasource;
 	
+=======
+	private Connection cn;
+	private Statement stm;
+
+>>>>>>> 1cb748c860b19e4bbd6852379dcaaa2f423f3904
 	/**
 	 * Constructor
 	 * @param datasource - Datasource object.
@@ -14,7 +20,7 @@ public class QueryExecutor {
 	public QueryExecutor(DataSource datasource){
 		this.datasource = datasource;
 	}
-	
+
 	/**
 	 * method ResultSet
 	 * @param query - sql select query String
@@ -33,10 +39,10 @@ public class QueryExecutor {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
 		}
-		
+
 		return res;
 	}
-	
+
 	/**
 	 * method int
 	 * @param query sql query String(insert, update, delete)
