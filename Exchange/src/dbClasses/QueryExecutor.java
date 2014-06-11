@@ -4,14 +4,9 @@ import java.sql.*;
 import javax.sql.DataSource;
 
 public class QueryExecutor {
-<<<<<<< HEAD
+
 	private DataSource datasource;
 	
-=======
-	private Connection cn;
-	private Statement stm;
-
->>>>>>> 1cb748c860b19e4bbd6852379dcaaa2f423f3904
 	/**
 	 * Constructor
 	 * @param datasource - Datasource object.
