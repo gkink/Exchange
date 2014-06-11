@@ -1,26 +1,21 @@
 package dbClasses;
+
 import java.sql.*;
-import org.apache.tomcat.jdbc.pool.ConnectionPool;
+import javax.sql.DataSource;
 
 public class QueryExecutor {
-	private Connection cn;
-	private Statement stm;
+
+	private DataSource datasource;
 	
 	/**
 	 * Constructor
-	 * @param pool - apache tomcat connectionPool object.
+	 * @param datasource - Datasource object.
 	 * tries to initialize it's local connection and statement variable and notes if exception occurs during the process.
 	 */
-	public QueryExecutor(ConnectionPool pool){
-		try {
-			cn = pool.getConnection();
-			stm = cn.createStatement();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when initializing connection");
-			e.printStackTrace();
-		}
+	public QueryExecutor(DataSource datasource){
+		this.datasource = datasource;
 	}
-	
+
 	/**
 	 * method ResultSet
 	 * @param query - sql select query String
@@ -31,27 +26,41 @@ public class QueryExecutor {
 		ResultSet res = null;
 
 		try {
+			Connection cn = datasource.getConnection();
+			Statement stm = cn.createStatement();
+			
 			res = stm.executeQuery(selectQuery);
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
 		}
-		
+
 		return res;
 	}
-	
+
 	/**
-	 * method void
+	 * method int
 	 * @param query sql query String(insert, update, delete)
 	 * tries to execute given query using local statement variable and notes if exception occurs during
 	 * process.
+	 * @return returns last insert id if the insert query was executed, 0 otherwise 
 	 */
-	public void executeQuery(String query){
+	public int executeQuery(String query){
+		int res = 0;
 		try {
-			stm.execute(query);
+			Connection cn = datasource.getConnection();
+			Statement stm = cn.createStatement();
+			
+			stm.executeUpdate(query);
+			
+			ResultSet rs = stm.getGeneratedKeys();
+			while(rs.next())
+				res = rs.getInt(1);
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing query(update, insert, delete)");
 			e.printStackTrace();
 		}
+		
+		return res;
 	}
 }
