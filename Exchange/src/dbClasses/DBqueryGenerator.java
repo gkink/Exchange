@@ -174,10 +174,10 @@ public class DBqueryGenerator {
 	public String deleteFromUsers(int id){
 		return "delete * from users where ID = " + toValue("" + id);
 	}
-
+	
 	public String getTransactionQuery(int iD) {
-		//TODO
-		return null;
+		
+		return "select firstName, lastName, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id join users on itemsChanged.userID = users.ID";
 	}
 
 	public String getItemChangedWithUser(int itemID) {

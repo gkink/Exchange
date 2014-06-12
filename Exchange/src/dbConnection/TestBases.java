@@ -50,24 +50,4 @@ public class TestBases {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public static void main(String[] args) {
-		ConnectionPool pool = null;
-		try {
-			pool = ConnectionPool.getInstance();
-			Connection con = pool.getConnectionFromPool();
-			getDataFromBases(con);
-			pool.returnConnectionToPool(con);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		try {
-			pool.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 }

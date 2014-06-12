@@ -1,84 +1,54 @@
 package guestSession;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+
+import ModelClasses.Cycle;
 import dbClasses.DBqueryGenerator;
-import dbConnection.ConnectionPool;
+import dbClasses.QueryExecutor;
 
 public class Transaction implements TransactionInterface{
 	
 	private int ID;
 	private DateTime dateTime;
-	private Connection con;
-	private ConnectionPool pool;
 	private DBqueryGenerator queryGenerator;
 	private Map<String, String> transaction;
-	
-	private ResultSet itemInfo(){
-		queryGenerator = new DBqueryGenerator();
-		String query = queryGenerator.getTransactionQuery(ID);
-		try {
-			pool = ConnectionPool.getInstance();
-			con = pool.getConnectionFromPool();
-			ResultSet set = con.createStatement().executeQuery(query);
-			return set;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	private void closeResultSet(ResultSet set){
-		try {
-			set.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void getUserAndItemName(int itemID){
-		String query = queryGenerator.getItemChangedWithUser(itemID);
-		try {
-			ResultSet set = con.createStatement().executeQuery(query);
-			set.next();
-			set.getString(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	private DataSource datasource;
 	
 	private void getTransactionFromBases(){
-		ResultSet itemIDs = itemInfo();
+		queryGenerator = new DBqueryGenerator();
+		String query = queryGenerator.getTransactionQuery(ID);
+		QueryExecutor executor = new QueryExecutor(datasource);
+		ResultSet res = executor.selectResult(query);
 		try {
-			while(itemIDs.next()){
-				getUserAndItemName(itemIDs.getInt(1));
+			while(res.next()){
+				transaction.put(res.getString(1) + " " + res.getString(2), res.getString(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try { if(null!=res)res.close();} catch (SQLException e)
+			{e.printStackTrace();}
 		}
-		closeResultSet(itemIDs);
-		pool.returnConnectionToPool(con);
 	}
 	
 	public void createNewTransaction(){
 		//TODO
 	}
  	
-	public Transaction(int ID, DateTime dateTime){
+	public Transaction(int ID, DateTime dateTime, DataSource datasource){
 		this.ID = ID;
 		this.dateTime = dateTime;
+		this.datasource = datasource;
 		getTransactionFromBases();
 	}
 	
-	public Transaction(){
+	public Transaction(Cycle cycle, DataSource datasource){
+		this.datasource = datasource;
 		createNewTransaction();
 	}
 
