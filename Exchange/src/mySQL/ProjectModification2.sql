@@ -13,6 +13,7 @@ create table itemsHave
 (ID int not null auto_increment primary key,
 name varchar(30), description varchar(120),
 keyWords varchar(50),userID int,
+DateTime createDate,
 constraint foreign key (userID) references users(ID));
 
 create table itemsNeed

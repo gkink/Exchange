@@ -1,6 +1,7 @@
 package dbClasses;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 
@@ -194,12 +195,13 @@ public class DBqueryGenerator {
 	 * tables of the database.
 	 * If type is 0 the itemsHave insert is generated, if type is 1
 	 * itemsNeed insert is generated.
+	 * @param createDate 
 	 */
-	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw){
+	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, Date createDate){
 		String table=" itemsHave ";
 		if(type==1) table =" itemsNeed ";
 		return "insert into"+ table+"(name, description, keywords, userID)"+"\n"+
-		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+")";
+		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+",'"+createDate+"'"+")";
 	}
 	
 	public String getItemSelectQuery(int Id){
@@ -208,14 +210,27 @@ public class DBqueryGenerator {
 	public String getItemUpdateQuery(int type, String field, String update, int itemId){
 		String table=" itemsHave ";
 		if(type==1) table =" itemsNeed ";
-		return "update "+ table+"Set "+field+"="+"'"+update+"'"+" WHERE ID="+itemId;
+		return "update "+ "'"+table+ "'"+"Set "+ "'"+field+ "'"+"="+"'"+update+"'"+" WHERE ID="+ "'"+itemId+ "'";
 	}
 	public String getItemDeleteQuery(int type, int id){
 		String table=" itemsHave ";
 		if(type==1) table =" itemsNeed ";
-		return "DELETE * from "+ table+ " Where ID = " + id;
+		return "DELETE * from "+"'" +table+"'" +" Where ID = " + "'"+id+ "'";
 		
 	}
+	//returns String to get the latest items added by users
+	public String getLatestItems() {
+		return "SELECT * from 'itemsHave' Order By 'DateTime' Limit 0, 10";
+		
+	}
+	/*returns String to get the items with the given userId uses the type
+	 *  parameter to specify which table it should use	to get the items
+	*/
+	public String getUserItems(int UserId, int type){
+		String table=" itemsHave ";
+		if(type==1) table =" itemsNeed ";
+		return "Select * from "+"'"+ table+"'"+ "Where userId="+ "'"+UserId+ "'";
+	}
+
 	
-	//update-is queria dasamatebeli
 }

@@ -6,16 +6,19 @@ import dbClasses.QueryExecutor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 
 
 
 public class Item {
+	
 	private int ID;
 	private String name;
 	private String description;
 	private String keywords;
 	private int userId;
+	private Date createDate;
 	DBqueryGenerator queryGenerator;
 	QueryExecutor executor;
 	/**
@@ -30,7 +33,7 @@ public class Item {
 	 * Note: when the basic constructor is called, it is expected to be given valid information from
 	 * database, and not a single parameter should be ignored.
 	 */
-	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID, String name, String description, String keywords, int userId){
+	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID, String name, String description, String keywords, int userId, Date date){
 		this.ID=ID;
 		this.name=name;
 		this.description=description;
@@ -38,6 +41,7 @@ public class Item {
 		this.userId=userId;
 		this.queryGenerator=generator;
 		this.executor=executor;
+		createDate=date;
 		
 		
 	}
@@ -59,6 +63,7 @@ public class Item {
 				this.description = rs.getString("description");
 				this.keywords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
+				Date time= rs.getDate("createDate");
 			}
 
 			rs.close();
@@ -80,6 +85,9 @@ public class Item {
 	public String getItemDescription(){
 		return description;
 	}
+	public Date getItemCreateDate(){
+		return createDate;
+	}
 	
 	
 	/**
@@ -90,7 +98,7 @@ public class Item {
 	 */
 	public void insert(int type){
 		
-		executor.executeQuery(queryGenerator.getItemInsertQuery(type, userId, name, description, keywords));
+		executor.executeQuery(queryGenerator.getItemInsertQuery(type, userId, name, description, keywords,createDate));
 		
 	}
 	public void update(int type, String field, String text){
@@ -100,6 +108,6 @@ public class Item {
 	public void delete(int type){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery(type, ID));
 	}
-	
+
 
 }
