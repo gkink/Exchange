@@ -30,6 +30,8 @@ public class QueryExecutor {
 			Statement stm = cn.createStatement();
 			
 			res = stm.executeQuery(selectQuery);
+			
+			cn.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -56,6 +58,8 @@ public class QueryExecutor {
 			ResultSet rs = stm.getGeneratedKeys();
 			while(rs.next())
 				res = rs.getInt(1);
+			
+			cn.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing query(update, insert, delete)");
 			e.printStackTrace();
