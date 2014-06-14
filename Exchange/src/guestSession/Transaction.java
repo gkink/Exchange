@@ -2,31 +2,29 @@ package guestSession;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.apache.tomcat.jdbc.pool.DataSource;
+import java.util.List;
 
 import ModelClasses.Cycle;
+import ModelClasses.Pair;
+import ModelClasses.User;
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
 public class Transaction implements TransactionInterface{
 	
-	private int ID;
+	private int ID, size = 0;
 	private DateTime dateTime;
-	private DBqueryGenerator queryGenerator;
-	private Map<String, String> transaction;
-	private DataSource datasource;
+	private DBqueryGenerator generator;
+	private List<Pair<User, String>> userItemPairs;
+	private QueryExecutor executor;
 	
 	private void getTransactionFromBases(){
-		queryGenerator = new DBqueryGenerator();
-		String query = queryGenerator.getTransactionQuery(ID);
-		QueryExecutor executor = new QueryExecutor(datasource);
-		ResultSet res = executor.selectResult(query);
+		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
 		try {
 			while(res.next()){
-				transaction.put(res.getString(1) + " " + res.getString(2), res.getString(3));
+				User user = new User(executor, generator, res.getInt(1));
+				userItemPairs.add(new Pair<User, String>(user, res.getString(2)));
+				size++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -36,35 +34,33 @@ public class Transaction implements TransactionInterface{
 		}
 	}
 	
-	public void createNewTransaction(){
-		//TODO
+	private void createNewTransaction(Cycle cycle){
+		
 	}
  	
-	public Transaction(int ID, DateTime dateTime, DataSource datasource){
+	public Transaction(QueryExecutor executor, DBqueryGenerator generator, int ID, DateTime dateTime){
 		this.ID = ID;
 		this.dateTime = dateTime;
-		this.datasource = datasource;
+		this.executor = executor;
+		this.generator = generator;
 		getTransactionFromBases();
 	}
 	
-	public Transaction(Cycle cycle, DataSource datasource){
-		this.datasource = datasource;
-		createNewTransaction();
+	
+	public Transaction(QueryExecutor executor, DBqueryGenerator generator, Cycle cycle){
+		this.executor = executor;
+		this.generator = generator;
+		createNewTransaction(cycle);
 	}
-
+	
 	@Override
-	public Iterator<String> getUsers() {
- 		return transaction.keySet().iterator();
+	public Pair<User, String> getUserItemPair(int num){
+		return userItemPairs.get(num);
 	}
-
+	
 	@Override
-	public Iterator<String> getItems() {
-		return transaction.values().iterator();
-	}
-
-	@Override
-	public Map<String, String> getItemsAndUsers() {
-		return transaction;
+	public int transactionSize(){
+		return size;
 	}
 
 	@Override
@@ -80,5 +76,15 @@ public class Transaction implements TransactionInterface{
 	@Override
 	public int getID() {
 		return ID;
+	}
+	
+	@Override
+	public String toString(){
+		String part1 = "Transaction ID = " + ID + ". Transaction created on " + dateTime.getDate() + " at " + dateTime.getTime() + "/n";
+		StringBuilder build = new StringBuilder(part1);
+		for(int i = 0; i < size; i++){
+			build.append(userItemPairs.get(i).getFirst().getFirstName() + " " + userItemPairs.get(i).getFirst().getLastName() + " --|-- " + userItemPairs.get(i).getSecond() + "/n");
+		}
+		return build.toString();
 	}
 }
