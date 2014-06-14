@@ -10,14 +10,14 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 public class QueryExecutor {
 
-	private BasicDataSource datasource;
+	private DataSource datasource;
 	
 	/**
 	 * Constructor
 	 * @param datasource - Datasource object.
 	 * tries to initialize it's local connection and statement variable and notes if exception occurs during the process.
 	 */
-	public QueryExecutor(BasicDataSource datasource){
+	public QueryExecutor(DataSource datasource){
 		this.datasource = datasource;
 	}
 
@@ -36,7 +36,6 @@ public class QueryExecutor {
 			
 			res = stm.executeQuery(selectQuery);
 			
-			cn.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -63,31 +62,11 @@ public class QueryExecutor {
 			ResultSet rs = stm.getGeneratedKeys();
 			while(rs.next())
 				res = rs.getInt(1);
-			
-			cn.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing query(update, insert, delete)");
 			e.printStackTrace();
 		}
-		
+
 		return res;
-	}
-	public static void main(String[] args) {
-		BasicDataSource s= new BasicDataSource();
-		s.setDriverClassName("com.mysql.jdbc.Driver");
-		s.setUsername("root");
-		s.setPassword("123456");
-		s.setUrl("jdbc:mysql://localhost:3306/Exchange");
-		QueryExecutor e= new QueryExecutor(s);
-		DBqueryGenerator q= new DBqueryGenerator();
-		ResultSet r= e.selectResult("Select * from itemsHave");
-		try {
-			while(r.next()){
-				System.out.print(r.getString("ID"));
-			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
 }
