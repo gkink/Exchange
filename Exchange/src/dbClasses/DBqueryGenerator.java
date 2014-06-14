@@ -183,7 +183,7 @@ public class DBqueryGenerator {
 	
 	public String getTransactionQuery(int iD) {
 		
-		return "select firstName, lastName, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id join users on itemsChanged.userID = users.ID";
+		return "select userID, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
 	}
 
 	public String getItemChangedWithUser(int itemID) {

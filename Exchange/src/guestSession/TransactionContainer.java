@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dbClasses.DBqueryGenerator;
-import dbConnection.ConnectionPool;
 
 /**
  * @author Gio
@@ -24,7 +23,7 @@ public class TransactionContainer {
 	
 	private ResultSet getTransactionIDSet(String query){
 		try {
-			ConnectionPool pool = ConnectionPool.getInstance();
+		//	ConnectionPool pool = ConnectionPool.getInstance();
 			Connection con = pool.getConnectionFromPool();
 			ResultSet set = con.createStatement().executeQuery(query);
 			pool.returnConnectionToPool(con);

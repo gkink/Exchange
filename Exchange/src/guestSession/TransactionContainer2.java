@@ -1,15 +1,13 @@
 package guestSession;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import ModelClasses.Pair;
 import dbClasses.DBqueryGenerator;
-import dbConnection.ConnectionPool;
+import dbClasses.QueryExecutor;
 
 /**
  * @author Gio
@@ -20,30 +18,21 @@ import dbConnection.ConnectionPool;
 public class TransactionContainer2 {
 	
 	private List<TransactionInterface> transactions;
-	private Map<Integer, String> IDs;
-	private DBqueryGenerator queryGenerator;
+	private List<Pair<Integer, String>> IDs;
+//	private DBqueryGenerator generator;
 	private int size = 0;
 	private ResultSet transactionIDs;
+	private QueryExecutor executor;
 	
 	private ResultSet getTransactionIDSet(String query){
-		try {
-			ConnectionPool pool = ConnectionPool.getInstance();
-			Connection con = pool.getConnectionFromPool();
-			ResultSet set = con.createStatement().executeQuery(query);
-			pool.returnConnectionToPool(con);
-			return set;
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return executor.selectResult(query);
 	}
 	
 	private void getTransactionIDs(){
 		try {
 			while(transactionIDs.next()){
-				IDs.put(transactionIDs.getInt(1), transactionIDs.getString(2));	
+				Pair<Integer, String> pair = new Pair<Integer, String>(transactionIDs.getInt(1), transactionIDs.getString(2));
+				IDs.add(pair);	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,21 +48,22 @@ public class TransactionContainer2 {
 		}
 	}
 	
-	private void init(){
-		IDs = new HashMap<Integer, String>();
+	private void init(QueryExecutor executor, DBqueryGenerator generator){
+		IDs = new ArrayList<Pair<Integer, String>>();
 		transactions = new ArrayList<TransactionInterface>();
-		queryGenerator = new DBqueryGenerator();
+//		this.generator = generator;
+		this.executor = executor;
 	}
 	
-	public TransactionContainer2(){
-		init();
-		transactionIDs = getTransactionIDSet(queryGenerator.getTransactionsQuery());
+	public TransactionContainer2(QueryExecutor executor, DBqueryGenerator generator){
+		init(executor, generator);
+		transactionIDs = getTransactionIDSet(generator.getTransactionsQuery());
 		getTransactionIDs();
 	}
 	
-	public TransactionContainer2(int userID){
-		init();
-		transactionIDs = getTransactionIDSet(queryGenerator.getTrasactionsForUserQuery(userID));
+	public TransactionContainer2(QueryExecutor executor, DBqueryGenerator generator, int userID){
+		init(executor, generator);
+		transactionIDs = getTransactionIDSet(generator.getTrasactionsForUserQuery(userID));
 		getTransactionIDs();
 	}
 	
@@ -90,7 +80,7 @@ public class TransactionContainer2 {
 		return size;
 	}
 	
-	public Map<Integer, String> getIDsAndDate(){
+	public List<Pair<Integer, String>> getIDsAndDate(){
 		return IDs;
 	}
 }

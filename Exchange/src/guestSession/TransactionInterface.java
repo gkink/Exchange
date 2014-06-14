@@ -1,15 +1,13 @@
 package guestSession;
 
-import java.util.Iterator;
-import java.util.Map;
+import ModelClasses.Pair;
+import ModelClasses.User;
 
 public interface TransactionInterface {
 	
-	public Iterator<String> getUsers();
+	public int transactionSize();
 	
-	public Iterator<String> getItems();
-	
-	public Map<String, String> getItemsAndUsers();
+	public Pair<User, String> getUserItemPair(int num);
 	
 	public void addToTheBases();
 	
