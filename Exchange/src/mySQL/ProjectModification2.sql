@@ -21,6 +21,7 @@ create table itemsNeed
 (ID int not null auto_increment primary key,
 name varchar(30),
 keyWords varchar(50), userID int,
+createDate DateTime,
 constraint foreign key (userID) references users(ID)
 );
 

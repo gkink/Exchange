@@ -1,7 +1,12 @@
 package dbClasses;
 
+import guestSession.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.eclipse.jdt.internal.compiler.batch.Main;
 
 /**
  * 
@@ -197,40 +202,53 @@ public class DBqueryGenerator {
 	 * itemsNeed insert is generated.
 	 * @param createDate 
 	 */
-	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, Date createDate){
+	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, DateTime createDate){
 		String table=" itemsHave ";
+		String Date=",'"+createDate.getDate()+" " + createDate.getTime()+"'";
 		if(type==1) table =" itemsNeed ";
-		return "insert into"+ table+"(name, description, keywords, userID)"+"\n"+
-		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+",'"+createDate+"'"+")";
+		String date=",DateTime";
+		return "insert into"+ table+"(name, description, keywords, userID"+date+")"+"\n"+
+		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
 	
 	public String getItemSelectQuery(int Id){
-		return "select * from itemsHave where ID=" +Id;
+		return "select * from itemsHave where ID=" +"'"+Id+"'";
 	}
 	public String getItemUpdateQuery(int type, String field, String update, int itemId){
-		String table=" itemsHave ";
-		if(type==1) table =" itemsNeed ";
-		return "update "+ "'"+table+ "'"+"Set "+ "'"+field+ "'"+"="+"'"+update+"'"+" WHERE ID="+ "'"+itemId+ "'";
+		String table="itemsHave";
+		if(type==1) table ="itemsNeed";
+		return "update "+table+ " Set " +field+"="+"'"+update+"'"+" WHERE ID="+ "'"+itemId+ "'";
 	}
 	public String getItemDeleteQuery(int type, int id){
 		String table=" itemsHave ";
 		if(type==1) table =" itemsNeed ";
-		return "DELETE * from "+"'" +table+"'" +" Where ID = " + "'"+id+ "'";
+		return "DELETE * from " +table +" Where ID = " + "'"+id+ "'";
 		
 	}
 	//returns String to get the latest items added by users
 	public String getLatestItems() {
-		return "SELECT * from 'itemsHave' Order By 'DateTime' Limit 0, 10";
+		return "SELECT * from itemsHave Order By createDate Limit 0, 10";
 		
 	}
 	/*returns String to get the items with the given userId uses the type
 	 *  parameter to specify which table it should use	to get the items
 	*/
 	public String getUserItems(int UserId, int type){
-		String table=" itemsHave ";
-		if(type==1) table =" itemsNeed ";
-		return "Select * from "+"'"+ table+"'"+ "Where userId="+ "'"+UserId+ "'";
+		String table="itemsHave";
+		if(type==1) table ="itemsNeed";
+		if (type==2) return getUserRealItems(UserId);
+		return "Select * from "+ table+ " Where userId="+ "'"+UserId+ "'";
 	}
-
+	private String getUserRealItems(int userId){
+		return "Select  name, description,ItemsHave.userId, keywords, itemsHave.ID, createDate from itemsHave"+
+" join realItems on itemsHave.ID=realItems.itemID and realItems.UserID=" +userId;
+		
+	}
+	public String searchItemsKeywords(String word){
+		return "Select * from itemsHave where keywords like '%" +word+"%'";
+		
+		
+	}
+	
 	
 }

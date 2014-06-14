@@ -18,22 +18,23 @@ public class Item {
 	private String description;
 	private String keywords;
 	private int userId;
-	private Date createDate;
+	private DateTime createDate;
 	DBqueryGenerator queryGenerator;
 	QueryExecutor executor;
 	/**
 	 * Basic constructor -  is given all the necessary arguments
 	 * @param executor - QueryExecutor object
 	 * @param queryGenerator - DBqueryGenerator object
-	 * @param id - user id in database
-	 * @param rating - user rating in database
-	 * @param firstName - user firstName from database
-	 * @param lastName - user lastName from database
-	 * @param email - user email frome database
+	 * @param id - item id in database
+	 * @param name - name of the item
+	 * @param description - description of the item 
+	 * @param keywords - keywords of the item
+	 * @param userId - id of the user who owns the item
+	 * @param date - date of the item in the database
 	 * Note: when the basic constructor is called, it is expected to be given valid information from
 	 * database, and not a single parameter should be ignored.
 	 */
-	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID, String name, String description, String keywords, int userId, Date date){
+	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID, String name, String description, String keywords, int userId, DateTime date){
 		this.ID=ID;
 		this.name=name;
 		this.description=description;
@@ -64,6 +65,7 @@ public class Item {
 				this.keywords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
 				Date time= rs.getDate("createDate");
+				this.createDate=new DateTime(time.toString());
 			}
 
 			rs.close();
@@ -85,9 +87,10 @@ public class Item {
 	public String getItemDescription(){
 		return description;
 	}
-	public Date getItemCreateDate(){
+	public DateTime getItemCreateDate(){
 		return createDate;
 	}
+	
 	
 	
 	/**

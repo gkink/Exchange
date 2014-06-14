@@ -1,18 +1,23 @@
 package dbClasses;
 
+import java.io.PrintWriter;
 import java.sql.*;
+import java.util.logging.Logger;
+
 import javax.sql.DataSource;
+
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 public class QueryExecutor {
 
-	private DataSource datasource;
+	private BasicDataSource datasource;
 	
 	/**
 	 * Constructor
 	 * @param datasource - Datasource object.
 	 * tries to initialize it's local connection and statement variable and notes if exception occurs during the process.
 	 */
-	public QueryExecutor(DataSource datasource){
+	public QueryExecutor(BasicDataSource datasource){
 		this.datasource = datasource;
 	}
 
@@ -66,5 +71,23 @@ public class QueryExecutor {
 		}
 		
 		return res;
+	}
+	public static void main(String[] args) {
+		BasicDataSource s= new BasicDataSource();
+		s.setDriverClassName("com.mysql.jdbc.Driver");
+		s.setUsername("root");
+		s.setPassword("123456");
+		s.setUrl("jdbc:mysql://localhost:3306/Exchange");
+		QueryExecutor e= new QueryExecutor(s);
+		DBqueryGenerator q= new DBqueryGenerator();
+		ResultSet r= e.selectResult("Select * from itemsHave");
+		try {
+			while(r.next()){
+				System.out.print(r.getString("ID"));
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }
