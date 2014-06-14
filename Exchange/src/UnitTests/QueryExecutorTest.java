@@ -2,24 +2,108 @@ package UnitTests;
 
 import static org.junit.Assert.*;
 
+import java.sql.*;
+
 import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * using this static import helps you not write classname mockito before calling each method(like this:
+ * Mockito.method), instead, after you use this static import, the static block of mockito class will run
+ * automatically, and you can then use method without classname before it(method(), instead of Mockito.method())
+ * another avialable import is "import org.mockito.Mockito", but then you will have to use classname(Mockito.method)
+ */
+import static org.mockito.Mockito.*;
 import dbClasses.QueryExecutor;
 
 public class QueryExecutorTest {
+	
+	private Connection con;
+	private Statement stmt;
+	private DataSource datasource;
 	private QueryExecutor executor;
+	
+	public static final String MYSQL_USERNAME = "root";
+	public static final String MYSQL_PASSWORD = "69727177";
+	public static final String MYSQL_DATABASE_SERVER = "localhost";
+	public static final String MYSQL_DATABASE_NAME = "db";
 
 	@Before
 	public void setUp(){
-		executor =  new QueryExecutor(datasource);
+		//this is mock object of any existing class
+		datasource = mock(DataSource.class);
+		
+		//copied this from assignment 3 code
+		try { 
+			Class.forName("com.mysql.jdbc.Driver"); 
+			con = DriverManager.getConnection 
+					( "jdbc:mysql://" + "localhost", "root" ,"69727177"); 
+			stmt = con.createStatement(); 
+			stmt.executeQuery("USE " + "exchange"); 
+			
+			//this code is responsible for overriding the mockobjects given method(getConnection() in this case)
+			//after this fragment of the code is called, datasource.getconnectin method will return the local connecion
+			//variable con
+			when(datasource.getConnection()).thenReturn(con);
+		}catch (ClassNotFoundException e) { 
+				e.printStackTrace(); 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		executor = new QueryExecutor(datasource);
+	}
+	
+
+	/*
+	 * test for select. Uses QueryExecutor object, which is given mock datasource object when created, this is to make
+	 * sure, that every time the executor calls datasource.getConnection(), the local connection variable con will
+	 * be returned
+	 */
+	@Test
+	public void testSelect() {
+		String selectQuery = "select * from users";
+		
+		ResultSet k = executor.selectResult(selectQuery);
+		
+		int id = 0, rating = 0;
+		String name = null, lastname = null, email = null;
+		
+		try {
+			while(k.next()){
+				id = k.getInt(1);
+				name = k.getString(2);
+				lastname = k.getString(3);
+				email = k.getString(4);
+				rating = k.getInt(5);
+				
+				break;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		assertNotNull(name);
+		assertNotNull(lastname);
+		assertNotNull(email);
+		
+		assertEquals(1, id);
+		assertEquals("giorgi", name);
+		assertEquals("ghambashidze", lastname);
+		assertEquals("ggha@gmail.com", email);
+		assertEquals(5, rating);
 	}
 	
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testInsert(){
+		String insertQuery = "insert into users (firstName, lastName, email, ranking) values"+ 
+	"( 'archil', 'bakhsoliani', 'abakh@gmail.com', '10')";
+		int id = executor.executeQuery(insertQuery);
+		
+		assertEquals(2, id);
 	}
 
 }
