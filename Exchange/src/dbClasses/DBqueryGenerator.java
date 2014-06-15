@@ -206,7 +206,7 @@ public class DBqueryGenerator {
 		String table=" itemsHave ";
 		String Date=",'"+createDate.getDate()+" " + createDate.getTime()+"'";
 		if(type==1) table =" itemsNeed ";
-		String date=",DateTime";
+		String date=",createDate";
 		return "insert into"+ table+"(name, description, keywords, userID"+date+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
@@ -250,5 +250,8 @@ public class DBqueryGenerator {
 		
 	}
 	
-	
+	public static void main(String[] args) {
+		DBqueryGenerator d=new DBqueryGenerator();
+		System.out.print(d.getItemUpdateQuery(0, "description", "bla", 1));
+	}
 }
