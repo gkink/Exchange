@@ -47,4 +47,12 @@ public class CycleContainer {
 			e.printStackTrace();
 		}
 	}
+	
+	public Cycle getCycle(int num){
+		return cycles.get(num);
+	}
+	
+	public int contSize(){
+		return cycles.size();
+	}
 }
