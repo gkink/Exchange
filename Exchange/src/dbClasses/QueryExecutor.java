@@ -11,7 +11,7 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 public class QueryExecutor {
 
 	private DataSource datasource;
-	
+
 	/**
 	 * Constructor
 	 * @param datasource - Datasource object.
@@ -33,9 +33,9 @@ public class QueryExecutor {
 		try {
 			Connection cn = datasource.getConnection();
 			Statement stm = cn.createStatement();
-			
+
 			res = stm.executeQuery(selectQuery);
-			
+
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -56,9 +56,9 @@ public class QueryExecutor {
 		try {
 			Connection cn = datasource.getConnection();
 			Statement stm = cn.createStatement();
-			
+
 			stm.executeUpdate(query);
-			
+
 			ResultSet rs = stm.getGeneratedKeys();
 			while(rs.next())
 				res = rs.getInt(1);

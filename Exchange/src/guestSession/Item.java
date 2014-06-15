@@ -34,8 +34,7 @@ public class Item {
 	 * Note: when the basic constructor is called, it is expected to be given valid information from
 	 * database, and not a single parameter should be ignored.
 	 */
-	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID, String name, String description, String keywords, int userId, DateTime date){
-		this.ID=ID;
+	public Item(DBqueryGenerator generator,QueryExecutor executor, String name, String description, String keywords, int userId, DateTime date){
 		this.name=name;
 		this.description=description;
 		this.keywords=keywords;
@@ -106,7 +105,6 @@ public class Item {
 	}
 	public void update(int type, String field, String text){
 		executor.executeQuery(queryGenerator.getItemUpdateQuery(type, field, text, ID));
-		
 	}
 	public void delete(int type){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery(type, ID));

@@ -65,15 +65,14 @@ public class ItemContainer {
 	private void ParseAndInit(ArrayList<Item> items,ResultSet rs){	
 		try {
 			while(rs.next()){
-				DateTime par=null;
-				int ID = rs.getInt("ID");
+				
 				String name = rs.getString("name");
 				String description = rs.getString("description");
 				String keywords = rs.getString("keywords");
 				int userId = rs.getInt("userId");
 				Date time= rs.getDate("createDate");
-				if(time!=null)par=new DateTime(time.toString());
-				Item cur=new Item(generator, executor,ID, name, description, keywords,userId,par);
+				DateTime par=new DateTime(time.toString());
+				Item cur=new Item(generator, executor, name, description, keywords,userId,par);
 				items.add(cur);
 			}
 			rs.close();
