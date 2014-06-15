@@ -185,6 +185,21 @@ public class DBqueryGenerator {
 		
 		return "select userID, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
 	}
+	
+	public String getCycleSelect(int id){
+		String res = "select itemID, userID from cycleInfo join itemsHave on itemID = itemsHave.ID where cycleInfo.ID = " 
+				+ toValue("" + id);
+		
+		return res;
+	}
+	
+	public String insertIntoCycles(){
+		return "insert into cycles() values()";
+	}
+	
+	public String cycleInfoInsert(int cycleID, int itemID){
+		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
+	}
 
 	public String getItemChangedWithUser(int itemID) {
 		//TODO
@@ -249,6 +264,8 @@ public class DBqueryGenerator {
 		
 		
 	}
+	
+	
 	
 	
 }

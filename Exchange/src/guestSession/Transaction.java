@@ -35,7 +35,7 @@ public class Transaction implements TransactionInterface{
 	}
 	
 	private void createNewTransaction(Cycle cycle){
-		//TODO
+		
 	}
  	
 	public Transaction(QueryExecutor executor, DBqueryGenerator generator, int ID, DateTime dateTime){
