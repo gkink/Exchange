@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 import org.junit.Before;
 import org.junit.Test;
 
+
 /**
  * using this static import helps you not write classname mockito before calling each method(like this:
  * Mockito.method), instead, after you use this static import, the static block of mockito class will run
@@ -16,6 +17,7 @@ import org.junit.Test;
  * another avialable import is "import org.mockito.Mockito", but then you will have to use classname(Mockito.method)
  */
 import static org.mockito.Mockito.*;
+import dbClasses.MyDBInfo;
 import dbClasses.QueryExecutor;
 
 public class QueryExecutorTest {
@@ -25,10 +27,10 @@ public class QueryExecutorTest {
 	private DataSource datasource;
 	private QueryExecutor executor;
 	
-	public static final String MYSQL_USERNAME = "root";
-	public static final String MYSQL_PASSWORD = "69727177";
-	public static final String MYSQL_DATABASE_SERVER = "localhost";
-	public static final String MYSQL_DATABASE_NAME = "db";
+	public static final String username = MyDBInfo.MYSQL_USERNAME;
+	public static final String password = MyDBInfo.MYSQL_PASSWORD;
+	public static final String server = MyDBInfo.MYSQL_DATABASE_SERVER;
+	public static final String database = MyDBInfo.MYSQL_DATABASE_NAME;
 
 	@Before
 	public void setUp(){
@@ -39,9 +41,9 @@ public class QueryExecutorTest {
 		try { 
 			Class.forName("com.mysql.jdbc.Driver"); 
 			con = DriverManager.getConnection 
-					( "jdbc:mysql://" + "localhost", "root" ,"69727177"); 
+					( "jdbc:mysql://" + server, username ,password); 
 			stmt = con.createStatement(); 
-			stmt.executeQuery("USE " + "exchange"); 
+			stmt.executeQuery("USE " + database); 
 			
 			//this code is responsible for overriding the mockobjects given method(getConnection() in this case)
 			//after this fragment of the code is called, datasource.getconnectin method will return the local connecion

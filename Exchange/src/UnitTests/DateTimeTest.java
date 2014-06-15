@@ -1,6 +1,7 @@
-package guestSession;
+package UnitTests;
 
 import static org.junit.Assert.*;
+import guestSession.DateTime;
 
 import org.junit.Before;
 import org.junit.Test;
