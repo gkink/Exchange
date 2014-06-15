@@ -187,10 +187,14 @@ public class DBqueryGenerator {
 	}
 	
 	public String getCycleSelect(int id){
-		String res = "select itemID, userID from cycleInfo join itemsHave on itemID = itemsHave.ID where cycleInfo.ID = " 
+		String res = "select itemID, userID from cycleInfo join itemsHave on itemID = itemsHave.ID where cycleInfo.cycleID = " 
 				+ toValue("" + id);
 		
 		return res;
+	}
+	
+	public String getCycleByItem(int itemID){
+		return "select cycleID from cycleInfo where itemID = " + toValue("" + itemID);
 	}
 	
 	public String insertIntoCycles(){
@@ -229,6 +233,11 @@ public class DBqueryGenerator {
 	public String getItemSelectQuery(int Id){
 		return "select * from itemsHave where ID=" +"'"+Id+"'";
 	}
+	
+	public String getItemByUser(int userId){
+		return "select itemsHave.ID from itemsHave where userID = " + toValue("" + userId);
+	}
+	
 	public String getItemUpdateQuery(int type, String field, String update, int itemId){
 		String table="itemsHave";
 		if(type==1) table ="itemsNeed";
