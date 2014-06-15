@@ -1,10 +1,9 @@
 package ModelClasses;
 
 
-
 /**
+ * Generic pair class. 
  * @author Gio
- *	Generic pair class. 
  * @param <T>
  * @param <U>
  */
@@ -25,7 +24,7 @@ public class Pair<T, U> {
 	
 	/**
 	 * Returns first object from the pair
-	 * @return
+	 * @return <T>
 	 */
 	public T getFirst(){
 		return first;
@@ -33,9 +32,25 @@ public class Pair<T, U> {
 	
 	/**
 	 * Returns second object from the pair
-	 * @return
+	 * @return <U>
 	 */
 	public U getSecond(){
 		return second;
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if (obj == this) return true;
+		
+		if (!(obj instanceof Pair<?,?>)) return false;
+		
+		Pair<?, ?> pair = (Pair<?, ?>) obj;
+		
+		return (pair.first.equals(first)) && (pair.second.equals(second));
+	}
+	
+	@Override
+	public String toString(){
+		return "(" + first + ", " + second + ")";
 	}
 }
