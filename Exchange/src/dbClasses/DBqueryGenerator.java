@@ -149,8 +149,8 @@ public class DBqueryGenerator {
 	 * Generates query string for getting last x transaction from databases.
 	 * Needs to be changed. Also all the methods below are temporary.
 	 */
-	public String getTransactionsQuery(){
-		return "select * from transactions order by ID desc limit 3";
+	public String getTransactionsQuery(int num){
+		return "select * from transactions order by ID desc limit " + num;
 	}
 
 	public String getTransactionInfoQuery(int ID){
@@ -161,6 +161,11 @@ public class DBqueryGenerator {
 		return "select * from users where ID = " + ID;
 	}
 
+	/**Gio
+	 * returns select query for the itemsChanget table
+	 * @param ID
+	 * @return String
+	 */
 	public String getItemQuery(int ID){
 		return "select * from itemsChanged where ID = " + ID;
 	}
@@ -183,7 +188,7 @@ public class DBqueryGenerator {
 	
 	public String getTransactionQuery(int iD) {
 		
-		return "select userID, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
+		return "select userID, itemId from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
 	}
 
 	public String getItemChangedWithUser(int itemID) {
@@ -251,4 +256,27 @@ public class DBqueryGenerator {
 	}
 	
 	
+	/**@author Gio
+	 * returns insert string into the transactions table
+	 * @return String
+	 */
+	public String insertIntoTransactions(){
+		return "insert into transactions(transDate) values(current_time)";
+	}
+	
+	/**
+	 * returns insert string into the transactionInfo table
+	 * @return String
+	 */
+	public String insertIntoTransactionInfo(int transactionId, int itemID){
+		return "insert into transactionInfo(transactionID, itemID) values(" + transactionId + ", " + itemID + ")";
+	}
+	
+	/**
+	 * returns insert string into the itemsChanged table
+	 * @return String
+	 */
+	public String insertIntoItemsChanged(int userID, String name){
+		return "insert into itemsChanged(" + userID + ") values(" + toValue(name) + ")";
+	}
 }
