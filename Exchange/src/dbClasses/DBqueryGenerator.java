@@ -240,36 +240,31 @@ public class DBqueryGenerator {
 		return "insert into"+ table+"(name, description, keywords, userID"+date+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
-	
+	public String getItemsNeedInsertQuery(int userId, String name,String keywords){
+		return "insert into itemsNeed (userId, name, keywords) values("+userId+","+toValue(name)+","+toValue(keywords)+")";
+	}
+	public String getItemSelectQuery(String table, int ID){
+		
+		return "select * from "+table+" where ID=" +"'"+ID+"'";
+	}
 	public String getItemsChangedInsertQuery(int userId, String name){
 		return "insert into itemsChanged(userId, name) values("+ userId+","+"'"+name+"'"+")";
 	}
-	public String getItemsChangedSelectQuery(int Id){
-		return "select * from itemsChanged where ID=" +"'"+Id+"'";
-	}
-	public String getItemsHaveSelectQuery(int Id){
-		return "select * from itemsHave where ID=" +"'"+Id+"'";
-	}
+	
 	
 	public String getItemByUser(int userId){
 		return "select itemsHave.ID from itemsHave where userID = " + toValue("" + userId);
 	}
 	
-	public String getItemUpdateQuery(int type, String field, String update, int itemId){
-		String table="itemsHave";
-		if(type==1) table ="itemsNeed";
+	public String getItemUpdateQuery(String table, String field, String update, int itemId){
 		return "update "+table+ " Set " +field+"="+"'"+update+"'"+" WHERE ID="+ "'"+itemId+ "'";
 	}
-	public String getItemsHaveDeleteQuery(int id){
-		return "DELETE from realItems Where itemId = " + "'"+id+ "';"+
-		"DELETE from cycleInfo Where itemId = " + "'"+id+ "';"+
-		"DELETE from itemsHave Where ID = " + "'"+id+ "';";
+	public String getItemDeleteQuery(String table, int id){
+		return 	"DELETE from "+table+" Where ID = " + "'"+id+ "';";
 		
 	}
-	public String getItemsChangedDeleteQuery(int ID){
-		return "Delete from transactionInfo where ItemId=" +ID+";"+"\n"+
-				"Delete from itemsChanged where ID="+ID;
-	}
+	
+	
 	//returns String to get the latest items added by users
 	public String getLatestItems() {
 		return "SELECT * from itemsHave Order By createDate Limit 0, 10";
@@ -318,5 +313,9 @@ public class DBqueryGenerator {
 	 */
 	public String insertIntoItemsChanged(int userID, String name){
 		return "insert into itemsChanged(" + userID + ") values(" + toValue(name) + ")";
+	}
+	public static void main(String[] args) {
+		DBqueryGenerator d= new DBqueryGenerator();
+		System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
 	}
 }

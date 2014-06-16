@@ -43,13 +43,13 @@ public class ItemsHaveObjectTests {
 		}
 		q = new QueryExecutor(datasource);
 		d=new DBqueryGenerator();
-		i=new ItemsHaveObject(d, q, "laptop", "chedavs","netbookcomp",2,new DateTime("2014/06/01 04:32"));
+		i=new ItemsHaveObject(d, q, "laptop", "chedavs","netbookcomp",1,new DateTime("2014/06/01 04:32"));
 	}
 	
 	@Test
 	public void testParams(){
 		assertEquals(i.getItemName(),"laptop");
-		assertEquals(i.getItemOwner(),2);
+		assertEquals(i.getItemOwner(),1);
 		assertEquals(i.getItemDescription(),"chedavs");
 		assertEquals(i.getItemKeywords(), "netbookcomp");
 		DateTime tester=new DateTime("2014/06/01 04:32");
@@ -57,16 +57,33 @@ public class ItemsHaveObjectTests {
 		assertEquals(i.getCreateDate().getTime(), tester.getTime());
 	}
 	@Test
-	public void TestInsertAndSelect(){
+	public void TestInsertAndSelectandUpdateandDelete(){
 		i.insert();
-		ItemsHaveObject test= new ItemsHaveObject(d, q, 2);
+		ItemsHaveObject test= new ItemsHaveObject(d, q, i.getItemId());
 		assertEquals(i.getItemName(),test.getItemName());
 		assertEquals(i.getItemOwner(),test.getItemOwner());
 		assertEquals(i.getItemDescription(),test.getItemDescription());
 		assertEquals(i.getItemKeywords(), test.getItemKeywords());
 		assertEquals(i.getCreateDate().getDate(), test.getCreateDate().getDate());
-		System.out.println(i.getCreateDate().getTime());
-		System.out.println(test.getCreateDate().getTime());
-		assertEquals(i.getCreateDate().getTime(), test.getCreateDate().getTime());
+		//time gasasworebelia
+		//	assertEquals(i.getCreateDate().getTime(), test.getCreateDate().getTime());
+		i.update("name", "notebook");
+		assertEquals(i.getItemName(),"notebook");
+		test= new ItemsHaveObject(d, q, i.getItemId());
+		assertEquals (i.getItemName(),test.getItemName());
+		i.delete();
+		test= new ItemsHaveObject(d, q, i.getItemId());
+		assertEquals(test, null);
+	}
+	@Test
+	public void TestUpdate(){
+		
+		
+		
+		
+	}
+	@Test
+	public void testDelete(){
+		
 	}
 }

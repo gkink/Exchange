@@ -2,7 +2,7 @@ package guestSession;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+
 
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
@@ -29,7 +29,7 @@ public class ItemsHaveObject implements ItemInterface {
 	public ItemsHaveObject(DBqueryGenerator generator,QueryExecutor executor,int ID){
 		this.executor = executor;
 		this.queryGenerator = generator;
-		String query=queryGenerator.getItemsHaveSelectQuery(ID);
+		String query=queryGenerator.getItemSelectQuery("itemsHave",ID);
 		ResultSet rs= executor.selectResult(query);
 		parseAndinit(rs);
 		
@@ -56,15 +56,29 @@ public class ItemsHaveObject implements ItemInterface {
 	}
 	@Override
 	public void insert() {
-		executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
+		this.ID= executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
 		
 	}
-	public void update(int ID, String field, String upd){
-		executor.executeQuery(queryGenerator.getItemUpdateQuery(0, field, upd, ID));
+	public void update(String field, String upd){
+		switch (field){
+		case "description" :this.description=upd;
+		break;
+		case "name": this.name=upd;
+		break;
+		case "keywords": this.keywords=upd;
+		break;
+		default :System.out.println("Illegal Field");
+		return;
+		}
+		executor.executeQuery(queryGenerator.getItemUpdateQuery("itemsHave", field, upd, ID));
+		
+				
+		
+		
 		
 	}
 	public void delete(){
-		executor.executeQuery(queryGenerator.getItemsHaveDeleteQuery(ID));
+		executor.executeQuery(queryGenerator.getItemDeleteQuery("itemsHave",ID));
 	}
 	public DateTime getCreateDate(){
 		return createDate;

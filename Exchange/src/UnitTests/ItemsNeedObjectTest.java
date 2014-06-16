@@ -1,6 +1,7 @@
 package UnitTests;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,17 +16,17 @@ import org.junit.Test;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
-
-import guestSession.ItemsChanged;
+import guestSession.DateTime;
+import guestSession.ItemsHaveObject;
+import guestSession.ItemsNeedObject;
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 import dbConnection.MyDBInfo;
 
-public class ItemsChangedTests {
-	ItemsChanged i;
+public class ItemsNeedObjectTest {
+	ItemsNeedObject i;
 	QueryExecutor q;
 	DBqueryGenerator d;
-	
 	@Before
 	public void SetUp(){
 		DataSource datasource = mock(DataSource.class);
@@ -43,28 +44,41 @@ public class ItemsChangedTests {
 		}
 		q = new QueryExecutor(datasource);
 		d=new DBqueryGenerator();
-		i=new ItemsChanged(d, q, 1, "bla");
-		
+		i=new ItemsNeedObject(d, q, 1,"laptop","netbookcomp");
 	}
+	
 	@Test
 	public void testParams(){
-		assertEquals(i.getItemName(),"bla");
-		assertEquals(i.getItemOwner(),1);	
+		assertEquals(i.getItemName(),"laptop");
+		assertEquals(i.getItemOwner(),1);
+		assertEquals(i.getItemKeywords(), "netbookcomp");
+		
+	}
+	@Test
+	public void TestInsertAndSelectandUpdateandDelete(){
+		i.insert();
+		ItemsNeedObject test= new ItemsNeedObject(d, q, i.getItemId());
+		assertEquals(i.getItemName(),test.getItemName());
+		assertEquals(i.getItemOwner(),test.getItemOwner());
+		assertEquals(i.getItemKeywords(), test.getItemKeywords());
+		i.update("name", "notebook");
+		assertEquals(i.getItemName(),"notebook");
+		test= new ItemsNeedObject(d, q, i.getItemId());
+		assertEquals (i.getItemName(),test.getItemName());
+		i.delete();
+		test= new ItemsNeedObject(d, q, i.getItemId());
+	//	assertEquals(test, null);
+	}
+	@Test
+	public void TestUpdate(){
+		
+		
 		
 		
 	}
 	@Test
-	public void testInsertAndSelect(){
-		i.insert();
-		ItemsChanged s= new ItemsChanged(d, q, i.getItemId());
-		assertEquals(i.getItemName(),s.getItemName());
-		assertEquals(i.getItemOwner(),s.getItemOwner());
-		assertEquals(s.getItemId(),s.getItemId());
-		
+	public void testDelete(){
 		
 	}
-	
-	
-	
-
 }
+

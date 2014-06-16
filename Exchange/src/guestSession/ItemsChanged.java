@@ -24,7 +24,7 @@ public class ItemsChanged implements ItemInterface {
 		this.gen=gen;
 		this.exe=exe;
 		this.ID=ID;
-		String query=gen.getItemsChangedSelectQuery(ID);
+		String query=gen.getItemSelectQuery("itemsChanged",ID);
 		ResultSet rs= exe.selectResult(query);
 		parseAndinit(rs);
 	}
@@ -42,19 +42,15 @@ public class ItemsChanged implements ItemInterface {
 		}
 		
 	}
+	@Override
 	public String getItemName(){
 		return name;
 	}
 	@Override
 	public void insert() {
-		exe.executeQuery(gen.getItemsChangedInsertQuery(userId, name));
-		
-		
+		this.ID=exe.executeQuery(gen.getItemsChangedInsertQuery(userId, name));
 	}
-	public void delete(){
-		System.out.println(gen.getItemsChangedDeleteQuery(ID));
-		exe.executeQuery(gen.getItemsChangedDeleteQuery(ID));
-	}
+	
 	@Override
 	public int getItemOwner() {
 		
@@ -66,5 +62,5 @@ public class ItemsChanged implements ItemInterface {
 		
 		return ID;
 	}
-
+	
 }
