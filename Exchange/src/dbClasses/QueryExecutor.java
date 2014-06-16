@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
 
 public class QueryExecutor {
 
@@ -57,7 +57,7 @@ public class QueryExecutor {
 			Connection cn = datasource.getConnection();
 			Statement stm = cn.createStatement();
 
-			stm.executeUpdate(query);
+			stm.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
 
 			ResultSet rs = stm.getGeneratedKeys();
 			while(rs.next())

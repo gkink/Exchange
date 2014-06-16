@@ -2,11 +2,9 @@ package dbClasses;
 
 import guestSession.DateTime;
 
-import java.util.ArrayList;
-import java.util.Date;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
-import org.eclipse.jdt.internal.compiler.batch.Main;
+
+
 
 /**
  * 
@@ -205,13 +203,25 @@ public class DBqueryGenerator {
 	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, DateTime createDate){
 		String table=" itemsHave ";
 		String Date=",'"+createDate.getDate()+" " + createDate.getTime()+"'";
-		if(type==1) table =" itemsNeed ";
 		String date=",createDate";
+		if(type==1){
+			table =" itemsNeed ";
+			Date="";
+			date="";
+		}
+		
+		
 		return "insert into"+ table+"(name, description, keywords, userID"+date+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
 	
-	public String getItemSelectQuery(int Id){
+	public String getItemsChangedInsertQuery(int userId, String name){
+		return "insert into itemsChanged(userId, name) values("+ userId+","+"'"+name+"'"+")";
+	}
+	public String getItemsChangedSelectQuery(int Id){
+		return "select * from itemsChanged where ID=" +"'"+Id+"'";
+	}
+	public String getItemsHaveSelectQuery(int Id){
 		return "select * from itemsHave where ID=" +"'"+Id+"'";
 	}
 	public String getItemUpdateQuery(int type, String field, String update, int itemId){
@@ -219,11 +229,15 @@ public class DBqueryGenerator {
 		if(type==1) table ="itemsNeed";
 		return "update "+table+ " Set " +field+"="+"'"+update+"'"+" WHERE ID="+ "'"+itemId+ "'";
 	}
-	public String getItemDeleteQuery(int type, int id){
-		String table=" itemsHave ";
-		if(type==1) table =" itemsNeed ";
-		return "DELETE * from " +table +" Where ID = " + "'"+id+ "'";
+	public String getItemsHaveDeleteQuery(int id){
+		return "DELETE from realItems Where itemId = " + "'"+id+ "';"+
+		"DELETE from cycleInfo Where itemId = " + "'"+id+ "';"+
+		"DELETE from itemsHave Where ID = " + "'"+id+ "';";
 		
+	}
+	public String getItemsChangedDeleteQuery(int ID){
+		return "Delete from transactionInfo where ItemId=" +ID+";"+"\n"+
+				"Delete from itemsChanged where ID="+ID;
 	}
 	//returns String to get the latest items added by users
 	public String getLatestItems() {

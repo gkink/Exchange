@@ -11,17 +11,16 @@ email varchar(30) unique, ranking int);
 
 create table itemsHave
 (ID int not null auto_increment primary key,
-name varchar(30), description varchar(120),
+name varchar(30),
+description varchar(120),
 keyWords varchar(50),
 userID int,
-createDate DateTime ,
+createDate DateTime,
 constraint foreign key (userID) references users(ID));
 
 create table itemsNeed
 (ID int not null auto_increment primary key,
-name varchar(30),
 keyWords varchar(50), userID int,
-createDate DateTime,
 constraint foreign key (userID) references users(ID)
 );
 
@@ -32,6 +31,11 @@ constraint foreign key (userID) references users(ID),
 itemId int,
 constraint foreign key (itemID) references itemsHave(ID));
 
+create table itemsChanged(
+ID int not null auto_increment primary key,
+userId int not null,
+constraint foreign key (userID) references users(ID),
+name varchar(120));
 
 create table cycles(
 ID int not null auto_increment primary key);
@@ -48,10 +52,7 @@ create table transactions(
 ID int not null auto_increment primary key,
 transDate datetime);
 
-create table itemsChanged(
-ID int not null primary key,
-userId int not null,
-description varchar(120));
+
 
 create table transactionInfo(
 transactionID int,
