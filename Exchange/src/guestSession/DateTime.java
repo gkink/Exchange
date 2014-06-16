@@ -3,29 +3,16 @@ package guestSession;
 import java.sql.Date;
 import java.sql.Time;
 
-import org.junit.runners.model.InitializationError;
-
 
 public class DateTime {
 	
-	String [] dateAndTime;
 	private Date date;
 	private Time time;
 	
 	/**
-	 * Creates DateTime object on string of that kind: "12/12/12 20:02:11".
-	 * If there is no exactly one space in the parameter, throws IllegalArgumentException.
+	 * Creates DateTime object on java.sql.Date and java.sql.Time objects.
 	 * @param dateTime
 	 */
-	public DateTime(String dateTime) throws IllegalArgumentException{
-		dateAndTime = dateTime.split(" ");
-		
-		if(dateAndTime.length != 2){
-			throw new IllegalArgumentException();
-		}
-	}
-	
-	//es tu gadavakete mashin getData da getTime_ic unda gadavaketo.
 	public DateTime(Date date, Time time){
 		this.time = time;
 		this.date = date;
@@ -33,18 +20,18 @@ public class DateTime {
 	
 	/**
 	 * Returns Date
-	 * @return String
+	 * @return Date
 	 */
-	public String getDate(){
-		return dateAndTime[0];
+	public Date getDate(){
+		return date;
 	}
 	
 	/**
 	 * Returns Time
-	 * @return String
+	 * @return Time
 	 */
-	public String getTime(){
-		return dateAndTime[1];
+	public Time getTime(){
+		return time;
 	}
 	
 	@Override
@@ -55,11 +42,11 @@ public class DateTime {
 		
 		DateTime other = (DateTime)obj;
 		
-		return (dateAndTime[0] == other.dateAndTime[0]) && (dateAndTime[1] == other.dateAndTime[1]);
+		return (date.equals(other.date)) && (time.equals(other.time));
 	}
 	
 	@Override
 	public String toString(){
-		return dateAndTime[0] + " " + dateAndTime[1];
+		return date + " " + time;
 	}
 }
