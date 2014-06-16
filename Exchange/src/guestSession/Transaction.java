@@ -6,6 +6,8 @@ import java.util.List;
 
 
 
+
+import ModelClasses.Cycle;
 //import ModelClasses.Cycle;
 import ModelClasses.CycleInterface;
 import ModelClasses.ItemInterface;
@@ -41,11 +43,16 @@ public class Transaction implements TransactionInterface{
 		}
 	}
 	
+
 	private void createNewTransaction(CycleInterface cycle){
 		for (int i = 0; i < cycle.cycleSize(); i++){
 			
 			//userItemPairs.add(cycle.getUserItemPair(i));
 		}
+	}
+
+	private void createNewTransaction(Cycle cycle){
+		
 	}
  	
 	public Transaction(QueryExecutor executor, DBqueryGenerator generator, int ID, DateTime dateTime){

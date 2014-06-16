@@ -134,10 +134,13 @@ create table ConversationLines(
 	line_date datetime,
 	constraint foreign key (userID) references users(ID),
 	constraint foreign key (ConvID) references Conversations(id)
-)
+);
 
 /*
 Am gverdze gadmodixar an search-is dabrunebuli item-ebis listidan an boos damatebuli item-ebis listidan. dasagenerireblad gchirdeba
 itemsHave table. bevrs verafers vfiqrob am gverdze ubralod surati iqneba nivtis da description, vin atvirta .... magistvis erti select daiwereba 
 itemsHave-dan.
 */
+
+insert into users (firstName, lastName, email, ranking) values 
+	( 'giorgi', 'ghambashidze', 'ggha@gmail.com', '5');
