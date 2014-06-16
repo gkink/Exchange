@@ -24,7 +24,7 @@ public class TransactionContainer2 {
 	private List<TransactionInterface> transactions;
 	private List<Pair<Integer, String>> IDs;
 //	private DBqueryGenerator generator;
-	private int size = 0, numOfIDs = 0;
+	private int size, numOfIDs;
 	private ResultSet transactionIDs;
 	private QueryExecutor executor;
 	
@@ -39,14 +39,6 @@ public class TransactionContainer2 {
 				IDs.add(pair);	
 				numOfIDs++;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		closeResultSet();
-	}
-	
-	private void closeResultSet(){
-		try {
 			transactionIDs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,6 +46,8 @@ public class TransactionContainer2 {
 	}
 	
 	private void init(QueryExecutor executor, DBqueryGenerator generator){
+		size = 0;
+		numOfIDs = 0;
 		IDs = new ArrayList<Pair<Integer, String>>();
 		transactions = new ArrayList<TransactionInterface>();
 //		this.generator = generator;

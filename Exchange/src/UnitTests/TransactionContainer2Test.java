@@ -17,11 +17,13 @@ import dbClasses.QueryExecutor;
 
 public class TransactionContainer2Test {
 	
-	private TransactionContainer2 container;
+	private TransactionContainer2 container, container2;
 	private QueryExecutor executor;
 	private DBqueryGenerator generator;
 	private ResultSet set;
 	private Transaction transaction;
+	
+	public static final int userID = 3;
 
 	@Before
 	public void init() throws SQLException {
@@ -35,16 +37,21 @@ public class TransactionContainer2Test {
 		
 		generator = mock(DBqueryGenerator.class);
 		when(generator.getTransactionsQuery(TransactionContainer2.NUMBER_OF_TOP_TRANSACTIONS)).thenReturn("test for top tuples");
+		when(generator.getTrasactionsForUserQuery(userID)).thenReturn("test for user transactions");
 		
 		executor = mock(QueryExecutor.class);
 		when(executor.selectResult("test for top tuples")).thenReturn(set);
+		when(executor.selectResult("test for user transactions")).thenReturn(set);
 		
 		container = new TransactionContainer2(executor, generator);
+		
+		container2 = new TransactionContainer2(executor, generator, userID);
 	}
 	
 	@Test
 	public void numOfPairsTest(){
 		assertEquals(3, container.numOfPairs());
+		assertEquals(3, container2.numOfPairs());
 	}
 	
 	@Test
@@ -54,6 +61,10 @@ public class TransactionContainer2Test {
 			assertEquals(container.getPair(i).getFirst(), new Integer(i+1));
 			assertEquals(container.getPair(i).getSecond(), arr[i]);
 		}
+		for (int i = 0; i < container2.numOfPairs(); i++){
+			assertEquals(container2.getPair(i).getFirst(), new Integer(i+1));
+			assertEquals(container2.getPair(i).getSecond(), arr[i]);
+		}
 	}
 	
 	@Test
@@ -62,6 +73,9 @@ public class TransactionContainer2Test {
 		for (int i = 0; i < container.numOfPairs(); i++){
 			assertEquals(container.getPair(i), new Pair<Integer, String>(i+1, arr[i]));
 		}
+		for (int i = 0; i < container2.numOfPairs(); i++){
+			assertEquals(container2.getPair(i), new Pair<Integer, String>(i+1, arr[i]));
+		}
 	}
 	
 	@Test
@@ -69,6 +83,10 @@ public class TransactionContainer2Test {
 		assertEquals(0, container.size());
 		container.addTransaction(transaction);
 		assertEquals(1, container.size());
+		
+		assertEquals(0, container2.size());
+		container2.addTransaction(transaction);
+		assertEquals(1, container2.size());
 	}
 	
 	@Test
@@ -78,6 +96,12 @@ public class TransactionContainer2Test {
 			container.addTransaction(transaction);
 		}
 		assertEquals(3, container.size());
+		
+		assertEquals(0, container2.size());
+		for (int i = 0; i < container2.numOfPairs(); i++){
+			container2.addTransaction(transaction);
+		}
+		assertEquals(3, container2.size());
 	}
 	
 	@Test
@@ -86,5 +110,10 @@ public class TransactionContainer2Test {
 		container.addTransaction(null);
 		assertSame(container.getTransaction(0), transaction);
 		assertSame(container.getTransaction(1), null);
+		
+		container2.addTransaction(transaction);
+		container2.addTransaction(null);
+		assertSame(container2.getTransaction(0), transaction);
+		assertSame(container2.getTransaction(1), null);
 	}
 }
