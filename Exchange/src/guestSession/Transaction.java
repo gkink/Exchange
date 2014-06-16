@@ -10,7 +10,7 @@ import java.util.List;
 import ModelClasses.Cycle;
 //import ModelClasses.Cycle;
 import ModelClasses.CycleInterface;
-import ModelClasses.ItemInterface;
+import ModelClasses.MyItemInterface;
 import ModelClasses.LittleItem;
 import ModelClasses.Pair;
 import ModelClasses.User;
@@ -22,7 +22,7 @@ public class Transaction implements TransactionInterface{
 	private int ID, size = 0;
 	private DateTime dateTime;
 	private DBqueryGenerator generator;
-	private List<Pair<User, ItemInterface>> userItemPairs;
+	private List<Pair<User, MyItemInterface>> userItemPairs;
 	private QueryExecutor executor;
 	private CycleInterface cycle;
 	
@@ -31,8 +31,8 @@ public class Transaction implements TransactionInterface{
 		try {
 			while(res.next()){
 				User user = new User(executor, generator, res.getInt(1));
-				ItemInterface item = new LittleItem(executor, generator, res.getInt(2));
-				userItemPairs.add(new Pair<User, ItemInterface>(user, item));
+				MyItemInterface item = new LittleItem(executor, generator, res.getInt(2));
+				userItemPairs.add(new Pair<User, MyItemInterface>(user, item));
 				size++;
 			}
 		} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class Transaction implements TransactionInterface{
 	}
 	
 	@Override
-	public Pair<User, ItemInterface> getUserItemPair(int num){
+	public Pair<User, MyItemInterface> getUserItemPair(int num){
 		return userItemPairs.get(num);
 	}
 	

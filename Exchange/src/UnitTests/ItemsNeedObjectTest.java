@@ -16,8 +16,7 @@ import org.junit.Test;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
-import guestSession.DateTime;
-import guestSession.ItemsHaveObject;
+
 import guestSession.ItemsNeedObject;
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;

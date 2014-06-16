@@ -227,17 +227,8 @@ public class DBqueryGenerator {
 	 * @param createDate 
 	 */
 	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, DateTime createDate){
-		String table=" itemsHave ";
 		String Date=",'"+createDate.getDate()+" " + createDate.getTime()+"'";
-		String date=",createDate";
-		if(type==1){
-			table =" itemsNeed ";
-			Date="";
-			date="";
-		}
-		
-		
-		return "insert into"+ table+"(name, description, keywords, userID"+date+")"+"\n"+
+		return "insert into itemsHave "+"(name, description, keywords, userID,createDate"+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
 	public String getItemsNeedInsertQuery(int userId, String name,String keywords){
@@ -261,6 +252,10 @@ public class DBqueryGenerator {
 	}
 	public String getItemDeleteQuery(String table, int id){
 		return 	"DELETE from "+table+" Where ID = " + "'"+id+ "';";
+		
+	}
+	public String getRealItemInsertQuery(int userId, int itemID){
+		return "insert into realItems(userId, itemId) values("+userId+","+itemID+")";
 		
 	}
 	
