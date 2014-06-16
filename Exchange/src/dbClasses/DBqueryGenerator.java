@@ -147,8 +147,8 @@ public class DBqueryGenerator {
 	 * Generates query string for getting last x transaction from databases.
 	 * Needs to be changed. Also all the methods below are temporary.
 	 */
-	public String getTransactionsQuery(){
-		return "select * from transactions order by ID desc limit 3";
+	public String getTransactionsQuery(int num){
+		return "select * from transactions order by ID desc limit " + num;
 	}
 
 	public String getTransactionInfoQuery(int ID){
@@ -159,6 +159,11 @@ public class DBqueryGenerator {
 		return "select * from users where ID = " + ID;
 	}
 
+	/**Gio
+	 * returns select query for the itemsChanget table
+	 * @param ID
+	 * @return String
+	 */
 	public String getItemQuery(int ID){
 		return "select * from itemsChanged where ID = " + ID;
 	}
@@ -167,10 +172,10 @@ public class DBqueryGenerator {
 		return "select * from users where ID = " + toValue("" + id);
 	}
 
-	public String insertIntoUsers(int id, int ranking, String firstName, String lastName, String email){
+	public String insertIntoUsers(int ranking, String firstName, String lastName, String email){
 		String res = generateInsert("users", 
-				new String[]{"ID", "firstName", "lastName", "email", "ranking"}, 
-				new String[]{"" + id, firstName, lastName, email, "" + ranking});
+				new String[]{"firstName", "lastName", "email", "ranking"}, 
+				new String[]{firstName, lastName, email, "" + ranking});
 
 		return res;
 	}
@@ -181,7 +186,28 @@ public class DBqueryGenerator {
 	
 	public String getTransactionQuery(int iD) {
 		
-		return "select userID, name from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
+
+		return "select userID, itemId from (select itemID from transactionInfo where transactionID = 2) as A join itemsChanged on A.itemID = id;";
+
+	}
+	
+	public String getCycleSelect(int id){
+		String res = "select itemID, userID from cycleInfo join itemsHave on itemID = itemsHave.ID where cycleInfo.cycleID = " 
+				+ toValue("" + id);
+		
+		return res;
+	}
+	
+	public String getCycleByItem(int itemID){
+		return "select cycleID from cycleInfo where itemID = " + toValue("" + itemID);
+	}
+	
+	public String insertIntoCycles(){
+		return "insert into cycles() values()";
+	}
+	
+	public String cycleInfoInsert(int cycleID, int itemID){
+		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
 	}
 
 	public String getItemChangedWithUser(int itemID) {
@@ -224,6 +250,11 @@ public class DBqueryGenerator {
 	public String getItemsHaveSelectQuery(int Id){
 		return "select * from itemsHave where ID=" +"'"+Id+"'";
 	}
+	
+	public String getItemByUser(int userId){
+		return "select itemsHave.ID from itemsHave where userID = " + toValue("" + userId);
+	}
+	
 	public String getItemUpdateQuery(int type, String field, String update, int itemId){
 		String table="itemsHave";
 		if(type==1) table ="itemsNeed";
@@ -264,8 +295,28 @@ public class DBqueryGenerator {
 		
 	}
 	
-	public static void main(String[] args) {
-		DBqueryGenerator d=new DBqueryGenerator();
-		System.out.print(d.getItemUpdateQuery(0, "description", "bla", 1));
+	
+	/**@author Gio
+	 * returns insert string into the transactions table
+	 * @return String
+	 */
+	public String insertIntoTransactions(){
+		return "insert into transactions(transDate) values(current_time)";
+	}
+	
+	/**
+	 * returns insert string into the transactionInfo table
+	 * @return String
+	 */
+	public String insertIntoTransactionInfo(int transactionId, int itemID){
+		return "insert into transactionInfo(transactionID, itemID) values(" + transactionId + ", " + itemID + ")";
+	}
+	
+	/**
+	 * returns insert string into the itemsChanged table
+	 * @return String
+	 */
+	public String insertIntoItemsChanged(int userID, String name){
+		return "insert into itemsChanged(" + userID + ") values(" + toValue(name) + ")";
 	}
 }

@@ -4,7 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+
+
+
 import ModelClasses.Cycle;
+//import ModelClasses.Cycle;
+import ModelClasses.CycleInterface;
+import ModelClasses.ItemInterface;
+import ModelClasses.LittleItem;
 import ModelClasses.Pair;
 import ModelClasses.User;
 import dbClasses.DBqueryGenerator;
@@ -15,15 +22,17 @@ public class Transaction implements TransactionInterface{
 	private int ID, size = 0;
 	private DateTime dateTime;
 	private DBqueryGenerator generator;
-	private List<Pair<User, String>> userItemPairs;
+	private List<Pair<User, ItemInterface>> userItemPairs;
 	private QueryExecutor executor;
+	private CycleInterface cycle;
 	
 	private void getTransactionFromBases(){
 		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
 		try {
 			while(res.next()){
 				User user = new User(executor, generator, res.getInt(1));
-				userItemPairs.add(new Pair<User, String>(user, res.getString(2)));
+				ItemInterface item = new LittleItem(executor, generator, res.getInt(2));
+				userItemPairs.add(new Pair<User, ItemInterface>(user, item));
 				size++;
 			}
 		} catch (SQLException e) {
@@ -34,8 +43,16 @@ public class Transaction implements TransactionInterface{
 		}
 	}
 	
+
+	private void createNewTransaction(CycleInterface cycle){
+		for (int i = 0; i < cycle.cycleSize(); i++){
+			
+			//userItemPairs.add(cycle.getUserItemPair(i));
+		}
+	}
+
 	private void createNewTransaction(Cycle cycle){
-		//TODO
+		
 	}
  	
 	public Transaction(QueryExecutor executor, DBqueryGenerator generator, int ID, DateTime dateTime){
@@ -47,14 +64,14 @@ public class Transaction implements TransactionInterface{
 	}
 	
 	
-	public Transaction(QueryExecutor executor, DBqueryGenerator generator, Cycle cycle){
+	public Transaction(QueryExecutor executor, DBqueryGenerator generator, CycleInterface cycle){
 		this.executor = executor;
 		this.generator = generator;
 		createNewTransaction(cycle);
 	}
 	
 	@Override
-	public Pair<User, String> getUserItemPair(int num){
+	public Pair<User, ItemInterface> getUserItemPair(int num){
 		return userItemPairs.get(num);
 	}
 	
@@ -65,7 +82,8 @@ public class Transaction implements TransactionInterface{
 
 	@Override
 	public void addToTheBases() {
-		//TODO
+		int transactionID = executor.executeQuery(generator.insertIntoTransactions());
+		
 	}
 
 	@Override

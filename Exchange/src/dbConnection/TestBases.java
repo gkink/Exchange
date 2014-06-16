@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import dbClasses.MyDBInfo;
+
 /**
  * am klass yuradgebas nu miaqcevt chemtvis davwere ro gametesta sworad tu mushaobda 
  * bazastan connection da sworad mushaobs tu. 
