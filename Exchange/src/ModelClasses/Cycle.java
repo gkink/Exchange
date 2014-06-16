@@ -7,6 +7,8 @@ import java.util.List;
 
 import guestSession.DateTime;
 import guestSession.Item;
+import guestSession.ItemInterface;
+import guestSession.ItemsHaveObject;
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -14,20 +16,18 @@ public class Cycle implements CycleInterface{
 	private DBqueryGenerator queryGenerator;
 	private QueryExecutor executor;
 	private int id;
-	private DateTime datetime;
-	private List<Pair<User, Item> >  list;
+	private List<Pair<User, ItemInterface> >  list;
 
-	public Cycle(QueryExecutor executor, DBqueryGenerator generator, int id, DateTime dateTime){
+	public Cycle(QueryExecutor executor, DBqueryGenerator generator, int id){
 		this.executor =  executor;
 		this.queryGenerator = generator;
 		this.id = id;
-		this.datetime = datetime;
 		
 		initList();
 	}
 
 	private void initList(){
-		list = new ArrayList<Pair<User, Item> >();
+		list = new ArrayList<Pair<User, ItemInterface> >();
 		
 		ResultSet rs = executor.selectResult(queryGenerator.getCycleSelect(id));
 		int userid, itemid;
@@ -36,9 +36,9 @@ public class Cycle implements CycleInterface{
 				userid = rs.getInt(1);
 				itemid = rs.getInt(2);
 				User user = new User(executor, queryGenerator, userid);
-				Item item = new Item(queryGenerator, executor, itemid);
+				ItemInterface item = new ItemsHaveObject(queryGenerator, executor, itemid);
 				
-				Pair<User, Item> curr = new Pair<User, Item>(user, item);
+				Pair<User, ItemInterface> curr = new Pair<User, ItemInterface>(user, item);
 				list.add(curr);
 			}
 		} catch (SQLException e) {
@@ -53,7 +53,7 @@ public class Cycle implements CycleInterface{
 	 * This constructor is given list which creates a new cycle, then addToBases method should be called
 	 * in order to add new cycle into cycles table, and add all nesessary rows in cycleinfo
 	 */
-	public Cycle(QueryExecutor executor, DBqueryGenerator generator, List<Pair<User, Item> >  list){
+	public Cycle(QueryExecutor executor, DBqueryGenerator generator, List<Pair<User, ItemInterface> >  list){
 		this.executor = executor;
 		this.queryGenerator = generator;
 		this.list = list;
@@ -66,7 +66,7 @@ public class Cycle implements CycleInterface{
 	}
 
 	@Override
-	public Pair<User, Item> getUserItemPair(int num) {
+	public Pair<User, ItemInterface> getUserItemPair(int num) {
 		return list.get(num);
 	}
 
@@ -81,14 +81,9 @@ public class Cycle implements CycleInterface{
 		this.id = executor.executeQuery(queryGenerator.insertIntoCycles());
 		
 		for(int i = 0 ; i < cycleSize() ; i++){
-			String insert = queryGenerator.cycleInfoInsert(id, list.get(i).getSecond().getID());
+			String insert = queryGenerator.cycleInfoInsert(id, list.get(i).getSecond().getItemId());
 			executor.executeQuery(insert);
 		}
-	}
-
-	@Override
-	public DateTime getDateTime() {
-		return datetime;
 	}
 
 	@Override

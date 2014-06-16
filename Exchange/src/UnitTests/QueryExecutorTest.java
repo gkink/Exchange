@@ -17,7 +17,7 @@ import org.junit.Test;
  * another avialable import is "import org.mockito.Mockito", but then you will have to use classname(Mockito.method)
  */
 import static org.mockito.Mockito.*;
-import dbClasses.MyDBInfo;
+import dbConnection.MyDBInfo;
 import dbClasses.QueryExecutor;
 
 public class QueryExecutorTest {
@@ -37,7 +37,7 @@ public class QueryExecutorTest {
 		//this is mock object of any existing class
 		datasource = mock(DataSource.class);
 		
-		//copied this from assignment 3 code
+		//copieds this from assignment 3 code
 		try { 
 			Class.forName("com.mysql.jdbc.Driver"); 
 			con = DriverManager.getConnection 
@@ -93,19 +93,20 @@ public class QueryExecutorTest {
 		assertNotNull(email);
 		
 		assertEquals(1, id);
-		assertEquals("giorgi", name);
-		assertEquals("ghambashidze", lastname);
-		assertEquals("ggha@gmail.com", email);
-		assertEquals(5, rating);
+		assertEquals("irakli", name);
+		assertEquals("kobalava", lastname);
+		assertEquals("ikoba@.gmail.com", email);
+		assertEquals(0, rating);
 	}
 	
 	@Test
 	public void testInsert(){
 		String insertQuery = "insert into users (firstName, lastName, email, ranking) values"+ 
-	"( 'archil', 'bakhsoliani', 'abakh@gmail.com', '10')";
+	"( 'archil', 'bakhsoliani', '1@gmail.com', '10')";
 		int id = executor.executeQuery(insertQuery);
 		
-		assertEquals(2, id);
+		System.out.print(id);
+		assertEquals(12, id);
 	}
 
 }

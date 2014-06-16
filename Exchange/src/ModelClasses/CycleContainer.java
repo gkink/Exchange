@@ -41,7 +41,7 @@ public class CycleContainer {
 		try {
 			while(rs.next()){
 				int cycleID = rs.getInt(1);
-				cycles.add(new Cycle(executor, generator, cycleID, dateTime));
+				cycles.add(new Cycle(executor, generator, cycleID));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

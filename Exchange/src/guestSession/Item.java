@@ -48,7 +48,7 @@ public class Item {
 	public Item(DBqueryGenerator generator,QueryExecutor executor,int ID){
 		this.executor = executor;
 		this.queryGenerator = generator;
-		String query=queryGenerator.getItemSelectQuery(ID);
+		String query=queryGenerator.getItemsHaveSelectQuery(ID);
 		ResultSet rs= executor.selectResult(query);
 		parseAndinit(rs);
 		
