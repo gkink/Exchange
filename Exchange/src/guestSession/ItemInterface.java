@@ -7,6 +7,7 @@ public interface ItemInterface {
 	
 	public int getItemId();
 	
+	public String getItemName();
 	 
 	
 

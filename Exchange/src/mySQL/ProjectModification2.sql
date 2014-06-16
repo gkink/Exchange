@@ -20,7 +20,9 @@ constraint foreign key (userID) references users(ID));
 
 create table itemsNeed
 (ID int not null auto_increment primary key,
-keyWords varchar(50), userID int,
+keyWords varchar(50),
+name varchar(50),
+userID int,
 constraint foreign key (userID) references users(ID)
 );
 
@@ -29,7 +31,8 @@ ID int not null auto_increment primary key,
 userId int,
 constraint foreign key (userID) references users(ID),
 itemId int,
-constraint foreign key (itemID) references itemsHave(ID));
+constraint foreign key (itemID) references itemsHave(ID) on delete cascade
+);
 
 create table itemsChanged(
 ID int not null auto_increment primary key,
@@ -37,14 +40,14 @@ userId int not null,
 constraint foreign key (userID) references users(ID),
 name varchar(120));
 
-create table cycles(
+create table cycles( 
 ID int not null auto_increment primary key);
 
 create table cycleInfo(
 cycleID int,
 constraint foreign key (cycleId) references cycles(ID),
 itemId int,
-constraint foreign key (itemID) references itemsHave(ID),
+constraint foreign key (itemID) references itemsHave(ID) on delete cascade,
 accept tinyint(1));
 
 
@@ -60,7 +63,8 @@ constraint foreign key (transactionID) references transactions(ID),
 userID int,
 constraint foreign key (userID) references users(ID),
 itemID int,
-constraint foreign key (itemID) references itemsChanged(ID));
+constraint foreign key (itemID) references itemsChanged(ID) on delete cascade
+);
 
 
 #Tu es notificationi ertxel naxa userma ramiT unda movnishnot ro meoret agar vanaxoT!
