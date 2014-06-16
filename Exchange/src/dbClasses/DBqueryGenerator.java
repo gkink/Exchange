@@ -318,4 +318,12 @@ public class DBqueryGenerator {
 		DBqueryGenerator d= new DBqueryGenerator();
 		System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
 	}
+	
+	public String deleteCycleInfo(int cycleID){
+		return "delete from  cycleInfo where cycleID = " + cycleID;
+	}
+	
+	public String deleteCycle(int cycleID){
+		return "delete from Cycles where ID = " + cycleID;
+	}
 }
