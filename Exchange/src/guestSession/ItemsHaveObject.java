@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+import java.sql.Time;
+import java.sql.Date;
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -44,8 +47,9 @@ public class ItemsHaveObject implements ItemInterface {
 				this.description = rs.getString("description");
 				this.keywords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
-				String time= rs.getString("createDate");
-				this.createDate=new DateTime(time.replace('-', '/'));
+				Date date= rs.getDate("createDate");
+				Time time=rs.getTime("createDate");
+				this.createDate=new DateTime(date, time);
 			}
 
 			rs.close();

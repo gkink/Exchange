@@ -227,7 +227,7 @@ public class DBqueryGenerator {
 	 * @param createDate 
 	 */
 	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, DateTime createDate){
-		String Date=",'"+createDate.getDate()+" " + createDate.getTime()+"'";
+		String Date=",'"+createDate.getDate().toString()+" " + createDate.getTime().toString()+"'";
 		return "insert into itemsHave "+"(name, description, keywords, userID,createDate"+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
