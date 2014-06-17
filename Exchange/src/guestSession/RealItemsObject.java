@@ -25,6 +25,7 @@ public class RealItemsObject{
 			while(rs.next()){
 				this.ID = rs.getInt("ID");
 				this.userId = rs.getInt("userId");
+				this.itemID=rs.getInt("itemId");
 			}
 
 			rs.close();

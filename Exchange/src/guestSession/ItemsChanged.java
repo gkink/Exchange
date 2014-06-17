@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -56,7 +58,16 @@ public class ItemsChanged implements ItemInterface {
 		
 		return userId;
 	}
-
+	@Override
+	public boolean equals(Object obj){
+		if (obj == this) return true;
+		
+		if (!(obj instanceof ItemsChanged)) return false;
+		
+		ItemsChanged item = (ItemsChanged) obj;
+		
+		return (item.getItemId()==ID);
+	}
 	@Override
 	public int getItemId() {
 		
