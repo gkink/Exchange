@@ -107,4 +107,18 @@ public class User {
 	public String getEmail(){
 		return email;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!obj.getClass().equals(this.getClass()))
+			return false;
+		
+		User tocompare = (User) obj;
+		
+		return 	this.id == tocompare.id
+				&& this.rating == tocompare.rating
+				&& this.firstName == tocompare.firstName
+				&& this.lastName == tocompare.lastName
+				&& this.email == tocompare.email;
+	}
 }
