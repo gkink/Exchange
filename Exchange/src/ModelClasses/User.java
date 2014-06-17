@@ -117,8 +117,8 @@ public class User {
 		
 		return 	this.id == tocompare.id
 				&& this.rating == tocompare.rating
-				&& this.firstName == tocompare.firstName
-				&& this.lastName == tocompare.lastName
-				&& this.email == tocompare.email;
+				&& this.firstName.equals(tocompare.firstName)
+				&& this.lastName.equals(tocompare.lastName)
+				&& this.email.equals(tocompare.email);
 	}
 }
