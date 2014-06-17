@@ -13,11 +13,32 @@ public class CycleContainer {
 	private QueryExecutor executor;
 	private DBqueryGenerator generator;
 	
+	/***
+	 * @param executor - QueryExecutor object
+	 * @param generator - DBqueryGenerator object
+	 * @param userID
+	 * Constructs the list of cycle objects, using userID parameter, initializes the list with
+	 * the user's cycles
+	 */
 	public CycleContainer(QueryExecutor executor, DBqueryGenerator generator, int userID){
 		this.executor = executor;
 		this.generator =  generator;
 		
 		initList(userID);
+	}
+	
+	/***
+	 * @param executor - QueryExecutor object
+	 * @param generator - DBqueryGenerator object
+	 * @param itemID
+	 * Constructs the list of cycle objects, using itemID parameter, initializes the list with
+	 * item's cycles
+	 */
+	public CycleContainer(DBqueryGenerator generator, QueryExecutor executor, int itemID){
+		this.executor = executor;
+		this.generator =  generator;
+
+		addItemCycles(itemID);
 	}
 	
 	private void initList(int userID){

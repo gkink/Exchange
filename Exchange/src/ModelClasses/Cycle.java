@@ -91,4 +91,13 @@ public class Cycle implements CycleInterface{
 		return id;
 	}
 	
+	public void delete(){
+		executor.executeQuery(queryGenerator.deleteCycleInfo(id));
+		executor.executeQuery(queryGenerator.deleteCycle(id));
+	}
+	
+	public void accept(int itemID){
+		executor.executeQuery(queryGenerator.insertAcceptCycle(itemID));
+	}
+	
 }
