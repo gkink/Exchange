@@ -171,6 +171,10 @@ public class DBqueryGenerator {
 	public String getUserUserQuery(int id){
 		return "select * from users where ID = " + toValue("" + id);
 	}
+	
+	public String getUserByEmail(String email){
+		return "select * from users where email = " + toValue("" + email);		
+	}
 
 	public String insertIntoUsers(int ranking, String firstName, String lastName, String email){
 		String res = generateInsert("users", 
@@ -320,5 +324,9 @@ public class DBqueryGenerator {
 	
 	public String deleteCycle(int cycleID){
 		return "delete from Cycles where ID = " + cycleID;
+	}
+	
+	public String insertAcceptCycle(int itemID){
+		return "insert (accept) into cycleInfo Values (1) where itemID = " + itemID;
 	}
 }
