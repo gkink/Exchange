@@ -1,14 +1,13 @@
 package guestSession;
 
-import ModelClasses.MyItemInterface;
 import ModelClasses.Pair;
 import ModelClasses.User;
 
 public interface TransactionInterface {
 	
-	public int transactionSize();
+	public int size();
 	
-	public Pair<User, MyItemInterface> getUserItemPair(int num);
+	public Pair<User, ItemsChanged> getUserItemPair(int num);
 	
 	public void addToTheBases();
 	

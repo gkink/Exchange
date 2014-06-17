@@ -4,26 +4,12 @@ package guestSession;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.sql.Date;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+
 import java.util.ArrayList;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.sql.DataSource;
 
 import com.mysql.jdbc.Connection;
@@ -39,93 +25,70 @@ import dbConnection.MyDBInfo;
  *It returns the selected as an ArrayList of items.
  */
 public class ItemContainer {
-	
+	ArrayList<ItemsHaveObject> itemsHave;
+	ArrayList<ItemsNeedObject> itemsNeed;
+	ArrayList<RealItemsObject> realItems;
 	private DBqueryGenerator generator;
 	private QueryExecutor executor;
-	private int ID;
+	
 	public ItemContainer(DBqueryGenerator generator, QueryExecutor executor){
 		this.generator=generator;
 		this.executor=executor;
 	}
 	//returns the 10 latest added items
 	public ArrayList<ItemsHaveObject> getLatestItems(){
-		ArrayList<ItemsHaveObject> items= new ArrayList<>();
-		prepareItemsHaveList(generator.getLatestItems(), items);
-		return items;
+		
+		prepareList(generator.getLatestItems(), 0);
+		return itemsHave;
 	}
 	//return all the items the user with the specified userId has
 	public  ArrayList<ItemsHaveObject> getUserItemsHave(int userId){
-		ArrayList<ItemsHaveObject> items= new ArrayList<>();
-		prepareItemsHaveList(generator.getUserItems(userId, 0),items);
-		return items;
+		
+		prepareList(generator.getUserItems(userId, 0),0);
+		return itemsHave;
 	}
 	//return all the items the user with the specified userId wants
 	public  ArrayList<ItemsNeedObject> getUserItemsNeed(int userId){
-		ArrayList<ItemsNeedObject> items= new ArrayList<>();
-		prepareItemsNeedList(generator.getUserItems(userId, 1), items);
-		return items;
+		
+		prepareList(generator.getUserItems(userId, 1), 1);
+		return itemsNeed;
 	}
 	//return all the items the user with the specified userId wants and the ones that exist(some other users have them)
-	public ArrayList<Item> getUserItemsReal(int userId){
-		prepareTheList(generator.getUserItems(userId, 2));
-		return items;
+	public ArrayList<RealItemsObject> getUserItemsReal(int userId){
+		prepareList(generator.getUserItems(userId, 2),2);
+		return realItems;
 	}
 	
 	//returns all the items where the keywords contain the word given as a parameter
 	public ArrayList<ItemsHaveObject> getSearchResultItems(String word){
-		ArrayList<ItemsHaveObject> items= new ArrayList<>();
-		prepareItemsHaveList(generator.searchItemsKeywords(word),items);
-		return items;
-	}
-	private void prepareItemsNeedList(String query, ArrayList<ItemsNeedObject> items){
-		ResultSet rs= executor.selectResult(query);
-		ParseAndInitItemsNeed(items, rs);
+		
+		prepareList(generator.searchItemsKeywords(word),0);
+		return itemsHave;
 	}
 	
-	private void ParseAndInitItemsNeed(ArrayList<ItemsNeedObject> items,ResultSet rs){	
+	private void prepareList(String query, int type){
+		if(type==0) itemsHave= new ArrayList<>();
+		if(type ==1)itemsNeed= new ArrayList<>();
+		if(type==2)realItems=new ArrayList<>();
+		ResultSet rs= executor.selectResult(query);
+		ParseAndInitItems(type, rs);
+	}
+	
+	private void ParseAndInitItems(int type,ResultSet rs){	
 		try {
 			while(rs.next()){
 				int ID=rs.getInt("ID");
-				ItemsNeedObject cur=new ItemsNeedObject(generator, executor,ID);
-				items.add(cur);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
-		}
-	}
-	private void prepareItemsHaveList(String query, ArrayList<ItemsHaveObject> items){
-		ResultSet rs= executor.selectResult(query);
-		ParseAndInitItemsHave(items, rs);
-	}
-	
-	private void ParseAndInitItemsHave(ArrayList<ItemsHaveObject> items,ResultSet rs){	
-		try {
-			while(rs.next()){
-				int ID=rs.getInt("ID");
+				if(type==0){
 				ItemsHaveObject cur=new ItemsHaveObject(generator, executor,ID);
-				items.add(cur);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
-		}
-	}
-/*	private void ParseAndInit(ArrayList<ItemsHaveObject> items,ResultSet rs){	
-		try {
-			while(rs.next()){
+				itemsHave.add(cur);
+				}if (type==1){
+					ItemsNeedObject cur=new ItemsNeedObject(generator, executor,ID);
+					itemsNeed.add(cur);
+				}if (type==1){
+					RealItemsObject cur=new RealItemsObject(generator, executor,ID);
+					realItems.add(cur);
+				}
 				
-				String name = rs.getString("name");
-				String description = rs.getString("description");
-				String keywords = rs.getString("keywords");
-				int userId = rs.getInt("userId");
-				Date date= rs.getDate("createDate");
-				Time time=rs.getTime("createDate");
-				DateTime createDate=new DateTime(date, time);
-				ItemsHaveObject cur=new ItemsHaveObject(generator, executor, name, description, keywords,userId,createDate);
-				items.add(cur);
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -133,7 +96,7 @@ public class ItemContainer {
 			//e.printStackTrace();
 		}
 	}
-*/
+
 	public static void main(String[] args) {
 		DataSource datasource = mock(DataSource.class);
 		try { 
@@ -151,11 +114,27 @@ public class ItemContainer {
 		QueryExecutor q = new QueryExecutor(datasource);
 		DBqueryGenerator d=new DBqueryGenerator();
 		ItemContainer i= new ItemContainer(d, q);
-		ArrayList<ItemsHaveObject> a= i.getUserItemsHave(1);
+		ArrayList<ItemsHaveObject> a= i.getSearchResultItems("net");
+		ArrayList<ItemsHaveObject> b= i.getLatestItems();
+		ArrayList<RealItemsObject> c= i.getUserItemsReal(1);
+		ArrayList<ItemsNeedObject> e= i.getUserItemsNeed(1);
+		
 		for(int j=0; j<a.size();j++){
-			System.out.println(a.get(j).getItemId());
+			System.out.println(a.get(j).getItemKeywords());
+			System.out.println(b.get(j).getItemName());
+			
+			
+			
+			
 		}
-        		
+		
+		for(int j=0; j<c.size();j++){
+			System.out.println(c.get(j).getItemId());
+			System.out.println(c.get(j).getRowId());
+		}
+		for(int j=0; j<e.size();j++){
+			System.out.println(e.get(j).getItemOwner());
+		}	
         		
         
     }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Date;
 
+
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -101,11 +103,21 @@ public class ItemsHaveObject implements ItemInterface {
 		// TODO Auto-generated method stub
 		return  userId;
 	}
-
+	
+	
 	@Override
 	public int getItemId() {
 		// TODO Auto-generated method stub
 		return ID;
 	}
-
+	@Override
+	public boolean equals(Object obj){
+		if (obj == this) return true;
+		
+		if (!(obj instanceof ItemsChanged)) return false;
+		
+		ItemsHaveObject item = (ItemsHaveObject) obj;
+		
+		return (item.getItemId()==ID);
+	}
 }

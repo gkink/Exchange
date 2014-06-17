@@ -20,7 +20,7 @@ public class TransactionContainer2Test {
 	private TransactionContainer2 container, container2;
 	private QueryExecutor executor;
 	private DBqueryGenerator generator;
-	private ResultSet set;
+	private ResultSet set, set2;
 	private Transaction transaction;
 	
 	public static final int userID = 3;
@@ -35,13 +35,18 @@ public class TransactionContainer2Test {
 		when(set.getInt(1)).thenReturn(1, 2, 3);
 		when(set.getString(2)).thenReturn("first", "second", "third");
 		
+		set2 = mock(ResultSet.class);
+		when(set2.next()).thenReturn(true, true, true, false);
+		when(set2.getInt(1)).thenReturn(2, 4, 6);
+		when(set2.getString(2)).thenReturn("three", "point", "fourteen");
+		
 		generator = mock(DBqueryGenerator.class);
 		when(generator.getTransactionsQuery(TransactionContainer2.NUMBER_OF_TOP_TRANSACTIONS)).thenReturn("test for top tuples");
 		when(generator.getTrasactionsForUserQuery(userID)).thenReturn("test for user transactions");
 		
 		executor = mock(QueryExecutor.class);
 		when(executor.selectResult("test for top tuples")).thenReturn(set);
-		when(executor.selectResult("test for user transactions")).thenReturn(set);
+		when(executor.selectResult("test for user transactions")).thenReturn(set2);
 		
 		container = new TransactionContainer2(executor, generator);
 		
@@ -61,9 +66,10 @@ public class TransactionContainer2Test {
 			assertEquals(container.getPair(i).getFirst(), new Integer(i+1));
 			assertEquals(container.getPair(i).getSecond(), arr[i]);
 		}
+		String [] arr2 = {"three", "point", "fourteen"};
 		for (int i = 0; i < container2.numOfPairs(); i++){
-			assertEquals(container2.getPair(i).getFirst(), new Integer(i+1));
-			assertEquals(container2.getPair(i).getSecond(), arr[i]);
+			assertEquals(container2.getPair(i).getFirst(), new Integer((i+1)*2));
+			assertEquals(container2.getPair(i).getSecond(), arr2[i]);
 		}
 	}
 	
@@ -73,8 +79,9 @@ public class TransactionContainer2Test {
 		for (int i = 0; i < container.numOfPairs(); i++){
 			assertEquals(container.getPair(i), new Pair<Integer, String>(i+1, arr[i]));
 		}
+		String [] arr2 = {"three", "point", "fourteen"};
 		for (int i = 0; i < container2.numOfPairs(); i++){
-			assertEquals(container2.getPair(i), new Pair<Integer, String>(i+1, arr[i]));
+			assertEquals(container2.getPair(i), new Pair<Integer, String>((i+1)*2, arr2[i]));
 		}
 	}
 	

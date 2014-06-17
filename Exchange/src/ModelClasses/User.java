@@ -108,9 +108,24 @@ public class User {
 		return email;
 	}
 	
+	public boolean emailInUse(){
+		ResultSet rs = executor.selectResult(queryGenerator.getUserByEmail(email));
+		int id = 0;
+		try {
+			while(rs.next())
+				id = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return id != 0;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
-		if(!obj.getClass().equals(this.getClass()))
+		if(obj == this)
+			return true;
+		if(!(obj instanceof User))
 			return false;
 		
 		User tocompare = (User) obj;
