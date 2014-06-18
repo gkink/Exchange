@@ -1,7 +1,9 @@
 package guestSession;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,17 @@ public class Transaction implements TransactionInterface{
 	@Override
 	public void addToTheBases() {
 		ID = executor.executeQuery(generator.insertIntoTransactions());
+		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
+		try {
+			res.next();
+			Date date = res.getDate(2);
+			Time time = res.getTime(2);
+			dateTime = new DateTime(date, time);
+			res.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		for (int i = 0; i < size(); i++){
 			executor.executeQuery(generator.insertIntoTransactionInfo(ID, getUserItemPair(i).getSecond().getItemId()));
 		}
@@ -103,10 +116,5 @@ public class Transaction implements TransactionInterface{
 			build.append(userItemPairs.get(i).getFirst().getFirstName() + " " + userItemPairs.get(i).getFirst().getLastName() + " --|-- " + userItemPairs.get(i).getSecond().getItemName() + "\n");
 		}
 		return build.toString();
-	}
-	
-	public static void main(String[] args) {
-		String [][] k = {{"erti", "ori"},{"sami", "otxi"}};
-		System.out.println(k[0][1]);
 	}
 }
