@@ -10,7 +10,7 @@ public class User {
 	private DBqueryGenerator queryGenerator;
 	private QueryExecutor executor;
 	private int id, rating;
-	private String firstName, lastName, email;
+	private String firstName, lastName, email, password;
 
 	/**
 	 * Basic constructor -  is given all the necessary arguments
@@ -24,13 +24,13 @@ public class User {
 	 * Note: when the basic constructor is called, it is expected to be given valid information from
 	 * database, and not a single parameter should be ignored.
 	 */
-	public User(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
-			String lastName, String email){
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, 0);
+	public User(QueryExecutor executor, DBqueryGenerator queryGenerator, String firstName, 
+			String lastName, String email, String password){
+		initVars(executor, queryGenerator, rating, firstName, lastName, email, 0, password);
 	}
 
 	private void initVars(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
-			String lastName, String email, int id){
+			String lastName, String email, int id, String password){
 		this.executor = executor;
 		this.queryGenerator = queryGenerator;
 		this.rating = rating;
@@ -48,7 +48,7 @@ public class User {
 		String selectQuery = queryGenerator.getUserQuery(id);
 		ResultSet rs = executor.selectResult(selectQuery);
 		int rating = 0;
-		String firstName = null, lastName = null, email = null;		
+		String firstName = null, lastName = null, email = null, password = null;		
 		
 		try {
 			while(rs.next()){
@@ -56,6 +56,7 @@ public class User {
 				lastName = rs.getString("lastName");
 				email = rs.getString("email");
 				rating = rs.getInt("ranking");
+				password = rs.getString("password");
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -63,14 +64,14 @@ public class User {
 			//e.printStackTrace();
 		}
 		
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id);
+		initVars(executor, queryGenerator, rating, firstName, lastName, email, id, password);
 	}
 
 	/*
 	 * inserts a new user into database and returns its id.
 	 */
 	public int addToUsers(){
-		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email);
+		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email, password);
 		this.id = executor.executeQuery(insertQuery);
 		
 		return this.id;
@@ -108,6 +109,10 @@ public class User {
 		return email;
 	}
 	
+	public String getPassword(){
+		return password;
+	}
+	
 	public boolean emailInUse(){
 		ResultSet rs = executor.selectResult(queryGenerator.getUserByEmail(email));
 		int id = 0;
@@ -134,6 +139,7 @@ public class User {
 				&& this.rating == tocompare.rating
 				&& this.firstName.equals(tocompare.firstName)
 				&& this.lastName.equals(tocompare.lastName)
-				&& this.email.equals(tocompare.email);
+				&& this.email.equals(tocompare.email)
+				&&this.password.equals(tocompare.password);
 	}
 }

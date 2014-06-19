@@ -176,10 +176,10 @@ public class DBqueryGenerator {
 		return "select * from users where email = " + toValue("" + email);		
 	}
 
-	public String insertIntoUsers(int ranking, String firstName, String lastName, String email){
+	public String insertIntoUsers(int ranking, String firstName, String lastName, String email, String password){
 		String res = generateInsert("users", 
-				new String[]{"firstName", "lastName", "email", "ranking"}, 
-				new String[]{firstName, lastName, email, "" + ranking});
+				new String[]{"firstName", "lastName", "email", "ranking", "password"}, 
+				new String[]{firstName, lastName, email, "" + ranking, "" + password});
 
 		return res;
 	}
