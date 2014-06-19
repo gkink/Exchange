@@ -7,7 +7,9 @@ use exchange;
 create table users 
 (ID int not null auto_increment primary key,
 firstName varchar(30), lastName varchar(30),
-email varchar(30) unique, ranking int);
+email varchar(30) unique,
+password varchar(40),
+ranking int);
 
 create table itemsHave
 (ID int not null auto_increment primary key,

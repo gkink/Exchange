@@ -1,38 +1,58 @@
-package UnitTests;
+package Servlets;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
+import ModelClasses.User;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
-
-
-import guestSession.ItemsChanged;
 import dbClasses.DBqueryGenerator;
+import dbClasses.InitDataSource;
 import dbClasses.QueryExecutor;
 import dbConnection.MyDBInfo;
 
-public class ItemsChangedTests {
-	ItemsChanged i;
-	QueryExecutor q;
-	DBqueryGenerator d;
-	
-	@Before
-	public void SetUp(){
-			DataSource datasource = new DataSource() {
+/**
+ * Servlet implementation class LoginServlet
+ */
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DBqueryGenerator g= new DBqueryGenerator();
+		DataSource data= new DataSource() {
 			
 			@Override
 			public <T> T unwrap(Class<T> iface) throws SQLException {
@@ -97,31 +117,19 @@ public class ItemsChangedTests {
 				}
 				return con;
 			}
-		};
-		q = new QueryExecutor(datasource);
-		d=new DBqueryGenerator();
-		i=new ItemsChanged(d, q, 1, "bla");
-		
-	}
-	@Test
-	public void testParams(){
-		assertEquals(i.getItemName(),"bla");
-		assertEquals(i.getItemOwner(),1);	
-		
-		
-	}
-	@Test
-	public void testInsertAndSelect(){
-		i.insert();
-		ItemsChanged s= new ItemsChanged(d, q, i.getItemId());
-		assertEquals(i.getItemName(),s.getItemName());
-		assertEquals(i.getItemOwner(),s.getItemOwner());
-		assertEquals(s.getItemId(),s.getItemId());
+		};;
+		QueryExecutor e= new QueryExecutor(data);
+		String email= request.getParameter("login");
+		String pass= request.getParameter("password");
+		User u= new User(e, g, email);
+		if(u.getId()==0|| pass!=u.getPassword()){
+			RequestDispatcher r= request.getRequestDispatcher("InvalidLogin.html");
+			r.forward(request, response);
+		}
 		
 		
-	}
-	
-	
-	
+		
+		
+		}
 
 }

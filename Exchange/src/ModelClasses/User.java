@@ -10,7 +10,7 @@ public class User {
 	private DBqueryGenerator queryGenerator;
 	private QueryExecutor executor;
 	private int id, rating;
-	private String firstName, lastName, email;
+	private String firstName, lastName, email, password;
 
 	/**
 	 * Basic constructor -  is given all the necessary arguments
@@ -25,12 +25,12 @@ public class User {
 	 * database, and not a single parameter should be ignored.
 	 */
 	public User(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
-			String lastName, String email){
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, 0);
+			String lastName, String email, String password){
+		initVars(executor, queryGenerator, rating, firstName, lastName, email, 0,password);
 	}
 
 	private void initVars(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
-			String lastName, String email, int id){
+			String lastName, String email, int id,String password){
 		this.executor = executor;
 		this.queryGenerator = queryGenerator;
 		this.rating = rating;
@@ -38,6 +38,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.id = id;
+		this.password=password;
 	}
 
 	/*
@@ -48,7 +49,7 @@ public class User {
 		String selectQuery = queryGenerator.getUserQuery(id);
 		ResultSet rs = executor.selectResult(selectQuery);
 		int rating = 0;
-		String firstName = null, lastName = null, email = null;		
+		String firstName = null, lastName = null, email = null, password=null;		
 		
 		try {
 			while(rs.next()){
@@ -56,6 +57,7 @@ public class User {
 				lastName = rs.getString("lastName");
 				email = rs.getString("email");
 				rating = rs.getInt("ranking");
+				password=rs.getString("password");
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -63,14 +65,35 @@ public class User {
 			//e.printStackTrace();
 		}
 		
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id);
+		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
+	}
+	public User(QueryExecutor ex, DBqueryGenerator g, String email){
+		ResultSet rs = ex.selectResult(g.getUserByEmail(email));
+		int rating = 0;
+		String firstName = null, lastName = null,password=null;
+		int id=0;
+		try {
+			while(rs.next()){
+				firstName = rs.getString("firstName");
+				lastName = rs.getString("lastName");
+				id = rs.getInt("ID");
+				rating = rs.getInt("ranking");
+				password=rs.getString("password");
+				
+			}
+			rs.close();
+		} catch (SQLException e) {
+			System.out.println("Exception occured when parcing through the resultSet");
+			//e.printStackTrace();
+		}
+		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 	}
 
 	/*
 	 * inserts a new user into database and returns its id.
 	 */
 	public int addToUsers(){
-		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email);
+		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email,password);
 		this.id = executor.executeQuery(insertQuery);
 		
 		return this.id;
@@ -107,7 +130,9 @@ public class User {
 	public String getEmail(){
 		return email;
 	}
-	
+	public String getPassword(){
+		return password;
+	}
 	public boolean emailInUse(){
 		ResultSet rs = executor.selectResult(queryGenerator.getUserByEmail(email));
 		int id = 0;
