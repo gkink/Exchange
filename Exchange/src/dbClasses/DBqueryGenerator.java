@@ -275,7 +275,7 @@ public class DBqueryGenerator {
 	public String getUserItems(int UserId, int type){
 		String table="itemsHave";
 		if(type==1) table ="itemsNeed";
-		if (type==2) return getUserRealItems(UserId);
+		if (type==2) table= "realItems";
 		return "Select * from "+ table+ " Where userId="+ "'"+UserId+ "'";
 	}
 	private String getUserRealItems(int userId){

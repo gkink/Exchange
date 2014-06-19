@@ -128,6 +128,8 @@ public class LoginServlet extends HttpServlet {
 		}else {
 			RequestDispatcher r= request.getRequestDispatcher("Homepage.jsp");
 			request.setAttribute("User", u);
+			request.setAttribute("executor", e);
+			request.setAttribute("generator", g);
 			r.forward(request, response);
 			
 		}

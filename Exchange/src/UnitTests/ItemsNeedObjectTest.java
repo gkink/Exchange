@@ -64,7 +64,7 @@ public class ItemsNeedObjectTest {
 		assertEquals(i.getItemName(),"notebook");
 		test= new ItemsNeedObject(d, q, i.getItemId());
 		assertEquals (i.getItemName(),test.getItemName());
-		i.delete();
+	//	i.delete();
 		test= new ItemsNeedObject(d, q, i.getItemId());
 	//	assertEquals(test, null);
 	}

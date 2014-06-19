@@ -78,8 +78,8 @@ public class ItemsHaveObjectTests {
 		assertEquals(i.getItemName(),"notebook");
 		test= new ItemsHaveObject(d, q, i.getItemId());
 		assertEquals (i.getItemName(),test.getItemName());
-		i.delete();
-		test= new ItemsHaveObject(d, q, i.getItemId());
+	//	i.delete();
+	//	test= new ItemsHaveObject(d, q, i.getItemId());
 	//	assertEquals(test, null);
 	}
 	@Test

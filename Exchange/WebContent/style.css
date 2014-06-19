@@ -6,12 +6,53 @@ body {
   background: #0ca3d2;
 }
 
+
 .container {
   margin: 80px auto;
   width: 640px;
 }
 .header{
 	 text-indent: 50px;
+}
+
+ul.itemsHave {
+ position : absolute;
+   top:200px;
+}
+p.itemsHave{
+	position : absolute;
+   top:180px;
+   left:20px
+}
+ul.itemsNeed{
+	position : absolute;
+  	 top:200px;
+   left: 200px;
+   
+}
+p.itemsNeed{
+	position : absolute;
+   top:180px;
+    left: 220px;
+}
+ul.realItems{
+	position : absolute;
+  	 top:200px;
+   left: 400px;
+   
+   
+}
+
+p.realItems{
+	position : absolute;
+   top:180px;
+    left: 420px;
+}
+ul.latestItems{
+	list-style-type: none;
+    padding:0px;
+    margin-top: 0px;
+    margin-left: 800px;
 }
 .login {
   
@@ -94,6 +135,20 @@ input {
   font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
   font-size: 14px;
 }
+#top {
+width: 1220px;
+
+height: 60px;
+border: 5px groove gray;
+
+}
+#search{
+	position: absolute;
+	right:20px;
+	top: -5px;
+	width: 600px;
+	
+}
 
 input[type=text], input[type=password] {
   margin: 5px;
@@ -116,7 +171,7 @@ input[type=text], input[type=password] {
   }
 }
 
-input[type=submit] {
+input[name=commit] {
   padding: 0 18px;
   height: 29px;
   font-size: 12px;
