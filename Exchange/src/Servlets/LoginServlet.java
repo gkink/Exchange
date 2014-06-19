@@ -21,7 +21,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import dbClasses.DBqueryGenerator;
-import dbClasses.InitDataSource;
+
 import dbClasses.QueryExecutor;
 import dbConnection.MyDBInfo;
 
@@ -122,9 +122,14 @@ public class LoginServlet extends HttpServlet {
 		String email= request.getParameter("login");
 		String pass= request.getParameter("password");
 		User u= new User(e, g, email);
-		if(u.getId()==0|| pass!=u.getPassword()){
+		if(u.getId()==0|| !pass.equals(u.getPassword())){
 			RequestDispatcher r= request.getRequestDispatcher("InvalidLogin.html");
 			r.forward(request, response);
+		}else {
+			RequestDispatcher r= request.getRequestDispatcher("Homepage.jsp");
+			request.setAttribute("User", u);
+			r.forward(request, response);
+			
 		}
 		
 		
