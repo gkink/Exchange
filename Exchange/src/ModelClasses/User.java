@@ -24,9 +24,9 @@ public class User {
 	 * Note: when the basic constructor is called, it is expected to be given valid information from
 	 * database, and not a single parameter should be ignored.
 	 */
-	public User(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
+	public User(QueryExecutor executor, DBqueryGenerator queryGenerator, String firstName, 
 			String lastName, String email, String password){
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, 0,password);
+		initVars(executor, queryGenerator, 0, firstName, lastName, email, 0,password);
 	}
 
 	private void initVars(QueryExecutor executor, DBqueryGenerator queryGenerator, int rating, String firstName, 
