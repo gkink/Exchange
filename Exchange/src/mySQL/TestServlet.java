@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+
 /**
  * Servlet implementation class TestServlet
  */
@@ -40,18 +42,18 @@ public class TestServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	PrintWriter out = resp.getWriter();
-    	out.println("<html><head></head><body>");
+    	out.println("<html><head><title>wazaa</title></head><body>");
          
         ResultSet resultSet = null;
         try {
             // Get Connection and Statement
             connection = dataSource.getConnection();
             statement = connection.createStatement();
-            String query = "SELECT * from transactions";
+            String query = "SELECT * from users";
             resultSet = statement.executeQuery(query);
             
             while (resultSet.next()) {
-               out.println("<p>" + resultSet.getString(1) + " " + resultSet.getDate(2) + " " + resultSet.getTime(2) +  "</p>");
+               out.println("<p>" + resultSet.getString(2) +  "</p>");
             }
         } catch (SQLException e) {
             e.printStackTrace();

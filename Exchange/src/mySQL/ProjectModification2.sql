@@ -7,7 +7,7 @@ use exchange;
 create table users 
 (ID int not null auto_increment primary key,
 firstName varchar(30), lastName varchar(30),
-email varchar(30) unique, ranking int);
+email varchar(30) unique, ranking int, password varchar(14));
 
 create table itemsHave
 (ID int not null auto_increment primary key,
@@ -147,5 +147,7 @@ itemsHave table. bevrs verafers vfiqrob am gverdze ubralod surati iqneba nivtis 
 itemsHave-dan.
 */
 
-insert into users (firstName, lastName, email, ranking) values 
-	( 'giorgi', 'ghambashidze', 'ggha@gmail.com', '5');
+insert into users (firstName, lastName, email, ranking, password) values 
+	( 'giorgi', 'ghambashidze', 'ggha@gmail.com', '5', '12345');
+
+select * from users;
