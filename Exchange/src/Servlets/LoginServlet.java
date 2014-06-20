@@ -126,7 +126,7 @@ public class LoginServlet extends HttpServlet {
 			RequestDispatcher r= request.getRequestDispatcher("InvalidLogin.html");
 			r.forward(request, response);
 		}else {
-			RequestDispatcher r= request.getRequestDispatcher("Homepage.jsp");
+			RequestDispatcher r= request.getRequestDispatcher("NewHomepage.jsp");
 			request.setAttribute("User", u);
 			request.setAttribute("executor", e);
 			request.setAttribute("generator", g);
