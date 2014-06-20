@@ -172,16 +172,16 @@ public class User {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("User" + "\n");
-		builder.append("parameters: " + "\n");
-		builder.append("id: " + id + "\n");
-		builder.append("rating: " + rating + "\n");
-		builder.append("firstName: " + firstName + "\n");
-		builder.append("lastName: " + lastName + "\n");
-		builder.append("email: " + email + "\n");
+		builder.append("User" + " | ");
+		builder.append("parameters: " + " | ");
+		builder.append("id: " + id + " | ");
+		builder.append("rating: " + rating + " | ");
+		builder.append("firstName: " + firstName + " | ");
+		builder.append("lastName: " + lastName + " | ");
+		builder.append("email: " + email + " | ");
 		builder.append("password: " + password);
 
 
-		return super.toString();
+		return builder.toString();
 	}
 }
