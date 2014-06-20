@@ -55,13 +55,14 @@ public class UserTest {
 
 	@Test
 	public void testFirstConstructorAndInsert() {
-		User testUser = new User(executor, generator, 0, "giorgi", "qinqladze", "gqin@gmail.com");
+		User testUser = new User(executor, generator, "giorgi", "qinqladze", "gqin@gmail.com", "123");
 
 		assertEquals(0, testUser.getId());
 		assertEquals(0, testUser.getRating());
 		assertEquals("giorgi", testUser.getFirstName());
 		assertEquals("qinqladze", testUser.getLastName());
 		assertEquals("gqin@gmail.com", testUser.getEmail());
+		assertEquals("123", testUser.getPassword());
 
 		int newid = testUser.addToUsers();
 		assertEquals(2, newid);

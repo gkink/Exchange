@@ -84,7 +84,7 @@ public class ItemContainer {
 				}if (type==1){
 					ItemsNeedObject cur=new ItemsNeedObject(generator, executor,ID);
 					itemsNeed.add(cur);
-				}if (type==1){
+				}if (type==2){
 					RealItemsObject cur=new RealItemsObject(generator, executor,ID);
 					realItems.add(cur);
 				}

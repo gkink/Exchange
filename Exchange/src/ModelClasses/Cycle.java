@@ -4,9 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import guestSession.DateTime;
-import guestSession.Item;
 import guestSession.ItemInterface;
 import guestSession.ItemsHaveObject;
 import dbClasses.DBqueryGenerator;
@@ -16,7 +13,7 @@ public class Cycle implements CycleInterface{
 	private DBqueryGenerator queryGenerator;
 	private QueryExecutor executor;
 	private int id;
-	private List<Pair<User, ItemInterface> >  list;
+	private List<Pair<User, ItemsHaveObject> >  list;
 
 	public Cycle(QueryExecutor executor, DBqueryGenerator generator, int id){
 		this.executor =  executor;
@@ -27,7 +24,7 @@ public class Cycle implements CycleInterface{
 	}
 
 	private void initList(){
-		list = new ArrayList<Pair<User, ItemInterface> >();
+		list = new ArrayList<Pair<User, ItemsHaveObject> >();
 		
 		ResultSet rs = executor.selectResult(queryGenerator.getCycleSelect(id));
 		int userid, itemid;
@@ -36,9 +33,9 @@ public class Cycle implements CycleInterface{
 				userid = rs.getInt(1);
 				itemid = rs.getInt(2);
 				User user = new User(executor, queryGenerator, userid);
-				ItemInterface item = new ItemsHaveObject(queryGenerator, executor, itemid);
+				ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
 				
-				Pair<User, ItemInterface> curr = new Pair<User, ItemInterface>(user, item);
+				Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
 				list.add(curr);
 			}
 		} catch (SQLException e) {
@@ -53,7 +50,7 @@ public class Cycle implements CycleInterface{
 	 * This constructor is given list which creates a new cycle, then addToBases method should be called
 	 * in order to add new cycle into cycles table, and add all nesessary rows in cycleinfo
 	 */
-	public Cycle(QueryExecutor executor, DBqueryGenerator generator, List<Pair<User, ItemInterface> >  list){
+	public Cycle(QueryExecutor executor, DBqueryGenerator generator, List<Pair<User, ItemsHaveObject> >  list){
 		this.executor = executor;
 		this.queryGenerator = generator;
 		this.list = list;
@@ -66,7 +63,7 @@ public class Cycle implements CycleInterface{
 	}
 
 	@Override
-	public Pair<User, ItemInterface> getUserItemPair(int num) {
+	public Pair<User, ItemsHaveObject> getUserItemPair(int num) {
 		return list.get(num);
 	}
 

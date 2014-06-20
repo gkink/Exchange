@@ -2,7 +2,11 @@
 <Context>
     <!-- Specify a JDBC datasource -->
     <Resource name="jdbc/testdb" auth="Container"
+<<<<<<< HEAD
         type="javax.sql.DataSource" username="root" password="69727177"
+=======
+        type="javax.sql.DataSource" username="root" password="123456"
+>>>>>>> 37c9fc52e4f73e2c2103c40aa52653f1b21af8c3
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/Exchange"
         maxActive="10" maxIdle="4" />

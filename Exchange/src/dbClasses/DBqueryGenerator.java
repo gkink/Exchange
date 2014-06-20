@@ -176,10 +176,10 @@ public class DBqueryGenerator {
 		return "select * from users where email = " + toValue("" + email);		
 	}
 
-	public String insertIntoUsers(int ranking, String firstName, String lastName, String email, String password){
+	public String insertIntoUsers(int ranking, String firstName, String lastName, String email,String password){
 		String res = generateInsert("users", 
-				new String[]{"firstName", "lastName", "email", "ranking", "password"}, 
-				new String[]{firstName, lastName, email, "" + ranking, "" + password});
+				new String[]{"firstName", "lastName", "email", "ranking","password"}, 
+				new String[]{firstName, lastName, email, "" + ranking, password});
 
 		return res;
 	}
@@ -275,7 +275,7 @@ public class DBqueryGenerator {
 	public String getUserItems(int UserId, int type){
 		String table="itemsHave";
 		if(type==1) table ="itemsNeed";
-		if (type==2) return getUserRealItems(UserId);
+		if (type==2) table= "realItems";
 		return "Select * from "+ table+ " Where userId="+ "'"+UserId+ "'";
 	}
 	private String getUserRealItems(int userId){

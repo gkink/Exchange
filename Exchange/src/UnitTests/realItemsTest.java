@@ -17,6 +17,8 @@ import com.mysql.jdbc.Statement;
 
 
 
+
+import guestSession.ItemsHaveObject;
 import guestSession.ItemsNeedObject;
 import guestSession.RealItemsObject;
 import dbClasses.DBqueryGenerator;
@@ -44,13 +46,15 @@ public class realItemsTest {
 		}
 		q = new QueryExecutor(datasource);
 		d=new DBqueryGenerator();
-		i=new RealItemsObject(d, q, 1,1);
+		i=new RealItemsObject(d, q, 1,3);
+		
 	}
 	
 	@Test
 	public void testParams(){
-		assertEquals(i.getItemId(),1);
+		assertEquals(i.getItemId(),3);
 		assertEquals(i.getItemOwner(),1);
+		
 		
 		
 	}
@@ -58,11 +62,11 @@ public class realItemsTest {
 	public void TestInsertAndSelectandUpdateandDelete(){
 		i.insert();
 		RealItemsObject test= new RealItemsObject(d, q, i.getRowId());
-		
+		ItemsHaveObject item= new ItemsHaveObject(d, q, i.getItemId());
 		assertEquals(i.getItemOwner(),test.getItemOwner());
 		assertEquals(i.getRowId(), test.getRowId());
 		assertEquals (i.getItemId(),test.getItemId());
-		i.delete();
+	//	i.delete();
 	//	test= new ItemsNeedObject(d, q, i.getItemId());
 	//	assertEquals(test, null);
 	}
