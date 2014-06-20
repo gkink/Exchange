@@ -17,8 +17,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<div id="top"><div id="topLogo"><a href="Homepage.jsp">Exchan.ge</a></div>
-	<p id="search"><input type="text" name="search" value="" placeholder="Search"></p>
+	<div id="top"><div id="topLogo"><a href="Homepage.jsp">Exchan.ge</a>
+		<p><input type="text" name="search" value="" placeholder="Search"></p>
+	
+	</div>
 	
 	</div>
 	<div class="user">
@@ -48,7 +50,7 @@
 	out.print("<p class=\"itemsNeed\"> Items You Want<p>");
 	out.print("<ul class=\"itemsNeed\">");
 	for(int j=0;j<itemsNeed.size();j++){
-		out.print("<li class=\"itemsNeedElem\">"+itemsNeed.get(j).getItemName()+"</li>");
+		out.print("<li class=\"itemsNeedElem\">"+"<a href=\"ItemPage.jsp?ID="+itemsNeed.get(j).getItemId()+"\">"+itemsNeed.get(j).getItemName()+"</a>"+"</li>");
 	}
 	out.print("</ul>");
 	%> 
