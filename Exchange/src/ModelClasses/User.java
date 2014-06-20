@@ -38,11 +38,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.id = id;
-<<<<<<< HEAD
 		this.password = password;
-=======
-		this.password=password;
->>>>>>> 37c9fc52e4f73e2c2103c40aa52653f1b21af8c3
 	}
 
 	/*
