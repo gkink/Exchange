@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 public class QueryExecutor {
 
 	private DataSource datasource;
+	private Connection con;
 
 	/**
 	 * Constructor
@@ -31,11 +32,11 @@ public class QueryExecutor {
 		ResultSet res = null;
 
 		try {
-			Connection cn = datasource.getConnection();
-			Statement stm = cn.createStatement();
-
+			con = datasource.getConnection();
+			Statement stm = con.createStatement();
 			res = stm.executeQuery(selectQuery);
 
+			stm.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -54,19 +55,30 @@ public class QueryExecutor {
 	public int executeQuery(String query){
 		int res = 0;
 		try {
-			Connection cn = datasource.getConnection();
-			Statement stm = cn.createStatement();
+			con = datasource.getConnection();
+			Statement stm = con.createStatement();
 
 			stm.executeUpdate(query,Statement.RETURN_GENERATED_KEYS);
-
 			ResultSet rs = stm.getGeneratedKeys();
 			while(rs.next())
 				res = rs.getInt(1);
+			
+			stm.close();
+			rs.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing query(update, insert, delete)");
 			e.printStackTrace();
 		}
 
 		return res;
+	}
+	
+	public void closeConnection(){
+		try {
+			con.close();
+		} catch (SQLException e) {
+			System.out.println("Exception occured when closing connection");
+			e.printStackTrace();
+		}
 	}
 }
