@@ -1,3 +1,13 @@
+<%@page import="guestSession.RealItemsObject"%>
+<%@page import="UnitTests.realItemsTest"%>
+<%@page import="guestSession.ItemsNeedObject"%>
+<%@page import="guestSession.ItemsHaveObject"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="guestSession.ItemContainer"%>
+<%@page import="ModelClasses.User"%>
+<%@page import="dbClasses.DBqueryGenerator"%>
+<%@page import="dbClasses.QueryExecutor"%>
+<%@page import="javax.sql.DataSource"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC>
@@ -19,7 +29,7 @@
 <div id="wrapper">
 <div id="header">
 	<div id="logo">
-		<h1><a href="#">Exchan.ge</a></h1>
+		<h1><a href="NewHomepage.jsp">Exchan.ge</a></h1>
 		
 	</div>
 	<div id="rss"><img src="images/sosial media.jpg" width="250px" height="110px"></div>
@@ -27,7 +37,7 @@
 	
 		<form id="searchform" name="search" method="get" action="">
 			<fieldset>
-				<input type="text" name="s" id="s" size="15" value="search" />
+				<input type="text" name="s" id="s" size="15" value="" placeholder="Search" />
 				<input type="submit" id="x" value="Search" />
 			</fieldset>
 		</form>
@@ -42,12 +52,19 @@
 <!-- end menu -->
 <!-- start page -->
 <div id="page">
-	<!-- start ads -->
-	<div id="ads">bla</div>
-	<!-- end ads -->
+	
 	<!-- start content -->
 	<div id="content">
-	<div class="postuser">USER
+	<div class="postuser">
+	<%
+	HttpSession ses= request.getSession();
+	Integer userId=(Integer)ses.getAttribute("User");
+	DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
+	QueryExecutor e=new QueryExecutor(dataSource);
+	DBqueryGenerator gen= new DBqueryGenerator();
+	User u =new User(e,gen,userId);
+	out.print(u.getFirstName()+" "+u.getLastName());
+	%>
 	<div class="bubble"></div>
 		</div>
 		<div class="post">
@@ -56,10 +73,25 @@
 					<div class="triangle-l"></div>
 					<div class="triangle-r"></div>
 						<div class="info">
-							<h2>"New Items</h2>
-							<p>
+						<%
+						QueryExecutor itemExecutor=new QueryExecutor(dataSource);
+						DBqueryGenerator itemGen= new DBqueryGenerator();
+						ItemContainer container= new ItemContainer( itemGen,itemExecutor);
+						ArrayList<ItemsHaveObject> itemsHave=container.getUserItemsHave(userId);
+						for(int i=0; i<itemsHave.size();i++){
+							ItemsHaveObject cur=itemsHave.get(i);
+							out.print("<p>");
+							out.print("<a href=\"ItemsHave.jsp?id="+cur.getItemId()+"\">");
+							out.print(cur.getItemName());
+							out.print("</a>");
+							out.print("</p>");
+						}
+						%>
 							
+							<p>
+							<a href="AddItemsNeed.jsp">
 							<input type="submit" name="addItemsHave" value="add item">
+							</a>
 							</p>
 						</div>
 					</div>
@@ -69,6 +101,23 @@
 		
 	</div>
 	<!-- end content -->
+	<!-- start ads -->
+	<div id="ads">
+	<%
+		ArrayList<ItemsHaveObject> latestItems=container.getLatestItems();
+		for(int i=0; i<latestItems.size();i++){
+			ItemsHaveObject cur=latestItems.get(i);
+			if(cur.getItemOwner()!=userId){
+				out.print("<p>");
+				out.print("<a href=\"ItemsHave.jsp?id="+cur.getItemId()+"\">");
+				out.print(cur.getItemName());
+				out.print("</a>");
+				out.print("</p>");
+			}
+			}
+	%>
+	</div>
+	<!-- end ads -->
 	<!-- start sidebar -->
 	<div id="sidebar">
 	
@@ -77,10 +126,21 @@
 					<div class="triangle-l"></div>
 					<div class="triangle-r"></div>
 						<div class="info">
-							<h2>New Items</h2>
+						<%
+							ArrayList<ItemsNeedObject> itemsNeed=container.getUserItemsNeed(userId);
+						for(int i=0; i<itemsNeed.size();i++){
+							ItemsNeedObject cur=itemsNeed.get(i);
+							out.print("<p>");
+							out.print("<a href=\"ItemsNeed.jsp?id="+cur.getItemId()+"\">");
+							out.print(cur.getItemName());
+							out.print("</a>");
+							out.print("</p>");
+						}
+						%>
 							<p>
-							
+							<a href="AddItemsNeed.jsp">
 							<input type="submit" name="addItemsHave" value="add item">
+							</a>
 							</p>
 						</div>
 					</div>
@@ -91,7 +151,18 @@
 					<div class="rectangle"><h2>Items That are being searched for</h2></div>
 					
 						<div class="info-center">
-							<h2>New Items</h2>
+							<%
+							ArrayList<RealItemsObject> itemsReal=container.getUserItemsReal(userId);
+						for(int i=0; i<itemsReal.size();i++){
+							RealItemsObject cur=itemsReal.get(i);
+							ItemsHaveObject exists=new ItemsHaveObject(gen, e,cur.getItemId());
+							out.print("<p>");
+							out.print("<a href=\"ItemsHave.jsp?id="+exists.getItemId()+"\">");
+							out.print(exists.getItemName());
+							out.print("</a>");
+							out.print("</p>");
+						}
+						%>
 							
 						</div>
 					</div>
