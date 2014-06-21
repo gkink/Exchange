@@ -12,6 +12,7 @@ public class QueryExecutor {
 
 	private DataSource datasource;
 	private Connection con;
+	private Statement stm;
 
 	/**
 	 * Constructor
@@ -33,10 +34,13 @@ public class QueryExecutor {
 
 		try {
 			con = datasource.getConnection();
-			Statement stm = con.createStatement();
+			stm = con.createStatement();
 			res = stm.executeQuery(selectQuery);
 
+<<<<<<< HEAD
 			
+=======
+>>>>>>> origin/master
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -65,6 +69,7 @@ public class QueryExecutor {
 			
 			stm.close();
 			rs.close();
+			con.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing query(update, insert, delete)");
 			e.printStackTrace();
@@ -78,6 +83,14 @@ public class QueryExecutor {
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when closing connection");
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeStatement(){
+		try {
+			stm.close();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

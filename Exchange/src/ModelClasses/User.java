@@ -60,6 +60,7 @@ public class User {
 				password=rs.getString("password");
 			}
 			rs.close();
+			executor.closeConnection();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
@@ -82,6 +83,7 @@ public class User {
 				
 			}
 			rs.close();
+			ex.closeConnection();;
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
@@ -95,7 +97,7 @@ public class User {
 	public int addToUsers(){
 		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email,password);
 		this.id = executor.executeQuery(insertQuery);
-		
+		executor.closeConnection();
 		return this.id;
 	}
 
@@ -107,6 +109,11 @@ public class User {
 	public void deleteUser(){
 		String deleteQuery = queryGenerator.deleteFromUsers(id);
 		executor.executeQuery(deleteQuery);
+		executor.closeConnection();
+	}
+	
+	public void setRating(int rating){
+		this.rating = rating;
 	}
 
 	//basic getter methods
@@ -142,7 +149,7 @@ public class User {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		executor.closeConnection();
 		return id != 0;
 	}
 	
@@ -160,5 +167,21 @@ public class User {
 				&& this.firstName.equals(tocompare.firstName)
 				&& this.lastName.equals(tocompare.lastName)
 				&& this.email.equals(tocompare.email);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User" + " | ");
+		builder.append("parameters: " + " | ");
+		builder.append("id: " + id + " | ");
+		builder.append("rating: " + rating + " | ");
+		builder.append("firstName: " + firstName + " | ");
+		builder.append("lastName: " + lastName + " | ");
+		builder.append("email: " + email + " | ");
+		builder.append("password: " + password);
+
+
+		return builder.toString();
 	}
 }
