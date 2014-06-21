@@ -163,7 +163,7 @@ img.left {
 
 
 /* Menu */
-/*
+
 #menu {
 	width: 895px;
 	height: 60px;
@@ -471,10 +471,10 @@ img.left {
 /* Sidebar */
 
 #sidebar {
-	float: right;
-	width: 40%;
-
-	margin-bottom: 10%;
+	float: left;
+	width: 30%;
+	margin-left:40px;
+	margin-bottom :10%;
 }
 
 #sidebar ul {
