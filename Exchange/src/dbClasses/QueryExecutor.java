@@ -36,7 +36,7 @@ public class QueryExecutor {
 			Statement stm = con.createStatement();
 			res = stm.executeQuery(selectQuery);
 
-			
+			stm.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();

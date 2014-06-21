@@ -43,7 +43,7 @@
 <!-- start page -->
 <div id="page">
 	<!-- start ads -->
-	<div id="ads">bla</div>
+	<div id="ads"></div>
 	<!-- end ads -->
 	<!-- start content -->
 	<div id="content">

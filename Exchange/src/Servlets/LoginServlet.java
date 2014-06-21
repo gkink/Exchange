@@ -1,4 +1,4 @@
-package Servlet;
+package Servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import sun.org.mozilla.javascript.internal.Context;
 import ModelClasses.User;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import dbClasses.DBqueryGenerator;
+
 import dbClasses.QueryExecutor;
 import dbConnection.MyDBInfo;
 
@@ -52,9 +52,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBqueryGenerator g= new DBqueryGenerator();
-		
-		DataSource newDataSource;
-				DataSource data= new DataSource() {
+		DataSource data= new DataSource() {
 			
 			@Override
 			public <T> T unwrap(Class<T> iface) throws SQLException {
