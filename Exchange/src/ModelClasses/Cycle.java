@@ -39,6 +39,7 @@ public class Cycle implements CycleInterface{
 				list.add(curr);
 			}
 			rs.close();
+			executor.closeStatement();
 			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -83,7 +84,6 @@ public class Cycle implements CycleInterface{
 			String insert = queryGenerator.cycleInfoInsert(id, list.get(i).getSecond().getItemId());
 			executor.executeQuery(insert);
 		}
-		executor.closeConnection();
 	}
 
 	@Override
@@ -94,12 +94,10 @@ public class Cycle implements CycleInterface{
 	public void delete(){
 		executor.executeQuery(queryGenerator.deleteCycleInfo(id));
 		executor.executeQuery(queryGenerator.deleteCycle(id));
-		executor.closeConnection();
 	}
 	
 	public void accept(int itemID){
 		executor.executeQuery(queryGenerator.insertAcceptCycle(itemID));
-		executor.closeConnection();
 	}
 	
 }

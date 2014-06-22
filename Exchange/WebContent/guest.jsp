@@ -46,12 +46,6 @@
 			var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
 			return  "<li><a href= \" " + href + " \" >" + name + "</a></li>"; 
 		}
-		
-		$(document).ready(function() {
-			setTimeout(callback, delay)
-		});
-
-
 	</script>
 </head>
 <body>

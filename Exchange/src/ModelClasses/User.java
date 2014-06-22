@@ -60,6 +60,7 @@ public class User {
 				password=rs.getString("password");
 			}
 			rs.close();
+			executor.closeStatement();
 			executor.closeConnection();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
@@ -83,6 +84,7 @@ public class User {
 				
 			}
 			rs.close();
+			ex.closeStatement();
 			ex.closeConnection();;
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
@@ -97,7 +99,6 @@ public class User {
 	public int addToUsers(){
 		String insertQuery = queryGenerator.insertIntoUsers(rating, firstName, lastName, email,password);
 		this.id = executor.executeQuery(insertQuery);
-		executor.closeConnection();
 		return this.id;
 	}
 
@@ -109,7 +110,6 @@ public class User {
 	public void deleteUser(){
 		String deleteQuery = queryGenerator.deleteFromUsers(id);
 		executor.executeQuery(deleteQuery);
-		executor.closeConnection();
 	}
 	
 	public void setRating(int rating){
@@ -146,9 +146,11 @@ public class User {
 		try {
 			while(rs.next())
 				id = rs.getInt(1);
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		executor.closeStatement();
 		executor.closeConnection();
 		return id != 0;
 	}
