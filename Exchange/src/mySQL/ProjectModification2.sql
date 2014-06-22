@@ -7,13 +7,8 @@ use exchange;
 create table users 
 (ID int not null auto_increment primary key,
 firstName varchar(30), lastName varchar(30),
-<<<<<<< HEAD
 email varchar(30) unique, ranking int, password varchar(14));
-=======
-email varchar(30) unique,
-password varchar(40),
-ranking int);
->>>>>>> 37c9fc52e4f73e2c2103c40aa52653f1b21af8c3
+
 
 create table itemsHave
 (ID int not null auto_increment primary key,
@@ -23,6 +18,14 @@ keyWords varchar(50),
 userID int,
 createDate DateTime,
 constraint foreign key (userID) references users(ID));
+
+insert into itemsHave (name, description, keyWords, userID, createDate)
+	values ('tusheti3', 'savele praqtikis bileti, tusheti, mesame nakadi', 'tusheti3, mesame tusheti, tusheti 3-e', 1, now());
+insert into itemsHave (name, description, keyWords, userID, createDate)
+	values ('tusheti2', 'savele praqtikis bileti, tusheti, meore nakadi', 'tusheti2, meore tusheti, tusheti 2-e', 1, now());
+
+
+select * from itemsHave;
 
 create table itemsNeed
 (ID int not null auto_increment primary key,

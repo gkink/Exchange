@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
+<<<<<<< HEAD
     <!-- Specify a JDBC datasource -->
     <Resource name="jdbc/testdb" auth="Container"
         type="javax.sql.DataSource" username="root" password=""
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/Exchange"
         maxActive="10" maxIdle="4" />
+=======
+   <!-- Specify a JDBC datasource -->
+   <Resource name="jdbc/testdb" auth="Container"
+       type="javax.sql.DataSource" username="root" password="12345"
+       driverClassName="com.mysql.jdbc.Driver"
+       url="jdbc:mysql://localhost:3306/Exchange"
+       maxActive="100" maxIdle="50" maxWait="10000"
+       removeAbandoned="true" removeAbandonedTimeout="90"  />
+>>>>>>> e531b1220a0f43600ec565c6a1398d89a6652cf1
 </Context>

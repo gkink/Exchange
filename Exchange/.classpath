@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
+	<classpathentry excluding="Servlets/" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Irakli/Downloads/mockito-all-1.9.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Irakli/Downloads/mysql-connector-java-5.1.30/mysql-connector-java-5.1.30-bin.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+=======
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="F:/Eclipse/mockito-all-1.9.5.jar"/>
 	<classpathentry kind="lib" path="F:/Eclipse/mysql-connector-java-5.1.30-bin.jar"/>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+=======
+>>>>>>> origin/master
+>>>>>>> e531b1220a0f43600ec565c6a1398d89a6652cf1
 	<classpathentry kind="output" path="bin"/>
 </classpath>
