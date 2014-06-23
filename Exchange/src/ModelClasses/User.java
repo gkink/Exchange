@@ -59,24 +59,22 @@ public class User {
 					rating = rs.getInt("ranking");
 					password=rs.getString("password");
 				}
-				rs.close();
-				executor.closeConnection();
 			} catch (SQLException e) {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
+			}finally{
+				try {
+					rs.close();
+					executor.closeVariables();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-<<<<<<< HEAD
-=======
-			rs.close();
-			executor.closeStatement();
-			executor.closeConnection();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
->>>>>>> origin/master
+			
+			initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 		}
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 	}
+	
 	public User(QueryExecutor ex, DBqueryGenerator g, String email){
 		ResultSet rs = ex.selectResult(g.getUserByEmail(email));
 		int rating = 0;
@@ -92,23 +90,20 @@ public class User {
 					password=rs.getString("password");
 				
 				}
-				rs.close();
-				ex.closeConnection();;
 			} catch (SQLException e) {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
+			}finally{
+				try {
+					rs.close();
+					ex.closeVariables();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-<<<<<<< HEAD
-=======
-			rs.close();
-			ex.closeStatement();
-			ex.closeConnection();;
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
->>>>>>> origin/master
+
+		initVars(ex, g, rating, firstName, lastName, email, id,password);
 		}
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 	}
 
 	/*
@@ -164,12 +159,18 @@ public class User {
 		try {
 			while(rs.next())
 				id = rs.getInt(1);
-			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		executor.closeStatement();
-		executor.closeConnection();
+		
+		
 		return id != 0;
 	}
 	
