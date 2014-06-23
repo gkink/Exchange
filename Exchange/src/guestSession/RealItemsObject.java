@@ -19,6 +19,7 @@ public class RealItemsObject{
 		this.e=executor;
 		ResultSet rs= e.selectResult(g.getItemSelectQuery("realItems", ID));
 		parseAndinit(rs);
+		e.closeVariables();
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -32,8 +33,7 @@ public class RealItemsObject{
 			//e.printStackTrace();
 		}finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
-		    e.closeStatement();
-		    e.closeConnection();
+		    e.closeVariables();
 		}
 	}
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
@@ -55,13 +55,9 @@ public class RealItemsObject{
 	}
 	public void insert(){
 		ID=e.executeQuery(g.getRealItemInsertQuery(userId, itemID));
-//		e.closeStatement();
-//		e.closeConnection();
 	}
 	public void delete(){
 		e.executeQuery(g.getItemDeleteQuery("realItems", ID));
-//		e.closeStatement();
-//		e.closeConnection();
 	}
 
 

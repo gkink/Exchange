@@ -35,7 +35,10 @@ public class QueryExecutor {
 		try {
 			con = datasource.getConnection();
 			stm = con.createStatement();
+
 			res = stm.executeQuery(selectQuery);
+
+
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
@@ -73,19 +76,12 @@ public class QueryExecutor {
 		return res;
 	}
 	
-	public void closeConnection(){
+	public void closeVariables(){
 		try {
+			stm.close();
 			con.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when closing connection");
-			e.printStackTrace();
-		}
-	}
-	
-	public void closeStatement(){
-		try {
-			stm.close();
-		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

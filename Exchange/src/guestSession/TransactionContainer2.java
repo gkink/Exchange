@@ -44,8 +44,7 @@ public class TransactionContainer2 {
 			e.printStackTrace();
 		}finally {
 		    try { if (transactionIDs != null) transactionIDs.close(); } catch (Exception e) {};
-		    executor.closeStatement();
-		    executor.closeConnection();
+		    executor.closeVariables();
 		}
 	}
 	

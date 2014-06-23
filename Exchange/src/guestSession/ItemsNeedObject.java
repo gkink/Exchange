@@ -25,6 +25,7 @@ public class ItemsNeedObject implements ItemInterface  {
 		this.exe=exe;
 		ResultSet rs= exe.selectResult(gen.getItemSelectQuery("itemsNeed", ID));
 		parseAndinit(rs);
+		exe.closeVariables();
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -39,15 +40,12 @@ public class ItemsNeedObject implements ItemInterface  {
 			//e.printStackTrace();
 		}finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
-		    exe.closeStatement();
-		    exe.closeConnection();
+		    exe.closeVariables();
 		}
 	}
 	@Override
 	public void insert() {
 		this.ID=exe.executeQuery(gen.getItemsNeedInsertQuery(userId, name, keyWords));		
-//		exe.closeStatement();
-//		exe.closeConnection();
 	}
 	public void update(String field, String upd){
 		switch (field){
@@ -57,15 +55,13 @@ public class ItemsNeedObject implements ItemInterface  {
 			break;
 			default :System.out.println("Illegal Field");
 			return;
+
 		}
 		exe.executeQuery(gen.getItemUpdateQuery("itemsNeed", field, upd, ID));
-//		exe.closeStatement();
-//		exe.closeConnection();
 	}
 	public void delete(){
 		exe.executeQuery(gen.getItemDeleteQuery("itemsNeed",ID));
-//		exe.closeStatement();
-//		exe.closeConnection();
+		exe.closeVariables();
 	}
 	public String getItemKeywords(){
 		return keyWords;

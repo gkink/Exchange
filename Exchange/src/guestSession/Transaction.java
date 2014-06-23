@@ -34,8 +34,7 @@ public class Transaction implements TransactionInterface{
 			e.printStackTrace();
 		}finally{
 			try { if(null!=res)res.close();} catch (SQLException e){e.printStackTrace();}
-			executor.closeStatement();
-			executor.closeConnection();
+			executor.closeVariables();
 		}
 		for (Pair<Integer, Integer> p: userItemIDs){
 			User user = new User(executor, generator, p.getFirst());
@@ -88,8 +87,7 @@ public class Transaction implements TransactionInterface{
 	@Override
 	public void addToTheBases() {
 		ID = executor.executeQuery(generator.insertIntoTransactions());
-		executor.closeStatement();
-		executor.closeConnection();
+		executor.closeVariables();
 		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
 		try {
 			res.next();
@@ -100,14 +98,12 @@ public class Transaction implements TransactionInterface{
 			e.printStackTrace();
 		}finally{
 			try { if(null!=res)res.close();} catch (SQLException e){e.printStackTrace();}
-			executor.closeStatement();
-			executor.closeConnection();
+			executor.closeVariables();
 		}
 		
 		for (int i = 0; i < size(); i++){
 			executor.executeQuery(generator.insertIntoTransactionInfo(ID, getUserItemPair(i).getSecond().getItemId()));
-			executor.closeStatement();
-			executor.closeConnection();
+			executor.closeVariables();
 		}
 	}
 

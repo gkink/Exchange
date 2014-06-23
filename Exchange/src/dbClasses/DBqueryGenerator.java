@@ -176,6 +176,11 @@ public class DBqueryGenerator {
 		return "select * from users where email = " + toValue("" + email);		
 	}
 
+	
+	public String getUsersByName(String name){
+		return "select ID from users where firstName like " + "%" + name + "%";
+	}
+	
 	public String insertIntoUsers(int ranking, String firstName, String lastName, String email,String password){
 		String res = generateInsert("users", 
 				new String[]{"firstName", "lastName", "email", "ranking","password"}, 
@@ -208,6 +213,10 @@ public class DBqueryGenerator {
 	
 	public String insertIntoCycles(){
 		return "insert into cycles() values()";
+	}
+	
+	public String getCycleAccept(int userid){
+		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
 	}
 	
 	public String cycleInfoInsert(int cycleID, int itemID){
@@ -265,8 +274,8 @@ public class DBqueryGenerator {
 	
 	
 	//returns String to get the latest items added by users
-	public String getLatestItems() {
-		return "SELECT * from itemsHave Order By createDate Limit 0, 10";
+	public String getLatestItems(int userId) {
+		return "SELECT * from itemsHave where userId>" +userId+" or userId< "+userId+" Order By createDate Limit 0, 10 ";
 		
 	}
 	/*returns String to get the items with the given userId uses the type

@@ -41,8 +41,8 @@ public class ItemContainer {
 		IDs = new ArrayList<Integer>();
 	}
 	//returns the 10 latest added items
-	public ArrayList<ItemsHaveObject> getLatestItems(){
-		prepareList(generator.getLatestItems());
+	public ArrayList<ItemsHaveObject> getLatestItems(int userId){
+		prepareList(generator.getLatestItems(userId));
 		createItems(1);
 		return itemsHave;
 	}
@@ -89,8 +89,7 @@ public class ItemContainer {
 			System.out.println("Exception occured when parcing through the resultSet");			
 		}finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
-		    executor.closeStatement();
-		    executor.closeConnection();
+		    executor.closeVariables();
 		}	
 	}
 	
@@ -105,6 +104,7 @@ public class ItemContainer {
 			}
 		}
 	}
+
 
 //	public static void main(String[] args) {
 //		DataSource datasource = mock(DataSource.class);
@@ -122,15 +122,18 @@ public class ItemContainer {
 //		}
 //		QueryExecutor q = new QueryExecutor(datasource);
 //		DBqueryGenerator d=new DBqueryGenerator();
+//		System.out.println(d.getLatestItems(1));
 //		ItemContainer i= new ItemContainer(d, q);
 //		ArrayList<ItemsHaveObject> a= i.getSearchResultItems("net");
-//		ArrayList<ItemsHaveObject> b= i.getLatestItems();
+//		ArrayList<ItemsHaveObject> b= i.getLatestItems(1);
 //		ArrayList<RealItemsObject> c= i.getUserItemsReal(1);
 //		ArrayList<ItemsNeedObject> e= i.getUserItemsNeed(1);
 //		
+//		
 //		for(int j=0; j<a.size();j++){
-//			System.out.println(a.get(j).getItemKeywords());
-//			System.out.println(b.get(j).getItemName());
+//		//	System.out.println(a.get(j).getItemKeywords());
+//			
+//		//	System.out.println(b.get(j).getItemName());
 //			
 //			
 //			
@@ -147,7 +150,6 @@ public class ItemContainer {
 //        		
 //        
 //    }
-	
 	
 	
 }

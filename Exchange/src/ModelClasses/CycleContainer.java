@@ -26,6 +26,7 @@ public class CycleContainer {
 		this.executor = executor;
 		this.generator =  generator;
 		idList = new ArrayList<Integer>();
+		cycles = new ArrayList<Cycle>();
 		
 		initList(userID);
 	}
@@ -53,11 +54,15 @@ public class CycleContainer {
 				int itemID = rs.getInt(1);
 				idList.add(itemID);
 			}
-			rs.close();
-			executor.closeStatement();
-			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}			
 		}
 		
 		for(int i = 0 ; i < idList.size() ; i++)
@@ -73,12 +78,17 @@ public class CycleContainer {
 				int cycleID = rs.getInt(1);
 				cycles.add(new Cycle(executor, generator, cycleID));
 			}
-			rs.close();
-			executor.closeStatement();
-			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}			
 		}
+
 	}
 	
 	public Cycle getCycle(int num){

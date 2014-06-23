@@ -44,8 +44,7 @@ public class ItemsChanged implements ItemInterface {
 			e.printStackTrace();
 		}finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
-		    exe.closeStatement();
-		    exe.closeConnection();
+		    exe.closeVariables();
 		}
 		
 	}
@@ -56,8 +55,6 @@ public class ItemsChanged implements ItemInterface {
 	@Override
 	public void insert() {
 		this.ID=exe.executeQuery(gen.getItemsChangedInsertQuery(userId, name));
-//		exe.closeStatement();
-//		exe.closeConnection();
 	}
 	
 	@Override

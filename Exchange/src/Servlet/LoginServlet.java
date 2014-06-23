@@ -13,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import sun.org.mozilla.javascript.internal.Context;
@@ -53,8 +54,8 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DBqueryGenerator g= new DBqueryGenerator();
 		
-		DataSource newDataSource;
-				DataSource data= new DataSource() {
+		DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
+		DataSource data= new DataSource() {
 			
 			@Override
 			public <T> T unwrap(Class<T> iface) throws SQLException {
@@ -120,18 +121,21 @@ public class LoginServlet extends HttpServlet {
 				return con;
 			}
 		};;
-		QueryExecutor e= new QueryExecutor(data);
+		QueryExecutor e= new QueryExecutor(dataSource);
 		String email= request.getParameter("login");
 		String pass= request.getParameter("password");
+		HttpSession ses= request.getSession();
+		
 		User u= new User(e, g, email);
+				
 		if(u.getId()==0|| !pass.equals(u.getPassword())){
 			RequestDispatcher r= request.getRequestDispatcher("InvalidLogin.html");
 			r.forward(request, response);
 		}else {
+			
+			
 			RequestDispatcher r= request.getRequestDispatcher("NewHomepage.jsp");
-			request.setAttribute("User", u);
-			request.setAttribute("executor", e);
-			request.setAttribute("generator", g);
+			ses.setAttribute("User", u.getId());
 			r.forward(request, response);
 			
 		}

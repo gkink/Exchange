@@ -36,6 +36,7 @@ public class ItemsHaveObject implements ItemInterface {
 		String query=queryGenerator.getItemSelectQuery("itemsHave",ID);
 		ResultSet rs= executor.selectResult(query);
 		parseAndinit(rs);
+	
 		
 	}
 	
@@ -52,20 +53,19 @@ public class ItemsHaveObject implements ItemInterface {
 				Time time=rs.getTime("createDate");
 				this.createDate=new DateTime(date, time);
 			}
+
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
 		}finally {
 		    try { if (rs != null) rs.close(); } catch (Exception e) {};
-		    executor.closeStatement();
-		    executor.closeConnection();
+		    executor.closeVariables();
+
 		}
 	}
 	@Override
 	public void insert() {
 		this.ID= executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
-//		executor.closeStatement();
-//		executor.closeConnection();
 	}
 	public void update(String field, String upd){
 		switch (field){
@@ -79,13 +79,10 @@ public class ItemsHaveObject implements ItemInterface {
 		return;
 		}
 		executor.executeQuery(queryGenerator.getItemUpdateQuery("itemsHave", field, upd, ID));
-//		executor.closeStatement();
-//		executor.closeConnection();
+		
 	}
 	public void delete(){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery("itemsHave",ID));
-//		executor.closeStatement();
-//		executor.closeConnection();
 	}
 	public DateTime getCreateDate(){
 		return createDate;

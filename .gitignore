@@ -1,4 +1,7 @@
 Exchange/.classpath
+<<<<<<< HEAD
+Exchange/.WebContent/META-INF/context.xml
+=======
 Exchange/.classpath
 Exchange/.classpath
 Exchange/.classpath
@@ -6,3 +9,8 @@ Exchange/WebContent/styles.css
 Exchange/WebContent/styles.css
 Exchange/src/ModelClasses/Cycle.java
 Exchange/src/ModelClasses/User.java
+Exchange/WebContent/META-INF/context.xml
+Exchange/.classpath
+Exchange/WebContent/META-INF/context.xml
+Exchange/.classpath
+>>>>>>> a7912bf112f567aa4b96fd58ea27731cf5be7c91
