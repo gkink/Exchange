@@ -20,21 +20,27 @@ public class Transaction implements TransactionInterface{
 	private DBqueryGenerator generator;
 	private List<Pair<User, ItemsChanged>> userItemPairs;
 	private QueryExecutor executor;
+	private List<Pair<Integer, Integer>> userItemIDs;
 	
 	private void getTransactionFromBases(){
+		userItemIDs = new ArrayList<Pair<Integer, Integer>>();
 		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
 		try {
 			while(res.next()){
-				User user = new User(executor, generator, res.getInt(1));
-				ItemsChanged item = new ItemsChanged(generator, executor, res.getInt(2));
-				userItemPairs.add(new Pair<User, ItemsChanged>(user, item));
+				userItemIDs.add(new Pair<Integer, Integer>(res.getInt("transactionID"), res.getInt("itemID")));
 				size++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			try { if(null!=res)res.close();} catch (SQLException e)
-			{e.printStackTrace();}
+			try { if(null!=res)res.close();} catch (SQLException e){e.printStackTrace();}
+			executor.closeStatement();
+			executor.closeConnection();
+		}
+		for (Pair<Integer, Integer> p: userItemIDs){
+			User user = new User(executor, generator, p.getFirst());
+			ItemsChanged item = new ItemsChanged(generator, executor, p.getSecond());
+			userItemPairs.add(new Pair<User, ItemsChanged>(user, item));
 		}
 	}
 	
@@ -82,19 +88,26 @@ public class Transaction implements TransactionInterface{
 	@Override
 	public void addToTheBases() {
 		ID = executor.executeQuery(generator.insertIntoTransactions());
+		executor.closeStatement();
+		executor.closeConnection();
 		ResultSet res = executor.selectResult(generator.getTransactionQuery(ID));
 		try {
 			res.next();
 			Date date = res.getDate(2);
 			Time time = res.getTime(2);
 			dateTime = new DateTime(date, time);
-			res.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try { if(null!=res)res.close();} catch (SQLException e){e.printStackTrace();}
+			executor.closeStatement();
+			executor.closeConnection();
 		}
 		
 		for (int i = 0; i < size(); i++){
 			executor.executeQuery(generator.insertIntoTransactionInfo(ID, getUserItemPair(i).getSecond().getItemId()));
+			executor.closeStatement();
+			executor.closeConnection();
 		}
 	}
 

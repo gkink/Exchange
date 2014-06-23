@@ -27,11 +27,13 @@ public class RealItemsObject{
 				this.userId = rs.getInt("userId");
 				this.itemID=rs.getInt("itemId");
 			}
-
-			rs.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+		}finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    e.closeStatement();
+		    e.closeConnection();
 		}
 	}
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
@@ -53,9 +55,13 @@ public class RealItemsObject{
 	}
 	public void insert(){
 		ID=e.executeQuery(g.getRealItemInsertQuery(userId, itemID));
+//		e.closeStatement();
+//		e.closeConnection();
 	}
 	public void delete(){
 		e.executeQuery(g.getItemDeleteQuery("realItems", ID));
+//		e.closeStatement();
+//		e.closeConnection();
 	}
 
 

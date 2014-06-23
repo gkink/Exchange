@@ -47,8 +47,8 @@ public class TransactionTest {
 		
 		set = mock(ResultSet.class);
 		when(set.next()).thenReturn(true, true, true, false);
-		when(set.getInt(1)).thenReturn(1, 2, 3);
-		when(set.getInt(2)).thenReturn(1, 2, 3);
+		when(set.getInt("transactionID")).thenReturn(1, 2, 3);
+		when(set.getInt("itemID")).thenReturn(1, 2, 3);
 		
 		userSet = mock(ResultSet.class);
 		when(userSet.next()).thenReturn(true, false, true, false, true, false);

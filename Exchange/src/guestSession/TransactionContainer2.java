@@ -28,8 +28,9 @@ public class TransactionContainer2 {
 	private ResultSet transactionIDs;
 	private QueryExecutor executor;
 	
-	private ResultSet getTransactionIDSet(String query){
-		return executor.selectResult(query);
+	private void getTransactionIDSet(String query){
+		transactionIDs = executor.selectResult(query);
+		getTransactionIDs();
 	}
 	
 	private void getTransactionIDs(){
@@ -39,9 +40,12 @@ public class TransactionContainer2 {
 				IDs.add(pair);	
 				numOfIDs++;
 			}
-			transactionIDs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+		    try { if (transactionIDs != null) transactionIDs.close(); } catch (Exception e) {};
+		    executor.closeStatement();
+		    executor.closeConnection();
 		}
 	}
 	
@@ -61,8 +65,7 @@ public class TransactionContainer2 {
 	 */
 	public TransactionContainer2(QueryExecutor executor, DBqueryGenerator generator){
 		init(executor, generator);
-		transactionIDs = getTransactionIDSet(generator.getTransactionsQuery(NUMBER_OF_TOP_TRANSACTIONS));
-		getTransactionIDs();
+		getTransactionIDSet(generator.getTransactionsQuery(NUMBER_OF_TOP_TRANSACTIONS));
 	}
 	
 	
@@ -74,8 +77,7 @@ public class TransactionContainer2 {
 	 */
 	public TransactionContainer2(QueryExecutor executor, DBqueryGenerator generator, int userID){
 		init(executor, generator);
-		transactionIDs = getTransactionIDSet(generator.getTrasactionsForUserQuery(userID));
-		getTransactionIDs();
+		getTransactionIDSet(generator.getTrasactionsForUserQuery(userID));
 	}
 	
 	/**
