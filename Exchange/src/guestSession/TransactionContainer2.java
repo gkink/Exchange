@@ -22,7 +22,7 @@ public class TransactionContainer2 {
 	public static final int NUMBER_OF_TOP_TRANSACTIONS = 7;
 	
 	private List<TransactionInterface> transactions;
-	private List<Pair<Integer, String>> IDs;
+	private List<Pair<Integer, DateTime>> IDs;
 //	private DBqueryGenerator generator;
 	private int size, numOfIDs;
 	private ResultSet transactionIDs;
@@ -35,7 +35,7 @@ public class TransactionContainer2 {
 	private void getTransactionIDs(){
 		try {
 			while(transactionIDs.next()){
-				Pair<Integer, String> pair = new Pair<Integer, String>(transactionIDs.getInt(1), transactionIDs.getString(2));
+				Pair<Integer, DateTime> pair = new Pair<Integer, DateTime>(transactionIDs.getInt(1), new DateTime(transactionIDs.getDate(2), transactionIDs.getTime(2)));
 				IDs.add(pair);	
 				numOfIDs++;
 			}
@@ -48,7 +48,7 @@ public class TransactionContainer2 {
 	private void init(QueryExecutor executor, DBqueryGenerator generator){
 		size = 0;
 		numOfIDs = 0;
-		IDs = new ArrayList<Pair<Integer, String>>();
+		IDs = new ArrayList<Pair<Integer, DateTime>>();
 		transactions = new ArrayList<TransactionInterface>();
 //		this.generator = generator;
 		this.executor = executor;
@@ -120,7 +120,7 @@ public class TransactionContainer2 {
 	 * represents ID of a transaction and String represents its dateTime.
 	 * @return Pair of Integer and String.
 	 */
-	public Pair<Integer, String> getPair(int num){
+	public Pair<Integer, DateTime> getPair(int num){
 		return IDs.get(num);
 	}
 }

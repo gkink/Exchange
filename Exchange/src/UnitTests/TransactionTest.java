@@ -55,7 +55,8 @@ public class TransactionTest {
 		when(userSet.getString("firstName")).thenReturn("user1", "user2", "user3");
 		when(userSet.getString("lastName")).thenReturn("user1son", "user2son", "user3son");
 		when(userSet.getString("email")).thenReturn("@user1", "@user2", "@user3");
-		when(userSet.getInt("ranking")).thenReturn(1, 2, 3);
+		when(userSet.getInt("ranking")).thenReturn(0, 0, 0);
+		when(userSet.getString("password")).thenReturn("p", "p", "p");
 		
 		itemSet = mock(ResultSet.class);
 		when(itemSet.next()).thenReturn(true, false, true, false, true, false);
@@ -77,9 +78,9 @@ public class TransactionTest {
 		when(generator.getUserQuery(2)).thenReturn("user2");
 		when(generator.getUserQuery(3)).thenReturn("user3");
 		
-		when(generator.insertIntoUsers(1, "user1", "user1son", "@user1")).thenReturn("insert1");
-		when(generator.insertIntoUsers(2, "user2", "user2son", "@user2")).thenReturn("insert2");
-		when(generator.insertIntoUsers(3, "user3", "user3son", "@user3")).thenReturn("insert3");
+		when(generator.insertIntoUsers(0, "user1", "user1son", "@user1", "p")).thenReturn("insert1");
+		when(generator.insertIntoUsers(0, "user2", "user2son", "@user2", "p")).thenReturn("insert2");
+		when(generator.insertIntoUsers(0, "user3", "user3son", "@user3", "p")).thenReturn("insert3");
 		
 		when(generator.getItemSelectQuery("itemsChanged", 1)).thenReturn("item1");
 		when(generator.getItemSelectQuery("itemsChanged", 2)).thenReturn("item2");
@@ -120,13 +121,13 @@ public class TransactionTest {
 		
 		when(cycle.cycleSize()).thenReturn(2);
 		
-		User user1 = new User(executor, generator, 1, "user1cycle", "user1soncycle", "@user1");
-		ItemInterface item1 = new ItemsHaveObject(generator, executor, "item1insert", "desc1", "kayword1", 1, dateTime);
-		Pair<User, ItemInterface> pair1 = new Pair<User, ItemInterface>(user1, item1);
+		User user1 = new User(executor, generator, "user1cycle", "user1soncycle", "@user1", "p");
+		ItemsHaveObject item1 = new ItemsHaveObject(generator, executor, "item1insert", "desc1", "kayword1", 1, dateTime);
+		Pair<User, ItemsHaveObject> pair1 = new Pair<User, ItemsHaveObject>(user1, item1);
 		
-		User user2 = new User(executor, generator, 2, "user2cycle", "user2soncycle", "@user2");
-		ItemInterface item2 = new ItemsHaveObject(generator, executor, "item2insert", "desc2", "kayword2", 2, dateTime);
-		Pair<User, ItemInterface> pair2 = new Pair<User, ItemInterface>(user2, item2);
+		User user2 = new User(executor, generator, "user2cycle", "user2soncycle", "@user2", "p");
+		ItemsHaveObject item2 = new ItemsHaveObject(generator, executor, "item2insert", "desc2", "kayword2", 2, dateTime);
+		Pair<User, ItemsHaveObject> pair2 = new Pair<User, ItemsHaveObject>(user2, item2);
 		
 		when(cycle.getUserItemPair(0)).thenReturn(pair1);
 		when(cycle.getUserItemPair(1)).thenReturn(pair2);
@@ -171,7 +172,7 @@ public class TransactionTest {
 				{"item1", "item2", "item3"}};
 		for (int i = 0; i < transaction.size(); i++){
 			
-			User user = new User(executor, generator, i+1, userNames[0][i], userNames[1][i], userNames[2][i]);
+			User user = new User(executor, generator, userNames[0][i], userNames[1][i], userNames[2][i], "p");
 			user.addToUsers();
 			ItemsChanged item = new ItemsChanged(generator, executor, i+1, userNames[3][i]);
 			item.insert();
@@ -179,6 +180,7 @@ public class TransactionTest {
 			Pair<User, ItemsChanged> pair = new Pair<User, ItemsChanged>(user, item);
 			assertEquals(transaction.getUserItemPair(i), pair);
 		}
-		System.out.println(transaction2.toString());
+		System.out.println(transaction2);
+		System.out.println(transaction);
 	}
 }

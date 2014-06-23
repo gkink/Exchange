@@ -110,10 +110,10 @@ public class Transaction implements TransactionInterface{
 	
 	@Override
 	public String toString(){
-		String part1 = "Transaction ID = " + ID + ". Transaction created on " + dateTime.getDate() + " at " + dateTime.getTime() + "\n";
+		String part1 = "| Transaction ID: " + ID + " " +  dateTime + "\n";
 		StringBuilder build = new StringBuilder(part1);
 		for(int i = 0; i < size; i++){
-			build.append(userItemPairs.get(i).getFirst().getFirstName() + " " + userItemPairs.get(i).getFirst().getLastName() + " --|-- " + userItemPairs.get(i).getSecond().getItemName() + "\n");
+			build.append("| userID: " + userItemPairs.get(i).getFirst().getId() + " | Firstname: " + userItemPairs.get(i).getFirst().getFirstName() + " | Lastname: " + userItemPairs.get(i).getFirst().getLastName() + " | itemID: " + userItemPairs.get(i).getSecond().getItemId() + " | itemName: " + userItemPairs.get(i).getSecond().getItemName() + " |\n");
 		}
 		return build.toString();
 	}

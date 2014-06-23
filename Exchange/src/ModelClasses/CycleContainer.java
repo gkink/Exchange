@@ -2,6 +2,7 @@ package ModelClasses;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dbClasses.DBqueryGenerator;
@@ -12,6 +13,7 @@ public class CycleContainer {
 	private List<Cycle> cycles;
 	private QueryExecutor executor;
 	private DBqueryGenerator generator;
+	private List<Integer> idList;
 	
 	/***
 	 * @param executor - QueryExecutor object
@@ -23,6 +25,7 @@ public class CycleContainer {
 	public CycleContainer(QueryExecutor executor, DBqueryGenerator generator, int userID){
 		this.executor = executor;
 		this.generator =  generator;
+		idList = new ArrayList<Integer>();
 		
 		initList(userID);
 	}
@@ -48,11 +51,17 @@ public class CycleContainer {
 		try {
 			while(rs.next()){
 				int itemID = rs.getInt(1);
-				addItemCycles(itemID);
+				idList.add(itemID);
 			}
+			rs.close();
+			executor.closeStatement();
+			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		for(int i = 0 ; i < idList.size() ; i++)
+			addItemCycles(idList.get(i));
 	}
 	
 	private void addItemCycles(int itemID){
@@ -64,6 +73,9 @@ public class CycleContainer {
 				int cycleID = rs.getInt(1);
 				cycles.add(new Cycle(executor, generator, cycleID));
 			}
+			rs.close();
+			executor.closeStatement();
+			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

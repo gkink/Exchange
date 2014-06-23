@@ -48,6 +48,6 @@ public class DateTime {
 
 	@Override
 	public String toString(){
-		return date + " " + time;
+		return "| Date: " + date + " | " + "Time: " + time + " |";
 	}
 }

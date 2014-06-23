@@ -2,11 +2,14 @@ package UnitTests;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import guestSession.DateTime;
 import guestSession.Transaction;
 import guestSession.TransactionContainer2;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,16 +32,20 @@ public class TransactionContainer2Test {
 	public void init() throws SQLException {
 		
 		transaction = mock(Transaction.class);
+		Date date = new Date(1000);
+		Time time = new Time(1000);
 		
 		set = mock(ResultSet.class);
 		when(set.next()).thenReturn(true, true, true, false);
 		when(set.getInt(1)).thenReturn(1, 2, 3);
-		when(set.getString(2)).thenReturn("first", "second", "third");
+		when(set.getDate(2)).thenReturn(date, date, date);
+		when(set.getTime(2)).thenReturn(time, time, time);
 		
 		set2 = mock(ResultSet.class);
 		when(set2.next()).thenReturn(true, true, true, false);
 		when(set2.getInt(1)).thenReturn(2, 4, 6);
-		when(set2.getString(2)).thenReturn("three", "point", "fourteen");
+		when(set2.getDate(2)).thenReturn(date, date, date);
+		when(set2.getTime(2)).thenReturn(time, time, time);
 		
 		generator = mock(DBqueryGenerator.class);
 		when(generator.getTransactionsQuery(TransactionContainer2.NUMBER_OF_TOP_TRANSACTIONS)).thenReturn("test for top tuples");
@@ -61,27 +68,31 @@ public class TransactionContainer2Test {
 	
 	@Test
 	public void getPairTest(){
-		String [] arr = {"first", "second", "third"};
+		Date date = new Date(1000);
+		Time time = new Time(1000);
+		DateTime dateTime = new DateTime(date, time);
+		
 		for (int i = 0; i < container.numOfPairs(); i++){
 			assertEquals(container.getPair(i).getFirst(), new Integer(i+1));
-			assertEquals(container.getPair(i).getSecond(), arr[i]);
+			assertEquals(container.getPair(i).getSecond(), dateTime);
 		}
-		String [] arr2 = {"three", "point", "fourteen"};
 		for (int i = 0; i < container2.numOfPairs(); i++){
 			assertEquals(container2.getPair(i).getFirst(), new Integer((i+1)*2));
-			assertEquals(container2.getPair(i).getSecond(), arr2[i]);
+			assertEquals(container2.getPair(i).getSecond(), dateTime);
 		}
 	}
 	
 	@Test
 	public void getPairTest2(){
-		String [] arr = {"first", "second", "third"};
+		Date date = new Date(1000);
+		Time time = new Time(1000);
+		DateTime dateTime = new DateTime(date, time);
+		
 		for (int i = 0; i < container.numOfPairs(); i++){
-			assertEquals(container.getPair(i), new Pair<Integer, String>(i+1, arr[i]));
+			assertEquals(container.getPair(i), new Pair<Integer, DateTime>(i+1, dateTime));
 		}
-		String [] arr2 = {"three", "point", "fourteen"};
 		for (int i = 0; i < container2.numOfPairs(); i++){
-			assertEquals(container2.getPair(i), new Pair<Integer, String>((i+1)*2, arr2[i]));
+			assertEquals(container2.getPair(i), new Pair<Integer, DateTime>((i+1)*2, dateTime));
 		}
 	}
 	
