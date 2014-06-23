@@ -265,8 +265,8 @@ public class DBqueryGenerator {
 	
 	
 	//returns String to get the latest items added by users
-	public String getLatestItems() {
-		return "SELECT * from itemsHave Order By createDate Limit 0, 10";
+	public String getLatestItems(int userId) {
+		return "SELECT * from itemsHave where userId>" +userId+" or userId< "+userId+" Order By createDate Limit 0, 10 ";
 		
 	}
 	/*returns String to get the items with the given userId uses the type

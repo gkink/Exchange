@@ -25,6 +25,8 @@ public class ItemsNeedObject implements ItemInterface  {
 		this.exe=exe;
 		ResultSet rs= exe.selectResult(gen.getItemSelectQuery("itemsNeed", ID));
 		parseAndinit(rs);
+		exe.closeConnection();
+		exe.closeStatement();
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -44,6 +46,8 @@ public class ItemsNeedObject implements ItemInterface  {
 	@Override
 	public void insert() {
 		this.ID=exe.executeQuery(gen.getItemsNeedInsertQuery(userId, name, keyWords));		
+		exe.closeConnection();
+		exe.closeStatement();
 	}
 	public void update(String field, String upd){
 			switch (field){
@@ -55,9 +59,13 @@ public class ItemsNeedObject implements ItemInterface  {
 			return;
 			}
 			exe.executeQuery(gen.getItemUpdateQuery("itemsNeed", field, upd, ID));
+			exe.closeConnection();
+			exe.closeStatement();
 	}
 	public void delete(){
 		exe.executeQuery(gen.getItemDeleteQuery("itemsNeed",ID));
+		exe.closeConnection();
+		exe.closeStatement();
 	}
 	public String getItemKeywords(){
 		return keyWords;

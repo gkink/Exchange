@@ -19,6 +19,8 @@ public class RealItemsObject{
 		this.e=executor;
 		ResultSet rs= e.selectResult(g.getItemSelectQuery("realItems", ID));
 		parseAndinit(rs);
+		e.closeConnection();
+		e.closeStatement();
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -53,9 +55,13 @@ public class RealItemsObject{
 	}
 	public void insert(){
 		ID=e.executeQuery(g.getRealItemInsertQuery(userId, itemID));
+		e.closeConnection();
+		e.closeStatement();
 	}
 	public void delete(){
 		e.executeQuery(g.getItemDeleteQuery("realItems", ID));
+		e.closeConnection();
+		e.closeStatement();
 	}
 
 

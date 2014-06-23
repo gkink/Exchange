@@ -38,7 +38,7 @@ public class Transaction implements TransactionInterface{
 		}
 	}
 	
-	private Pair<User, ItemsChanged> createUserItemPair(Pair<User, ItemInterface> pair){
+	private Pair<User, ItemsChanged> createUserItemPair(Pair<User, ItemsHaveObject> pair){
 		ItemsChanged item = new ItemsChanged(generator, executor, pair.getSecond().getItemOwner(), pair.getSecond().getItemName());
 		item.insert();
 		return new Pair<User, ItemsChanged>(pair.getFirst(), item);
