@@ -11,40 +11,28 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="js.js"></script>
 	<script type="text/javascript">
-		var xml = new XMLHttpRequest();
+		var xml;
+		var xmlHt;
 		function searchFunction(){
-			xml.open("post", "guestItemSearch?item=" + document.getElementById("iteminput").value, true);
-			xml.onreadystatechange = readyStateHandler;
-			xml.send();
+			var searchValue = document.getElementById("iteminput").value;
+			if(searchValue !== ""){
+				xml = new XMLHttpRequest();
+				xml.open("post", "guestItemSearch?item=" + document.getElementById("iteminput").value, true);
+				xml.onreadystatechange = readyStateHandler;
+				xml.send();				
+			}else{
+				document.getElementById("searchContent").innerHTML = "";				
+			}
 		}
-		
+
 		function readyStateHandler(){
-			if(xml.readyState === 4){
-				document.getElementById("searchContent").innerHTML = "";
-				var resp = xml.responseXML;
-				var message = resp.getElementsByTagName("message")[0].childNodes[0].nodeValue;
-				if(message === "ok"){
-					generateSearchResults();					
-				}else{
-					document.getElementById("searchContent").innerHTML += message;
-				}
+			if(xml.readyState === 4 && xml.status === 200){
+				document.getElementById("searchContent").innerHTML = xml.responseText;
 			}
 		}
-		
-		function generateSearchResults(){
-			var resp = xml.responseXML;
-			var idList = resp.getElementsByTagName("itemID");
-			var nameList = resp.getElementsByTagName("itemName");
-			for(var i = 0 ; i < idList.length ; i++){
-				var id = idList[i].childNodes[0].nodeValue;
-				var name = nameList[i].childNodes[0].nodeValue;				
-				document.getElementById("searchContent").innerHTML += generateElem(id, name);
-			}
-		}
-		
-		function generateElem(id, name){
-			var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
-			return  "<li><a href= \" " + href + " \" >" + name + "</a></li>"; 
+
+		function readyforTransactios(){
+			
 		}
 	</script>
 </head>
@@ -53,8 +41,7 @@
 	<div id="main">
 		<div id="left">
 			<div id="searchbox">
-				search a intm: <input id="iteminput" placeholder="Item" tabindex="1" type="text">
-				<button type="button" onclick="searchFunction()">click</button>
+				search a intm: <input id="iteminput" placeholder="Item" tabindex="1"  onkeyup="searchFunction()" onkeydown="searchFunction()" type="text">
 			</div>
 			<div>
 				<ul id="searchContent">
@@ -81,6 +68,10 @@
 						<input class="button" type="submit" required="required" value="Sign In">
 					</form>
 				</div>
+			</div>
+			<div>
+				<ul id="transactions">
+				</ul>				
 			</div>
 		</div>
 	</div>

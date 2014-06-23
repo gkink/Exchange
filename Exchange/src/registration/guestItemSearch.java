@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.mockito.asm.tree.IntInsnNode;
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -29,23 +31,7 @@ import dbClasses.QueryExecutor;
 @WebServlet("/guestItemSearch")
 public class guestItemSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-     
-	private DataSource dataSource;
-    private Connection connection;
-    private Statement statement;
-     
-    public void init() throws ServletException {
-        try {
-            Context initContext  = new InitialContext();
-            Context envContext = (Context)initContext.lookup("java:/comp/env");
-            dataSource = (DataSource)envContext.lookup("jdbc/testdb");
-            
-            
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }	
-	
+     	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -64,6 +50,8 @@ public class guestItemSearch extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DataSource dataSource = (DataSource) request.getServletContext().getAttribute("DataSource");
+		
 		String itemKeyword = request.getParameter("item");
 		System.out.println("Server recieved: " + itemKeyword);
 
@@ -75,20 +63,20 @@ public class guestItemSearch extends HttpServlet {
 		ItemContainer container = new ItemContainer(generator, executor);
 		List<ItemsHaveObject> items = container.getSearchResultItems(itemKeyword);
 
-		out.println("<main>");
 		if(items.size() == 0)
-			out.println("<message>Nothing found for word " + itemKeyword + "</message>");
-		else
-			out.println("<message>ok</message>");
-		
-		
-		for(ItemsHaveObject item: items){
-			out.println("<itemID>" + item.getItemId() + "</itemID>");
-			out.println("<itemName>" + item.getItemName() + "</itemName>");			
+			out.println("<p>Nothing found for word " + itemKeyword + "</p>");
+		else{
+			for(ItemsHaveObject item: items){
+				String href = "http://localhost:8080/Exchange/item.jsp?id=" + item.getItemId();
+				out.println("<li><a href=" + toHref(href) + ">" + item.getItemName() + "</a></li>");
+			}
 		}
-		out.println("</main>");
-		
 		
 		System.out.println("Server finished job");
 	}
+	
+	private String toHref(String initialValue){
+		return "\"" + initialValue + "\"";
+	}
+
 }

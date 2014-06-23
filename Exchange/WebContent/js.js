@@ -14,4 +14,3 @@ $(document).ready(function() {
 		$("div#signin").css("background-color", "rgb(255, 255, 255)");
 	});
 });
-

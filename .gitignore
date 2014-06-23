@@ -1,8 +1,2 @@
 Exchange/.classpath
-Exchange/.classpath
-Exchange/.classpath
-Exchange/.classpath
-Exchange/WebContent/styles.css
-Exchange/WebContent/styles.css
-Exchange/src/ModelClasses/Cycle.java
-Exchange/src/ModelClasses/User.java
+Exchange/.WebContent/META-INF/context.xml

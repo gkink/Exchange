@@ -688,3 +688,61 @@ img.left {
 	color: #FFFFFF;
 }
 
+div#left, div#right{
+	height: 100%;
+	float: left;
+}
+div#left{
+ 	width: 70%;
+}
+div#right{
+	width: 30%;
+}
+
+div#full_form {
+	width: 60%;
+	height: 35%;
+	margin-left: 40%;
+}
+
+div#form_top {
+	height: 20%;
+	width: 100%;
+}
+
+div#form_body{
+	height: 80%%;
+	width: 100%;
+}
+
+div#signin,div#signup {
+	width: 50%;
+	height: 100%;
+	text-align: center;
+	float: left;
+}
+
+form#first {
+	display: block;
+}
+
+form#second {
+	display: none;
+}
+
+input.button{
+	width: 100px;
+}
+
+p#signup, p#signin{
+	cursor: pointer;
+}
+
+div#signin {
+	background-color: rgb(230, 231, 232);
+
+}
+
+div#signup {
+	background-color: white;
+}

@@ -1,5 +1,2 @@
-/build
-/.project
-
-.classpath
-/bin
+Exchange/.classpath
+Exchange/.WebContent/META-INF/context.xml

@@ -3,7 +3,9 @@ package ModelClasses;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 import guestSession.ItemInterface;
 import guestSession.ItemsHaveObject;
 import dbClasses.DBqueryGenerator;
@@ -14,11 +16,14 @@ public class Cycle implements CycleInterface{
 	private QueryExecutor executor;
 	private int id;
 	private List<Pair<User, ItemsHaveObject> >  list;
+	private List<Integer> hashHelper;
+	private static final int HashKey = 1001;
 
 	public Cycle(QueryExecutor executor, DBqueryGenerator generator, int id){
 		this.executor =  executor;
 		this.queryGenerator = generator;
 		this.id = id;
+		hashHelper = new ArrayList<Integer>();
 		
 		initList();
 	}
@@ -37,15 +42,20 @@ public class Cycle implements CycleInterface{
 				
 				Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
 				list.add(curr);
+				hashHelper.add(itemid);
 			}
-			rs.close();
-			executor.closeStatement();
-			executor.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	/**
 	 * @param executor
 	 * @param generator
@@ -90,14 +100,31 @@ public class Cycle implements CycleInterface{
 	public int getID() {
 		return id;
 	}
-	
+
 	public void delete(){
 		executor.executeQuery(queryGenerator.deleteCycleInfo(id));
 		executor.executeQuery(queryGenerator.deleteCycle(id));
 	}
-	
+
 	public void accept(int itemID){
 		executor.executeQuery(queryGenerator.insertAcceptCycle(itemID));
 	}
+
+	public int generateHash(){
+		Collections.sort(hashHelper);
+		int curr = hashHelper.get(0);
+		for(int i = 1 ; i < hashHelper.size() ; i++){
+			curr = cantorFunction(curr, hashHelper.get(i));
+		}
+
+		return curr;
+	}
 	
+	private int cantorFunction(int first, int second){
+		int firstElem, secondElem;
+		firstElem = first + second;
+		secondElem = firstElem + 1;
+		
+		return firstElem*secondElem%HashKey + second%HashKey;
+	}
 }

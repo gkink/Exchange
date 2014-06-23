@@ -176,6 +176,11 @@ public class DBqueryGenerator {
 		return "select * from users where email = " + toValue("" + email);		
 	}
 
+	
+	public String getUsersByName(String name){
+		return "select ID from users where firstName like " + "%" + name + "%";
+	}
+	
 	public String insertIntoUsers(int ranking, String firstName, String lastName, String email,String password){
 		String res = generateInsert("users", 
 				new String[]{"firstName", "lastName", "email", "ranking","password"}, 
