@@ -34,30 +34,38 @@ public class ItemsNeedObject implements ItemInterface  {
 				this.keyWords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
 			}
-
-			rs.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+		}finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    exe.closeStatement();
+		    exe.closeConnection();
 		}
 	}
 	@Override
 	public void insert() {
 		this.ID=exe.executeQuery(gen.getItemsNeedInsertQuery(userId, name, keyWords));		
+//		exe.closeStatement();
+//		exe.closeConnection();
 	}
 	public void update(String field, String upd){
-			switch (field){
+		switch (field){
 			case "name": this.name=upd;
 			break;
 			case "keywords": this.keyWords=upd;
 			break;
 			default :System.out.println("Illegal Field");
 			return;
-			}
-			exe.executeQuery(gen.getItemUpdateQuery("itemsNeed", field, upd, ID));
+		}
+		exe.executeQuery(gen.getItemUpdateQuery("itemsNeed", field, upd, ID));
+//		exe.closeStatement();
+//		exe.closeConnection();
 	}
 	public void delete(){
 		exe.executeQuery(gen.getItemDeleteQuery("itemsNeed",ID));
+//		exe.closeStatement();
+//		exe.closeConnection();
 	}
 	public String getItemKeywords(){
 		return keyWords;
