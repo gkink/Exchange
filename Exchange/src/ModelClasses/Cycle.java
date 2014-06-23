@@ -16,14 +16,17 @@ public class Cycle implements CycleInterface{
 	private QueryExecutor executor;
 	private int id;
 	private List<Pair<User, ItemsHaveObject> >  list;
-	private List<Integer> hashHelper;
+	private List<Integer> userIdCont;
+	private List<Integer> itemIdCont;
 	private static final int HashKey = 1001;
 
 	public Cycle(QueryExecutor executor, DBqueryGenerator generator, int id){
 		this.executor =  executor;
 		this.queryGenerator = generator;
 		this.id = id;
-		hashHelper = new ArrayList<Integer>();
+		userIdCont =  new ArrayList<Integer>();
+		itemIdCont =  new ArrayList<Integer>();
+		
 		
 		initList();
 	}
@@ -35,14 +38,10 @@ public class Cycle implements CycleInterface{
 		int userid, itemid;
 		try {
 			while(rs.next()){
-				userid = rs.getInt(1);
-				itemid = rs.getInt(2);
-				User user = new User(executor, queryGenerator, userid);
-				ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
-				
-				Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
-				list.add(curr);
-				hashHelper.add(itemid);
+				userid = rs.getInt("userId");
+				itemid = rs.getInt("itemId");
+				userIdCont.add(userid);
+				itemIdCont.add(itemid);				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -54,6 +53,22 @@ public class Cycle implements CycleInterface{
 				e.printStackTrace();
 			}
 		}
+		
+		addElemsToList();
+	}
+	
+	private void addElemsToList(){
+		for(int i = 0 ; i < userIdCont.size() ; i++){
+			int userid = userIdCont.get(i);
+			int itemid =  itemIdCont.get(i);
+			
+			User user = new User(executor, queryGenerator, userid);
+			ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
+			
+			Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
+			list.add(curr);	
+		}
+		
 	}
 
 	/**
@@ -111,10 +126,10 @@ public class Cycle implements CycleInterface{
 	}
 
 	public int generateHash(){
-		Collections.sort(hashHelper);
-		int curr = hashHelper.get(0);
-		for(int i = 1 ; i < hashHelper.size() ; i++){
-			curr = cantorFunction(curr, hashHelper.get(i));
+		Collections.sort(userIdCont);
+		int curr = userIdCont.get(0);
+		for(int i = 1 ; i < userIdCont.size() ; i++){
+			curr = cantorFunction(curr, userIdCont.get(i));
 		}
 
 		return curr;
