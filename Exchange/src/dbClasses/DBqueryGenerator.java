@@ -329,4 +329,8 @@ public class DBqueryGenerator {
 	public String insertAcceptCycle(int itemID){
 		return "insert (accept) into cycleInfo Values (1) where itemID = " + itemID;
 	}
+	
+	public String insertIntoCyclesHash(int size, int hashRemainder, String cycle){
+		return "insert into cyclesHash (size, hashRemainder, cycle) select * from (select " + size + ", " + hashRemainder + ", '" + cycle + "') as temp where not exists (select size, hashRemainder, cycle from cyclesHash where (((size = " + size + ") and hashRemainder = " + hashRemainder + ") and cycle = '" + cycle + "')) limit 1";
+	}
 }
