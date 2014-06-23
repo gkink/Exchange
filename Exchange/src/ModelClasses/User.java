@@ -50,23 +50,31 @@ public class User {
 		ResultSet rs = executor.selectResult(selectQuery);
 		int rating = 0;
 		String firstName = null, lastName = null, email = null, password=null;		
-		
-		try {
-			while(rs.next()){
-				firstName = rs.getString("firstName");
-				lastName = rs.getString("lastName");
-				email = rs.getString("email");
-				rating = rs.getInt("ranking");
-				password=rs.getString("password");
+		if(rs!=null){
+			try {
+				while(rs.next()){
+					firstName = rs.getString("firstName");
+					lastName = rs.getString("lastName");
+					email = rs.getString("email");
+					rating = rs.getInt("ranking");
+					password=rs.getString("password");
+				}
+				rs.close();
+				executor.closeConnection();
+			} catch (SQLException e) {
+				System.out.println("Exception occured when parcing through the resultSet");
+				//e.printStackTrace();
 			}
+<<<<<<< HEAD
+=======
 			rs.close();
 			executor.closeStatement();
 			executor.closeConnection();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+>>>>>>> origin/master
 		}
-		
 		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 	}
 	public User(QueryExecutor ex, DBqueryGenerator g, String email){
@@ -74,21 +82,31 @@ public class User {
 		int rating = 0;
 		String firstName = null, lastName = null,password=null;
 		int id=0;
-		try {
-			while(rs.next()){
-				firstName = rs.getString("firstName");
-				lastName = rs.getString("lastName");
-				id = rs.getInt("ID");
-				rating = rs.getInt("ranking");
-				password=rs.getString("password");
+		if(rs!=null){
+			try {
+				while(rs.next()){
+					firstName = rs.getString("firstName");
+					lastName = rs.getString("lastName");
+					id = rs.getInt("ID");
+					rating = rs.getInt("ranking");
+					password=rs.getString("password");
 				
+				}
+				rs.close();
+				ex.closeConnection();;
+			} catch (SQLException e) {
+				System.out.println("Exception occured when parcing through the resultSet");
+				//e.printStackTrace();
 			}
+<<<<<<< HEAD
+=======
 			rs.close();
 			ex.closeStatement();
 			ex.closeConnection();;
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+>>>>>>> origin/master
 		}
 		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 	}

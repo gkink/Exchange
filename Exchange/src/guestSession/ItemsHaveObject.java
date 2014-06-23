@@ -37,6 +37,7 @@ public class ItemsHaveObject implements ItemInterface {
 		String query=queryGenerator.getItemSelectQuery("itemsHave",ID);
 		ResultSet rs= executor.selectResult(query);
 		parseAndinit(rs);
+	
 		
 	}
 	
@@ -59,11 +60,14 @@ public class ItemsHaveObject implements ItemInterface {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
 		}
+		executor.closeConnection();
+		executor.closeStatement();
 	}
 	@Override
 	public void insert() {
 		this.ID= executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
-		
+		executor.closeConnection();
+		executor.closeStatement();
 	}
 	public void update(String field, String upd){
 		switch (field){
@@ -77,7 +81,8 @@ public class ItemsHaveObject implements ItemInterface {
 		return;
 		}
 		executor.executeQuery(queryGenerator.getItemUpdateQuery("itemsHave", field, upd, ID));
-		
+		executor.closeConnection();
+		executor.closeStatement();
 				
 		
 		
@@ -85,6 +90,8 @@ public class ItemsHaveObject implements ItemInterface {
 	}
 	public void delete(){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery("itemsHave",ID));
+		executor.closeConnection();
+		executor.closeStatement();
 	}
 	public DateTime getCreateDate(){
 		return createDate;

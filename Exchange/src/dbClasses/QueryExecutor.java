@@ -35,7 +35,12 @@ public class QueryExecutor {
 		try {
 			con = datasource.getConnection();
 			stm = con.createStatement();
+<<<<<<< HEAD
 			res = stm.executeQuery(selectQuery);
+
+=======
+			res = stm.executeQuery(selectQuery);
+>>>>>>> origin/master
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
 			e.printStackTrace();
