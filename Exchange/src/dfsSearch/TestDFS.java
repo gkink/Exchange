@@ -40,28 +40,6 @@ public class TestDFS extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		BlockingQueue<List<ArrayList<Integer>>> resultsQueue = (BlockingQueue<List<ArrayList<Integer>>>)getServletContext().getAttribute("resultsQueue");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-		
-		System.out.println("im userebis raodenoba romlebic ciklebshi arian = " + resultsQueue.size());
-		List<ArrayList<Integer>> result = null;
-		while(!resultsQueue.isEmpty()){
-    		try {
-				result = resultsQueue.take();
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-			for (int c = 0; c < result.size(); c++){
-				for (int j = 0; j < result.get(c).size(); j++){
-					System.out.print("item #" + result.get(c).get(j));
-				}
-				System.out.println("");
-			}
-    	}
     	System.out.println("amobechdvebma daasrula mushaoba");
 	}
 

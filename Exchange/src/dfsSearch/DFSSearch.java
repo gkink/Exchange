@@ -1,8 +1,8 @@
 package dfsSearch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 import javax.sql.DataSource;
 
@@ -14,32 +14,55 @@ import guestSession.RealItemsObject;
 import ModelClasses.User;
 
 public class DFSSearch extends Thread{
+	private static final int HashKey = 7013053;
+	
 	private DBqueryGenerator generator;
 	private QueryExecutor executor;
 	private List<ArrayList<Integer>> cycles;
 	private int userID;
-	private BlockingQueue<List<ArrayList<Integer>>> resultsQueue;
 	
-	public DFSSearch(DataSource datasource, int userID, BlockingQueue<List<ArrayList<Integer>>> resultsQueue){
+	public DFSSearch(DataSource datasource, int userID){
 		generator = new DBqueryGenerator();
 		executor = new QueryExecutor(datasource);
-		this.resultsQueue = resultsQueue;
 		this.userID = userID;
 	}
 	
 	@Override
 	public void run(){
 		startDFS();
-		if (cycles.size() != 0){
-			try {
-				resultsQueue.put(cycles);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		for (int i = 0; i < cycles.size(); i++){
+			int hash = generateHash(cycles.get(i));
+			String cycle = cycles.get(i).get(0) +"";
+			for (int j = 1; j < cycles.get(i).size(); j++){
+				cycle += "*" + cycles.get(i).get(j);
+			}
+			int k = executor.executeQuery(generator.insertIntoCyclesHash(cycles.get(i).size(), hash, cycle));
+//			System.out.println(k);
+			if (k != 0){
+				
 			}
 		}
 		System.out.println("userma: " + userID + " daasrula mushaoba");
 	}
-	
+
+	private int generateHash(List<Integer> hashHelper){
+        Collections.sort(hashHelper);
+        int curr = hashHelper.get(0);
+        for(int i = 1 ; i < hashHelper.size() ; i++){
+                curr = cantorFunction(curr, hashHelper.get(i));
+        }
+
+        return curr;
+	}
+
+	private int cantorFunction(int first, int second){
+        int firstElem, secondElem;
+        firstElem = first + second;
+        secondElem = firstElem + 1;
+        
+        return ((firstElem*secondElem)/2)%HashKey + second%HashKey;
+	}
+
 	private void startDFS(){
 		ItemContainer container = new ItemContainer(generator, executor);
 		List<RealItemsObject> realItems = container.getUserItemsReal(userID);
@@ -52,7 +75,7 @@ public class DFSSearch extends Thread{
 	}
 	
 	private void DFSrec(RealItemsObject item, List<Integer> cycle, int stopUserID){
-		if (cycle.size() >= 4) return;
+		if (cycle.size() >= 4 || cycle.contains(item.getItemId())) return;
 		cycle.add(item.getItemId());
 		ItemsHaveObject newitem = new ItemsHaveObject(generator, executor, item.getItemId());
 		if (newitem.getItemOwner() == stopUserID){
