@@ -43,26 +43,16 @@ public class TestServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
     	PrintWriter out = resp.getWriter();
-<<<<<<< HEAD
     	out.println("<html><head><title>wazaa</title></head><body>");
          
-=======
-    	out.println("<html><head></head><body>");
-    	
->>>>>>> 37c9fc52e4f73e2c2103c40aa52653f1b21af8c3
+
         ResultSet resultSet = null;
         try {
         	 
             // Get Connection and Statement
             connection = dataSource.getConnection();
             statement = connection.createStatement();
-<<<<<<< HEAD
-            String query = "SELECT * from users";
-            resultSet = statement.executeQuery(query);
-            
-            while (resultSet.next()) {
-               out.println("<p>" + resultSet.getString(2) +  "</p>");
-=======
+
             String query = "SELECT * from ItemsHave";
            ;
             resultSet = statement.executeQuery(query);
@@ -70,7 +60,6 @@ public class TestServlet extends HttpServlet {
             while (resultSet.next()) {
             //	System.out.print("<p>" + resultSet.getString(1) + " " + resultSet.getDate(2) + " " + resultSet.getTime(2) +  "</p>");
                out.println("<p>" + resultSet.getString(1) + " " + resultSet.getString(2) + " " + resultSet.getString(2) +  "</p>");
->>>>>>> 37c9fc52e4f73e2c2103c40aa52653f1b21af8c3
             }
         } catch (SQLException e) {
             e.printStackTrace();

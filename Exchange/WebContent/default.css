@@ -707,13 +707,20 @@ div#full_form {
 	margin-left: 40%;
 }
 
+div#trans{
+	width: 70%;
+	height: 75%;
+	margin-left: 25%;
+	
+}
+
 div#form_top {
-	height: 20%;
+	height: 10%;
 	width: 100%;
 }
 
 div#form_body{
-	height: 80%%;
+	height: 90%%;
 	width: 100%;
 }
 

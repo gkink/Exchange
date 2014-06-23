@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-<<<<<<< HEAD
    <!-- Specify a JDBC datasource -->
    <Resource name="jdbc/testdb" auth="Container"
-       type="javax.sql.DataSource" username="root" password="123456"
+       type="javax.sql.DataSource" username="root" password="69727177"
        driverClassName="com.mysql.jdbc.Driver"
        url="jdbc:mysql://localhost:3306/Exchange"
        maxActive="100" maxIdle="50" maxWait="10000"
        removeAbandoned="true" removeAbandonedTimeout="90"  />
 </Context>
-=======
-    <!-- Specify a JDBC datasource -->
-    <Resource name="jdbc/testdb" auth="Container"
-        type="javax.sql.DataSource" username="root" password="69727177"
-        driverClassName="com.mysql.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/Exchange"
-        maxActive="100" maxIdle="50" maxWait="10000"
-        removeAbandoned="true" removeAbandonedTimeout="90"  />
-</Context>
->>>>>>> origin/master

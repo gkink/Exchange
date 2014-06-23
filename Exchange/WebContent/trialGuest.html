@@ -13,10 +13,10 @@
 		var xml;
 		var xmlHt;
 		function searchFunction(){
-			var searchValue = document.getElementById("iteminput").value;
+			var searchValue = document.getElementById("s").value;
 			if(searchValue !== ""){
 				xml = new XMLHttpRequest();
-				xml.open("post", "guestItemSearch?item=" + document.getElementById("iteminput").value, true);
+				xml.open("post", "guestItemSearch?item=" + document.getElementById("s").value, true);
 				xml.onreadystatechange = readyStateHandler;
 				xml.send();				
 			}else{
@@ -34,31 +34,66 @@
 			
 		}
 	</script>
+	<script>
+		var xml1 = new XMLHttpRequest();
+		var run1=ItemShower();
+		var myVar1=setInterval(function(){ItemSHower()},1000000);
+		function ItemShower(){
+			xml1.open("post", "RealItemUpdater" , true);
+			xml1.onreadystatechange = readyStateHandler2;
+			xml1.send();
+		}
+			               
+		function readyStateHandler2(){
+			if(xml1.readyState === 4){
+				document.getElementById("realItems").innerHTML = "";
+			 	generateSearchResults2("realItems");                                        
+			                                
+			 }
+		}
+	function generateSearchResults2(type){
+		var resp = xml1.responseXML;
+		var idList = resp.getElementsByTagName("itemID");
+		var nameList = resp.getElementsByTagName("itemName");
+		for(var i = 0 ; i < idList.length ; i++){
+		var id = idList[i].childNodes[0].nodeValue;
+		var name = nameList[i].childNodes[0].nodeValue;                                
+		document.getElementById(type).innerHTML += generateElem2(id, name);
+	}
+	}
+	function generateElem2(id, name){
+		var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
+		return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
+	}
+</script>  
+	
 </head>
 <body>
 <!-- start header -->
 
 <div id="header">
 	<div id="logo">
-		<h1><a href="#">Exchan.ge</a></h1>
-	
+		<h1><a href="NewHomepage.jsp">Exchan.ge</a></h1>
+		
 	</div>
 	<div id="rss"><img src="images/sosial media.jpg" width="250px" height="110px"></div>
 	<div id="search">
-
+	
 		<form id="searchform" name="search" method="get" action="">
 			<fieldset>
-				<input type="text" name="s" id="s" size="15" placeHolder="Search for an item" onkeyup="searchFunction()" onkeydown="searchFunction()" />
+				<input type="text" name="s" id="s" size="15" onkeyup="searchFunction()" onkeydown="searchFunction()" placeholder="Search for an item" />
 				<input type="submit" id="x" value="Search" />
 			</fieldset>
 		</form>
 	</div>
-</div>	
+</div>
 <!-- end header -->
 
 <!-- start page -->
 <div id="page">
 	<div id="left">
+		<ul id="searchContent">
+		</ul>
 	</div>
 
 	<div id="right">
@@ -82,6 +117,10 @@
 				</form>
 			</div>
 		</div>
+			<div id="trans">
+				<ul id="latest_transactions">
+				</ul>
+			</div>
 
 	</div>
 </div>

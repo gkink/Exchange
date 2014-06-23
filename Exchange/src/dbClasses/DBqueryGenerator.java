@@ -215,6 +215,10 @@ public class DBqueryGenerator {
 		return "insert into cycles() values()";
 	}
 	
+	public String getCycleAccept(int userid){
+		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
+	}
+	
 	public String cycleInfoInsert(int cycleID, int itemID){
 		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
 	}

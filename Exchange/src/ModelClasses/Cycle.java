@@ -125,6 +125,29 @@ public class Cycle implements CycleInterface{
 		executor.executeQuery(queryGenerator.insertAcceptCycle(itemID));
 	}
 
+	public boolean userAccepted(int userId){
+		String query =  queryGenerator.getCycleAccept(userId);
+		ResultSet rs =  executor.selectResult(query);
+
+		int accept = 0;
+		
+		try {
+			while(rs.next())
+				accept =  rs.getInt("accept");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return accept == 1;
+	}
+	
 	public int generateHash(){
 		Collections.sort(userIdCont);
 		int curr = userIdCont.get(0);
