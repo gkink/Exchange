@@ -106,7 +106,7 @@ public class Cycle implements CycleInterface{
 		this.id = executor.executeQuery(queryGenerator.insertIntoCycles());
 		
 		for(int i = 0 ; i < cycleSize() ; i++){
-			String insert = queryGenerator.cycleInfoInsert(id, list.get(i).getSecond().getItemId());
+			String insert = queryGenerator.cycleInfoInsert(id, list.get(i).getSecond().getItemId(), 0);
 			executor.executeQuery(insert);
 		}
 	}

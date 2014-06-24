@@ -25,6 +25,7 @@ public class ItemsNeedObject implements ItemInterface  {
 		this.exe=exe;
 		ResultSet rs= exe.selectResult(gen.getItemSelectQuery("itemsNeed", ID));
 		parseAndinit(rs);
+
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -34,7 +35,6 @@ public class ItemsNeedObject implements ItemInterface  {
 				this.keyWords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
 			}
-
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
@@ -54,7 +54,7 @@ public class ItemsNeedObject implements ItemInterface  {
 		this.ID=exe.executeQuery(gen.getItemsNeedInsertQuery(userId, name, keyWords));		
 	}
 	public void update(String field, String upd){
-			switch (field){
+		switch (field){
 			case "name": this.name=upd;
 			break;
 			case "keywords": this.keyWords=upd;
@@ -64,6 +64,7 @@ public class ItemsNeedObject implements ItemInterface  {
 			}
 			exe.executeQuery(gen.getItemUpdateQuery("itemsNeed", field, upd, ID));
 	}
+
 	public void delete(){
 		exe.executeQuery(gen.getItemDeleteQuery("itemsNeed",ID));
 	}

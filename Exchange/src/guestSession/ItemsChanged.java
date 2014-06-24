@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 
 
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
@@ -41,6 +42,9 @@ public class ItemsChanged implements ItemInterface {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    exe.closeVariables();
 		}
 		
 	}

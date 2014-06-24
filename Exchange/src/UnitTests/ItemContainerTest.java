@@ -24,8 +24,9 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
 import dbClasses.DBqueryGenerator;
+import dbClasses.MyDBInfo;
 import dbClasses.QueryExecutor;
-import dbConnection.MyDBInfo;
+
 
 public class ItemContainerTest {
 	ItemContainer i;

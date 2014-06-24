@@ -226,8 +226,13 @@ public class DBqueryGenerator {
 	}
 	
 	public String cycleInfoInsert(int cycleID, int itemID, int accept){
+<<<<<<< HEAD
 		return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
 				+ "," + toValue("" + itemID) + accept +")";
+=======
+        return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
+                        + "," + toValue("" + itemID) + ", " + accept +")";
+>>>>>>> 46f13b3bb79bc2d61bb11dc8f749157dcb9959b1
 	}
 
 	public String getItemChangedWithUser(int itemID) {
@@ -331,7 +336,8 @@ public class DBqueryGenerator {
 	}
 	public static void main(String[] args) {
 		DBqueryGenerator d= new DBqueryGenerator();
-		System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		//System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		System.out.println(d.cycleInfoInsert(3, 3, 0));
 	}
 	
 	public String deleteCycleInfo(int cycleID){
@@ -344,5 +350,9 @@ public class DBqueryGenerator {
 	
 	public String insertAcceptCycle(int itemID){
 		return "insert (accept) into cycleInfo Values (1) where itemID = " + itemID;
+	}
+	
+	public String insertIntoCyclesHash(int size, int hashRemainder, String cycle){
+		return "insert into cyclesHash (size, hashRemainder, cycle) select * from (select " + size + ", " + hashRemainder + ", '" + cycle + "') as temp where not exists (select size, hashRemainder, cycle from cyclesHash where (((size = " + size + ") and hashRemainder = " + hashRemainder + ") and cycle = '" + cycle + "')) limit 1";
 	}
 }

@@ -20,6 +20,7 @@ public class RealItemsObject{
 		this.executor=executor;
 		ResultSet rs= executor.selectResult(generator.getItemSelectQuery("realItems", ID));
 		parseAndinit(rs);
+
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -28,8 +29,6 @@ public class RealItemsObject{
 				this.userId = rs.getInt("userId");
 				this.itemID=rs.getInt("itemId");
 			}
-
-			rs.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
@@ -42,7 +41,6 @@ public class RealItemsObject{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
 		}
 	}
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
@@ -66,9 +64,7 @@ public class RealItemsObject{
 		ID=executor.executeQuery(generator.getRealItemInsertQuery(userId, itemID));
 	}
 	public void delete(){
-		executor.executeQuery(generator.getItemDeleteQuery("realItems", ID));
+	 	executor.executeQuery(generator.getItemDeleteQuery("realItems", ID));
 	}
 
-
-	
 }
