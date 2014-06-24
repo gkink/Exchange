@@ -158,6 +158,12 @@ public class DBqueryGenerator {
 	public String getUserQuery(int ID){
 		return "select * from users where ID = " + ID;
 	}
+	
+	public String getUserByEverything(String firstName, String lastName, String email, String password){
+		return "select ID, ranking from users where firstName = " + toValue(firstName) 
+				+ " and lastName = " + toValue(lastName) + "and email = " + toValue(email)
+				+ " and password = " + toValue(password);
+	}
 
 	/**Gio
 	 * returns select query for the itemsChanget table
@@ -219,8 +225,9 @@ public class DBqueryGenerator {
 		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
 	}
 	
-	public String cycleInfoInsert(int cycleID, int itemID){
-		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
+	public String cycleInfoInsert(int cycleID, int itemID, int accept){
+		return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
+				+ "," + toValue("" + itemID) + accept +")";
 	}
 
 	public String getItemChangedWithUser(int itemID) {

@@ -52,6 +52,16 @@ public class UserTest {
 
 		executor = new QueryExecutor(datasource);
 	}
+	
+	@Test
+	public void sampletest(){
+		User testUser = new User(executor, generator, "Ibrahim", "Ajaev", "randomr10@yahoo.com", "sample");		
+		assertEquals(true, testUser.userRegistered());
+		assertEquals(5, testUser.getRating());
+		User testUser2 = new User(executor, generator, "giorgie", "gheambashidze", "ggeha@gmail.com", "12345");		
+		assertEquals(false, testUser2.userRegistered());
+		assertEquals(0, testUser2.getRating());
+	}
 
 	@Test
 	public void testFirstConstructorAndInsert() {

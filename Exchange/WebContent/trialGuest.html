@@ -8,64 +8,9 @@
 	<meta name="description" content="" />
 	<link href="default.css" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="js.js"></script>
-	<script type="text/javascript">
-		var xml;
-		var xmlHt;
-		function searchFunction(){
-			var searchValue = document.getElementById("s").value;
-			if(searchValue !== ""){
-				xml = new XMLHttpRequest();
-				xml.open("post", "guestItemSearch?item=" + document.getElementById("s").value, true);
-				xml.onreadystatechange = readyStateHandler;
-				xml.send();				
-			}else{
-				document.getElementById("searchContent").innerHTML = "";				
-			}
-		}
-
-		function readyStateHandler(){
-			if(xml.readyState === 4 && xml.status === 200){
-				document.getElementById("searchContent").innerHTML = xml.responseText;
-			}
-		}
-
-		function readyforTransactios(){
-			
-		}
-	</script>
-	<script>
-		var xml1 = new XMLHttpRequest();
-		var run1=ItemShower();
-		var myVar1=setInterval(function(){ItemSHower()},1000000);
-		function ItemShower(){
-			xml1.open("post", "RealItemUpdater" , true);
-			xml1.onreadystatechange = readyStateHandler2;
-			xml1.send();
-		}
-			               
-		function readyStateHandler2(){
-			if(xml1.readyState === 4){
-				document.getElementById("realItems").innerHTML = "";
-			 	generateSearchResults2("realItems");                                        
-			                                
-			 }
-		}
-	function generateSearchResults2(type){
-		var resp = xml1.responseXML;
-		var idList = resp.getElementsByTagName("itemID");
-		var nameList = resp.getElementsByTagName("itemName");
-		for(var i = 0 ; i < idList.length ; i++){
-		var id = idList[i].childNodes[0].nodeValue;
-		var name = nameList[i].childNodes[0].nodeValue;                                
-		document.getElementById(type).innerHTML += generateElem2(id, name);
-	}
-	}
-	function generateElem2(id, name){
-		var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
-		return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
-	}
-</script>  
+	<script type="text/javascript" src="GuestMode\js.js"></script>
+	<script type="text/javascript" src="GuestMode\guest_ajax.js"></script>
+	<script type="text/javascript" src="GuestMode\fb_google.js"></script>
 	
 </head>
 <body>
@@ -109,12 +54,44 @@
 					<input name="email" placeholder="Email" required="required" tabindex="3" type="text">
 					<input name="password" placeholder="Password" required="required" tabindex="4" type="password">
 					<input class="button" type="submit" value="Sign Up">
+					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+					</fb:login-button>
+					<span
+    				class="g-signin"
+    				data-callback="signinCallback"
+    				data-clientid="381679982064-2es822nqq9hdr2ubeebonve5kq64p396.apps.googleusercontent.com"
+    				data-cookiepolicy="single_host_origin"
+    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
+    				data-scope="https://www.googleapis.com/auth/plus.login">
+ 				 	</span>
+					
 				</form>
 				<form method="post" action="Register" id="second">
 					<input name="email" placeholder="Email" required="required" tabindex="3" type="text">
 					<input name="password" placeholder="Password" required="required" tabindex="4" type="password">
 					<input class="button" type="submit" required="required" value="Sign In">
+					<fb:login-button scope="public_profile,email" onclick="checkLoginState();">
+					</fb:login-button>
+					<span
+    				class="g-signin"
+    				data-callback="signinCallback"
+    				data-clientid="381679982064-2es822nqq9hdr2ubeebonve5kq64p396.apps.googleusercontent.com"
+    				data-cookiepolicy="single_host_origin"
+    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
+    				data-scope="https://www.googleapis.com/auth/plus.login">
+ 				 	</span>
+					
 				</form>
+				<form style="display: none" method="post" action="fbGoogleLogin" id="fb_login">
+					<input type="text" id="fb_name" name="name"/>
+					<input type="text" id="fb_lastName" name="lastname"/>
+					<input type="text" id="fb_email" name="email"/>
+				</form>
+				<form style="display: none" method="post" action="fbGoogleLogin" id="gp_login">
+					<input type="text" id="g_name" name="name"/>
+					<input type="text" id="g_lastName" name="lastname"/>
+					<input type="text" id="g_email" name="email"/>
+				</form>				
 			</div>
 		</div>
 			<div id="trans">

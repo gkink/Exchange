@@ -174,6 +174,35 @@ public class User {
 		return id != 0;
 	}
 	
+	public boolean userRegistered(){
+		ResultSet rs = executor.selectResult(queryGenerator.getUserByEverything(firstName, lastName, email, password));
+
+		int id = 0;
+		int ranking = 0;
+		
+		try {
+			while(rs.next()){
+				id = rs.getInt(1);
+				ranking = rs.getInt(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				if(rs != null)
+					rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+
+		this.id =  id;
+		this.rating =  ranking;
+		return id != 0;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == this)

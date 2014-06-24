@@ -2,25 +2,24 @@ package guestSession;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.Executor;
 
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
 public class RealItemsObject{
-	int UserWantId;
-	int itemID;
-	int userId;
-	int ID;
-	QueryExecutor e;
-	DBqueryGenerator g;
+	private int UserWantId;
+	private int itemID;
+	private int userId;
+	private int ID;
+	private QueryExecutor executor;
+	private DBqueryGenerator generator;
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
 			int ID) {
-		this.g=generator;
-		this.e=executor;
-		ResultSet rs= e.selectResult(g.getItemSelectQuery("realItems", ID));
+		this.generator=generator;
+		this.executor=executor;
+		ResultSet rs= executor.selectResult(generator.getItemSelectQuery("realItems", ID));
 		parseAndinit(rs);
-		e.closeConnection();
-		e.closeStatement();
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -34,14 +33,24 @@ public class RealItemsObject{
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+		}finally{
+				try {
+					if(rs != null)
+						rs.close();
+					executor.closeVariables();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 		}
 	}
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
 			int userId,int itemId) {
 		this.userId=userId;
 		this.itemID=itemId;
-		this.g=generator;
-		this.e=executor;
+		this.generator=generator;
+		this.executor=executor;
 	}
 	public int getItemOwner(){
 		return userId;
@@ -54,14 +63,10 @@ public class RealItemsObject{
 		return ID;
 	}
 	public void insert(){
-		ID=e.executeQuery(g.getRealItemInsertQuery(userId, itemID));
-		e.closeConnection();
-		e.closeStatement();
+		ID=executor.executeQuery(generator.getRealItemInsertQuery(userId, itemID));
 	}
 	public void delete(){
-		e.executeQuery(g.getItemDeleteQuery("realItems", ID));
-		e.closeConnection();
-		e.closeStatement();
+		executor.executeQuery(generator.getItemDeleteQuery("realItems", ID));
 	}
 
 

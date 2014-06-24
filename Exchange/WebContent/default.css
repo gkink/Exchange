@@ -755,3 +755,20 @@ div#signin {
 div#signup {
 	background-color: white;
 }
+	
+div#main{
+	height: 100%;
+	width: 100%;
+}
+
+div#thecontent{
+	height: 100%;
+	width: 45%;
+	float: left;
+}
+
+div#buttons{
+	height: 100%;
+	width: 55%;
+	float: left;
+}
