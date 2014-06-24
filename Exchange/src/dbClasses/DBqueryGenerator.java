@@ -219,8 +219,9 @@ public class DBqueryGenerator {
 		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
 	}
 	
-	public String cycleInfoInsert(int cycleID, int itemID){
-		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
+	public String cycleInfoInsert(int cycleID, int itemID, int accept){
+        return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
+                        + "," + toValue("" + itemID) + ", " + accept +")";
 	}
 
 	public String getItemChangedWithUser(int itemID) {
@@ -324,7 +325,8 @@ public class DBqueryGenerator {
 	}
 	public static void main(String[] args) {
 		DBqueryGenerator d= new DBqueryGenerator();
-		System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		//System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		System.out.println(d.cycleInfoInsert(3, 3, 0));
 	}
 	
 	public String deleteCycleInfo(int cycleID){
