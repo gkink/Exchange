@@ -41,8 +41,8 @@ public class ItemContainer {
 		IDs = new ArrayList<Integer>();
 	}
 	//returns the 10 latest added items
-	public ArrayList<ItemsHaveObject> getLatestItems(){
-		prepareList(generator.getLatestItems(10));
+	public ArrayList<ItemsHaveObject> getLatestItems(int userId){
+		prepareList(generator.getLatestItems(userId));
 		createItems(1);
 		return itemsHave;
 	}
