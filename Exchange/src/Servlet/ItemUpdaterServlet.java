@@ -66,7 +66,7 @@ public class ItemUpdaterServlet extends HttpServlet {
          out.println("</main>");
          
          
-         System.out.println("Server finished job");
+        
  
 	}
 

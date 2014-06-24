@@ -231,7 +231,7 @@ public class DBqueryGenerator {
 	 * @param createDate 
 	 */
 	public String getItemInsertQuery(int type, int userId, String name, String descr, String kw, DateTime createDate){
-		String Date=",'"+createDate.getDate().toString()+" " + createDate.getTime().toString()+"'";
+		String Date=",current_time";
 		return "insert into itemsHave "+"(name, description, keywords, userID,createDate"+")"+"\n"+
 		"values ("+"'" +name+"',"+"'" +descr+"',"+"'" +kw+"'," +userId+Date+")";
 	}
@@ -327,6 +327,9 @@ public class DBqueryGenerator {
 	}
 	
 	public String insertAcceptCycle(int itemID){
-		return "insert (accept) into cycleInfo Values (1) where itemID = " + itemID;
+		return "update cycleInfo Set accept=1 WHERE itemId=" + itemID;
+	}
+	public String getCycleAccept(int userid){
+		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
 	}
 }

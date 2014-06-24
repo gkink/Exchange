@@ -26,6 +26,7 @@ public class CycleContainer {
 		this.executor = executor;
 		this.generator =  generator;
 		idList = new ArrayList<Integer>();
+		cycles=new ArrayList<Cycle>();
 		
 		initList(userID);
 	}

@@ -1,9 +1,7 @@
 package Servlet;
 
 import guestSession.ItemContainer;
-import guestSession.ItemsHaveObject;
 import guestSession.ItemsNeedObject;
-import guestSession.RealItemsObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,20 +15,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import ModelClasses.Cycle;
+import ModelClasses.CycleContainer;
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
 /**
- * Servlet implementation class RealItemUpdater
+ * Servlet implementation class CycleUpdater
  */
-@WebServlet("/RealItemUpdater")
-public class RealItemUpdater extends HttpServlet {
+@WebServlet("/CycleUpdater")
+public class CycleUpdater extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RealItemUpdater() {
+    public CycleUpdater() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,28 +46,27 @@ public class RealItemUpdater extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/xml");
+
+        response.setContentType("text/xml");
         PrintWriter out = response.getWriter();
         HttpSession ses= request.getSession();
     	Integer userId=(Integer)ses.getAttribute("User");
         DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
         QueryExecutor  executor = new QueryExecutor(dataSource);
         DBqueryGenerator generator = new DBqueryGenerator();
-        ItemContainer container = new ItemContainer(generator, executor);
-        List<RealItemsObject> items = container.getUserItemsReal(userId);
-
+        CycleContainer container = new CycleContainer(executor,generator, userId);
         out.println("<main>");
         
-        for(RealItemsObject item: items){
-        	System.out.println(item.getItemId());
-        	ItemsHaveObject exist= new ItemsHaveObject(generator, executor, item.getItemId());
-        	System.out.println(exist.getItemName());
-        	out.println("<itemID>" + exist.getItemId() + "</itemID>");
-            out.println("<itemName>" + exist.getItemName() + "</itemName>");                        
-    }
-    out.println("</main>");
+        for(int i=0;i<container.contSize();i++){
+        	Cycle cycle=container.getCycle(i);
+        	
+            out.println("<itemID>" + cycle.getID() + "</itemID>");
+            out.println("<itemName>" + "cycle "+(int)(i+1) + "</itemName>");                        
+        }
+        out.println("</main>");
     
     
+        System.out.println("Server finished job for cycles");
 	}
 	
 

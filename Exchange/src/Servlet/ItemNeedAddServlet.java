@@ -1,13 +1,9 @@
 package Servlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.util.logging.Logger;
+import guestSession.ItemsNeedObject;
 
-import javax.servlet.RequestDispatcher;
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,27 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import sun.org.mozilla.javascript.internal.Context;
-import ModelClasses.User;
-
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
-
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
-import dbConnection.MyDBInfo;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class ItemNeedAddServlet
  */
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/ItemNeedAddServlet")
+public class ItemNeedAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public ItemNeedAddServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -52,31 +41,17 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DBqueryGenerator g= new DBqueryGenerator();
-		
-		DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
-	
-		QueryExecutor e= new QueryExecutor(dataSource);
-		String email= request.getParameter("login");
-		String pass= request.getParameter("password");
+		String name=request.getParameter("ItemName");
+		String key=request.getParameter("ItemKey");
 		HttpSession ses= request.getSession();
+		Integer userId=(Integer)ses.getAttribute("User");
+		DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
+		QueryExecutor e=new QueryExecutor(dataSource);
+		DBqueryGenerator gen= new DBqueryGenerator();
+		ItemsNeedObject item= new ItemsNeedObject(gen, e, userId, name, key);
+		item.insert();
+		response.sendRedirect("NewHomepage.jsp");
 		
-		User u= new User(e, g, email);
-				
-		if(u.getId()==0|| !pass.equals(u.getPassword())){
-			response.sendRedirect("InvalidLogin.html");
-		}else {
-			
-			
-			
-			ses.setAttribute("User", u.getId());
-			response.sendRedirect("NewHomepage.jsp");
-			
-		}
-		
-		
-		
-		
-		}
+	}
 
 }

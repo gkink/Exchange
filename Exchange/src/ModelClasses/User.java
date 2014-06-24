@@ -65,17 +65,18 @@ public class User {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
 			}
-<<<<<<< HEAD
-=======
-			rs.close();
+
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			executor.closeStatement();
 			executor.closeConnection();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
->>>>>>> origin/master
-		}
+		
 		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
+		}
 	}
 	public User(QueryExecutor ex, DBqueryGenerator g, String email){
 		ResultSet rs = ex.selectResult(g.getUserByEmail(email));
@@ -93,22 +94,19 @@ public class User {
 				
 				}
 				rs.close();
-				ex.closeConnection();;
+				ex.closeConnection();
 			} catch (SQLException e) {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
 			}
-<<<<<<< HEAD
-=======
-			rs.close();
-			ex.closeStatement();
-			ex.closeConnection();;
-		} catch (SQLException e) {
-			System.out.println("Exception occured when parcing through the resultSet");
-			//e.printStackTrace();
->>>>>>> origin/master
-		}
+			
+
+			
+		
 		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
+		}
+		
+		
 	}
 
 	/*

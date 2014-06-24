@@ -45,7 +45,13 @@
 <!-- end header -->
 <!-- star menu -->
 <div id="menu">
-		
+<form id="searchform" name="search" method="post" action="LogoutServlet">
+	<button id="bla"> LogOut</button>
+</form>
+<form action="Transactions.jsp">
+    <input type="submit" value="My Transactions" class="Trans">
+</form>
+
 
 </div>
 <!-- end menu -->
@@ -90,7 +96,7 @@
 						%>
 							
 							<p>
-							<a href="AddItemsHavejsp">
+							<a href="AddItemsHave.html">
 							<input type="submit" name="addItemsHave" value="add item">
 							</a>
 							</p>
@@ -104,6 +110,10 @@
 	<!-- end content -->
 	<!-- start ads -->
 	<div id="ads">
+	<div class="bubble" >
+	
+	<div class="info" id="ad">
+	
 	<script type="text/javascript">
 			   var xml = new XMLHttpRequest();
 			   var run=latestItemsShower();
@@ -116,8 +126,8 @@
                
                function readyStateHandler(){
                        if(xml.readyState === 4){
-                               document.getElementById("ads").innerHTML = "";
-                               generateSearchResults("ads");                                        
+                               document.getElementById("ad").innerHTML = "";
+                               generateSearchResults("ad");                                        
                                 
                        }
                }
@@ -137,7 +147,46 @@
            }
                
        </script>        
-	
+	</div>
+	</div>
+	<div class="bubble" id="cycles" >
+	<div class="rectangle"><h2>Your Cycles</h2></div>
+	<div class="info" id="cycle">
+	<script type="text/javascript">
+			   var newXml = new XMLHttpRequest();
+			   var runcycle=CycleShower();
+               var myVarcycle=setInterval(function(){latestItemsShower()},1000000);
+               function CycleShower(){
+                       newXml.open("post", "CycleUpdater" , true);
+                       newXml.onreadystatechange = readyStateHandler4;
+                       newXml.send();
+               }
+               
+               function readyStateHandler4(){
+                       if(newXml.readyState === 4){
+                               document.getElementById("cycle").innerHTML = "";
+                               generateSearchResults4("cycle");                                        
+                                
+                       }
+               }
+               function generateSearchResults4(type){
+                   var resp = newXml.responseXML;
+                   var idList = resp.getElementsByTagName("itemID");
+                   var nameList = resp.getElementsByTagName("itemName");
+                   for(var i = 0 ; i < idList.length ; i++){
+                           var id = idList[i].childNodes[0].nodeValue;
+                           var name = nameList[i].childNodes[0].nodeValue;                                
+                           document.getElementById(type).innerHTML += generateElement(id, name);
+                   }
+           }
+               function generateElement(id, name){
+                   var href = "http://localhost:8080/Exchange/cycle.jsp?id=" + id;
+                   return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
+           }
+               
+       </script>
+	</div>
+	</div>
 	</div>
 	<!-- end ads -->
 	<!-- start sidebar -->
@@ -185,7 +234,7 @@
 							
 						</div>
 						<p>
-							<a href="AddItemsHavejsp">
+							<a href="AddItemsNeed.html">
 							<input type="submit" name="addItemsHave" value="add item">
 							</a>
 							</p>

@@ -44,30 +44,30 @@ public class ItemsHaveObject implements ItemInterface {
 
 	private void parseAndinit(ResultSet rs){	
 		try {
-			while(rs.next()){
-				this.ID = rs.getInt("ID");
-				this.name = rs.getString("name");
-				this.description = rs.getString("description");
-				this.keywords = rs.getString("keywords");
-				this.userId = rs.getInt("userId");
-				Date date= rs.getDate("createDate");
-				Time time=rs.getTime("createDate");
-				this.createDate=new DateTime(date, time);
+			if(rs!=null){
+				while(rs.next()){
+					this.ID = rs.getInt("ID");
+					this.name = rs.getString("name");
+					this.description = rs.getString("description");
+					this.keywords = rs.getString("keywords");
+					this.userId = rs.getInt("userId");
+					Date date= rs.getDate("createDate");
+					Time time=rs.getTime("createDate");
+					this.createDate=new DateTime(date, time);
+				}
+	
+				rs.close();
 			}
-
-			rs.close();
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
 		}
-		executor.closeConnection();
-		executor.closeStatement();
+		executor.closeVariables();
 	}
 	@Override
 	public void insert() {
 		this.ID= executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
-		executor.closeConnection();
-		executor.closeStatement();
+		
 	}
 	public void update(String field, String upd){
 		switch (field){
@@ -81,8 +81,7 @@ public class ItemsHaveObject implements ItemInterface {
 		return;
 		}
 		executor.executeQuery(queryGenerator.getItemUpdateQuery("itemsHave", field, upd, ID));
-		executor.closeConnection();
-		executor.closeStatement();
+		
 				
 		
 		
@@ -90,8 +89,7 @@ public class ItemsHaveObject implements ItemInterface {
 	}
 	public void delete(){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery("itemsHave",ID));
-		executor.closeConnection();
-		executor.closeStatement();
+		
 	}
 	public DateTime getCreateDate(){
 		return createDate;

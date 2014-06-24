@@ -1,13 +1,15 @@
 package Servlet;
 
-import guestSession.ItemContainer;
+import guestSession.DateTime;
 import guestSession.ItemsHaveObject;
 import guestSession.ItemsNeedObject;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 
+
+
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,20 +18,26 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import java.sql.Date;
+import java.sql.Time;
+
+
+
+
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
 /**
- * Servlet implementation class ItemNeedUpdater
+ * Servlet implementation class ItemAddServlet
  */
-@WebServlet("/ItemNeedUpdater")
-public class ItemNeedUpdater extends HttpServlet {
+@WebServlet("/ItemAddServlet")
+public class ItemAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ItemNeedUpdater() {
+    public ItemAddServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -45,26 +53,23 @@ public class ItemNeedUpdater extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        response.setContentType("text/xml");
-        PrintWriter out = response.getWriter();
-        HttpSession ses= request.getSession();
-    	Integer userId=(Integer)ses.getAttribute("User");
-        DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
-        QueryExecutor  executor = new QueryExecutor(dataSource);
-        DBqueryGenerator generator = new DBqueryGenerator();
-        ItemContainer container = new ItemContainer(generator, executor);
-        List<ItemsNeedObject> items = container.getUserItemsNeed(userId);
-
-        out.println("<main>");
-        
-        for(ItemsNeedObject item: items){
-            out.println("<itemID>" + item.getItemId() + "</itemID>");
-            out.println("<itemName>" + item.getItemName() + "</itemName>");                        
-    }
-    out.println("</main>");
-    
-    
-    }
+		String name=request.getParameter("ItemName");
+		String desc=request.getParameter("ItemsDesc");
+		String key=request.getParameter("ItemKey");
+		System.out.print(desc);
+		HttpSession ses= request.getSession();
+		Integer userId=(Integer)ses.getAttribute("User");
+		DataSource dataSource=(DataSource)request.getServletContext().getAttribute("DataSource");
+		QueryExecutor e=new QueryExecutor(dataSource);
+		DBqueryGenerator gen= new DBqueryGenerator();
+		Date date=new Date(1);
+		Time time=new Time(1);
+		DateTime dateTime=new DateTime(date, time);
+		ItemsHaveObject item=new ItemsHaveObject(gen, e, name, desc, key, userId, dateTime);
+		item.insert();
+	//	RequestDispatcher r=request.getRequestDispatcher("NewHomepage.jsp");
+		response.sendRedirect("NewHomepage.jsp");
+	//	r.forward(request, response);
+	}
 
 }

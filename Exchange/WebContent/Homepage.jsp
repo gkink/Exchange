@@ -45,15 +45,7 @@
 
 	out.print("</ul>");
 	%> 
-	<%
- 	ArrayList<ItemsNeedObject> itemsNeed=i.getUserItemsNeed(u.getId());
-	out.print("<p class=\"itemsNeed\"> Items You Want<p>");
-	out.print("<ul class=\"itemsNeed\">");
-	for(int j=0;j<itemsNeed.size();j++){
-		out.print("<li class=\"itemsNeedElem\">"+"<a href=\"ItemPage.jsp?ID="+itemsNeed.get(j).getItemId()+"\">"+itemsNeed.get(j).getItemName()+"</a>"+"</li>");
-	}
-	out.print("</ul>");
-	%> 
+	
 	<%
  	ArrayList<RealItemsObject> realItems=i.getUserItemsReal(u.getId());
 	out.print("<p class=\"realItems\"> Items That are being searched for<p>");

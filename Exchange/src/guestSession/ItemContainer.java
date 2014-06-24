@@ -72,6 +72,7 @@ public class ItemContainer {
 		if(type==2)realItems=new ArrayList<>();
 		ResultSet rs= executor.selectResult(query);
 		ParseAndInitItems(type, rs);
+		executor.closeVariables();
 	}
 	
 	private void ParseAndInitItems(int type,ResultSet rs){	
