@@ -11,6 +11,8 @@ import dbClasses.QueryExecutor;
 import guestSession.ItemContainer;
 import guestSession.ItemsHaveObject;
 import guestSession.RealItemsObject;
+import ModelClasses.Cycle;
+import ModelClasses.Pair;
 import ModelClasses.User;
 
 public class DFSSearch extends Thread{
@@ -40,6 +42,15 @@ public class DFSSearch extends Thread{
 //			System.out.println(k);
 			if (k != 0){
 				
+				List<Pair<User, ItemsHaveObject>> list = new ArrayList<Pair<User, ItemsHaveObject>>();
+				for (int j = 0; j < cycles.get(i).size(); j++){
+					ItemsHaveObject item = new ItemsHaveObject(generator, executor, cycles.get(i).get(j));
+					User user = new User(executor, generator, item.getItemOwner());
+					Pair<User, ItemsHaveObject> pair = new Pair<User, ItemsHaveObject>(user, item);
+					list.add(pair);
+				}
+				Cycle newCycle = new Cycle(executor, generator, list);
+				newCycle.addToTheBases();
 			}
 		}
 		System.out.println("userma: " + userID + " daasrula mushaoba");

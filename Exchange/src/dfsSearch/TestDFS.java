@@ -33,7 +33,7 @@ public class TestDFS extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlockingQueue<Integer> usersQueue = (BlockingQueue<Integer>)getServletContext().getAttribute("usersQueue");
-		for (int i = 1; i <= 6; i++){
+		for (int i = 1; i <= 3; i++){
 			try {
 				usersQueue.put(i);
 			} catch (InterruptedException e) {
