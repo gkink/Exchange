@@ -158,6 +158,12 @@ public class DBqueryGenerator {
 	public String getUserQuery(int ID){
 		return "select * from users where ID = " + ID;
 	}
+	
+	public String getUserByEverything(String firstName, String lastName, String email, String password){
+		return "select ID, ranking from users where firstName = " + toValue(firstName) 
+				+ " and lastName = " + toValue(lastName) + "and email = " + toValue(email)
+				+ " and password = " + toValue(password);
+	}
 
 	/**Gio
 	 * returns select query for the itemsChanget table
@@ -176,6 +182,11 @@ public class DBqueryGenerator {
 		return "select * from users where email = " + toValue("" + email);		
 	}
 
+	
+	public String getUsersByName(String name){
+		return "select ID from users where firstName like " + "%" + name + "%";
+	}
+	
 	public String insertIntoUsers(int ranking, String firstName, String lastName, String email,String password){
 		String res = generateInsert("users", 
 				new String[]{"firstName", "lastName", "email", "ranking","password"}, 
@@ -210,8 +221,18 @@ public class DBqueryGenerator {
 		return "insert into cycles() values()";
 	}
 	
-	public String cycleInfoInsert(int cycleID, int itemID){
-		return "insert into cycleInfo (cycleID, itemId) values (" + toValue("" + cycleID) + "," + toValue("" + itemID) + ")";
+	public String getCycleAccept(int userid){
+		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
+	}
+	
+	public String cycleInfoInsert(int cycleID, int itemID, int accept){
+<<<<<<< HEAD
+		return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
+				+ "," + toValue("" + itemID) + accept +")";
+=======
+        return "insert into cycleInfo (cycleID, itemId, accept) values (" + toValue("" + cycleID)
+                        + "," + toValue("" + itemID) + ", " + accept +")";
+>>>>>>> 46f13b3bb79bc2d61bb11dc8f749157dcb9959b1
 	}
 
 	public String getItemChangedWithUser(int itemID) {
@@ -315,7 +336,8 @@ public class DBqueryGenerator {
 	}
 	public static void main(String[] args) {
 		DBqueryGenerator d= new DBqueryGenerator();
-		System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		//System.out.print(d.getItemsNeedInsertQuery(1, "me", "bla"));
+		System.out.println(d.cycleInfoInsert(3, 3, 0));
 	}
 	
 	public String deleteCycleInfo(int cycleID){
@@ -331,5 +353,9 @@ public class DBqueryGenerator {
 	}
 	public String getCycleAccept(int userid){
 		return "select accept from cycleinfo join itemsHave on cycleinfo.itemId = itemsHave.ID where itemshave.userID =" + userid;
+	}
+	
+	public String insertIntoCyclesHash(int size, int hashRemainder, String cycle){
+		return "insert into cyclesHash (size, hashRemainder, cycle) select * from (select " + size + ", " + hashRemainder + ", '" + cycle + "') as temp where not exists (select size, hashRemainder, cycle from cyclesHash where (((size = " + size + ") and hashRemainder = " + hashRemainder + ") and cycle = '" + cycle + "')) limit 1";
 	}
 }

@@ -59,25 +59,22 @@ public class User {
 					rating = rs.getInt("ranking");
 					password=rs.getString("password");
 				}
-				rs.close();
-				executor.closeConnection();
 			} catch (SQLException e) {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
+			}finally{
+				try {
+					rs.close();
+					executor.closeVariables();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
 
-			try {
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			executor.closeStatement();
-			executor.closeConnection();
-		
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
+			initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
 		}
 	}
+
 	public User(QueryExecutor ex, DBqueryGenerator g, String email){
 		ResultSet rs = ex.selectResult(g.getUserByEmail(email));
 		int rating = 0;
@@ -91,22 +88,22 @@ public class User {
 					id = rs.getInt("ID");
 					rating = rs.getInt("ranking");
 					password=rs.getString("password");
-				
+
 				}
-				rs.close();
-				ex.closeConnection();
 			} catch (SQLException e) {
 				System.out.println("Exception occured when parcing through the resultSet");
 				//e.printStackTrace();
+			}finally{
+				try {
+					rs.close();
+					ex.closeVariables();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			
 
-			
-		
-		initVars(executor, queryGenerator, rating, firstName, lastName, email, id,password);
+		initVars(ex, g, rating, firstName, lastName, email, id,password);
 		}
-		
-		
 	}
 
 	/*
@@ -127,7 +124,7 @@ public class User {
 		String deleteQuery = queryGenerator.deleteFromUsers(id);
 		executor.executeQuery(deleteQuery);
 	}
-	
+
 	public void setRating(int rating){
 		this.rating = rating;
 	}
@@ -137,19 +134,19 @@ public class User {
 	public int getId(){
 		return id;
 	}
-	
+
 	public int getRating(){
 		return rating;
 	}
-	
+
 	public String getFirstName(){
 		return firstName;
 	}
-	
+
 	public String getLastName(){
 		return lastName;
 	}
-	
+
 	public String getEmail(){
 		return email;
 	}
@@ -162,31 +159,66 @@ public class User {
 		try {
 			while(rs.next())
 				id = rs.getInt(1);
-			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+				rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		executor.closeStatement();
-		executor.closeConnection();
+
+
 		return id != 0;
 	}
-	
+
+	public boolean userRegistered(){
+		ResultSet rs = executor.selectResult(queryGenerator.getUserByEverything(firstName, lastName, email, password));
+
+		int id = 0;
+		int ranking = 0;
+
+		try {
+			while(rs.next()){
+				id = rs.getInt(1);
+				ranking = rs.getInt(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				if(rs != null)
+					rs.close();
+				executor.closeVariables();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+		this.id =  id;
+		this.rating =  ranking;
+		return id != 0;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == this)
 			return true;
 		if(!(obj instanceof User))
 			return false;
-		
+
 		User tocompare = (User) obj;
-		
+
 		return 	this.id == tocompare.id
 				&& this.rating == tocompare.rating
 				&& this.firstName.equals(tocompare.firstName)
 				&& this.lastName.equals(tocompare.lastName)
 				&& this.email.equals(tocompare.email);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

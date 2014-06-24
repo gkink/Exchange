@@ -37,16 +37,14 @@ public class ContextListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0) {
     	BlockingQueue<Integer> usersQueue = new ArrayBlockingQueue<Integer>(QUEUE_SIZE);
-		BlockingQueue<List<ArrayList<Integer>>> resultsQueue = new ArrayBlockingQueue<List<ArrayList<Integer>>>(QUEUE_SIZE);
 		arg0.getServletContext().setAttribute("usersQueue", usersQueue);
-		arg0.getServletContext().setAttribute("resultsQueue", resultsQueue);
 		try {
 			Context initContext  = new InitialContext();
             Context envContext = (Context)initContext.lookup("java:/comp/env");
             DataSource dataSource = (DataSource)envContext.lookup("jdbc/testdb");
             arg0.getServletContext().setAttribute("DataSource", dataSource);
             
-            DFSStarter starter = new DFSStarter(usersQueue, resultsQueue, dataSource);
+            DFSStarter starter = new DFSStarter(usersQueue, dataSource);
             System.out.println("saitma mushaoba daiwyo");
             starter.start();
 		} catch (NamingException e) {

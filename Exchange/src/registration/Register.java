@@ -14,7 +14,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
@@ -71,7 +69,9 @@ public class Register extends HttpServlet {
 		lastName = request.getParameter("lastName");
 		email = request.getParameter("email");
 		password = request.getParameter("password");
-				
+		
+		DataSource dataSource = (DataSource) request.getServletContext().getAttribute("DataSource");
+		
 		QueryExecutor ex = new QueryExecutor(datasource);
 		DBqueryGenerator gn = new DBqueryGenerator();
 		

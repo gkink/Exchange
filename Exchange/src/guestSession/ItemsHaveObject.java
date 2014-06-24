@@ -2,10 +2,9 @@ package guestSession;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-
 import java.sql.Time;
 import java.sql.Date;
+
 
 
 
@@ -58,16 +57,30 @@ public class ItemsHaveObject implements ItemInterface {
 	
 				rs.close();
 			}
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();
+		}finally {
+		    try { if (rs != null) rs.close(); } catch (Exception e) {};
+		    executor.closeVariables();
+
 		}
+<<<<<<< HEAD
 		executor.closeVariables();
+=======
+>>>>>>> origin/master
 	}
 	@Override
 	public void insert() {
 		this.ID= executor.executeQuery(queryGenerator.getItemInsertQuery(0, userId, name, description, keywords,createDate));
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/master
 	}
 	public void update(String field, String upd){
 		switch (field){
@@ -81,15 +94,21 @@ public class ItemsHaveObject implements ItemInterface {
 		return;
 		}
 		executor.executeQuery(queryGenerator.getItemUpdateQuery("itemsHave", field, upd, ID));
+<<<<<<< HEAD
 		
 				
 		
 		
+=======
+>>>>>>> origin/master
 		
 	}
 	public void delete(){
 		executor.executeQuery(queryGenerator.getItemDeleteQuery("itemsHave",ID));
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/master
 	}
 	public DateTime getCreateDate(){
 		return createDate;

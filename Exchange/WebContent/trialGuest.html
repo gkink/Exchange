@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC>
+
+<html >
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Exchan.ge</title>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link href="default.css" rel="stylesheet" type="text/css" media="screen" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="GuestMode\js.js"></script>
+	<script type="text/javascript" src="GuestMode\guest_ajax.js"></script>
+	<script type="text/javascript" src="GuestMode\fb_google.js"></script>
+	
+</head>
+<body>
+<!-- start header -->
+
+<div id="header">
+	<div id="logo">
+		<h1><a href="NewHomepage.jsp">Exchan.ge</a></h1>
+		
+	</div>
+	<div id="rss"><img src="images/sosial media.jpg" width="250px" height="110px"></div>
+	<div id="search">
+	
+		<form id="searchform" name="search" method="get" action="">
+			<fieldset>
+				<input type="text" name="s" id="s" size="15" onkeyup="searchFunction()" onkeydown="searchFunction()" placeholder="Search for an item" />
+				<input type="submit" id="x" value="Search" />
+			</fieldset>
+		</form>
+	</div>
+</div>
+<!-- end header -->
+
+<!-- start page -->
+<div id="page">
+	<div id="left">
+		<ul id="searchContent">
+		</ul>
+	</div>
+
+	<div id="right">
+		<div id="full_form">
+			<div id="form_top">
+				<div id="signup"><p id="signup">Sign Up</p></div>
+				<div id="signin"><p id="signin">Sign In</p></div>
+			</div>
+			<div id="form_body">
+				<form method="post" action="Register" id="first">
+					<input name="firstName" placeholder="FirstName" required="required" tabindex="1" type="text">
+					<input name="lastName" placeholder="LastName" required="required" tabindex="2" type="text">
+					<input name="email" placeholder="Email" required="required" tabindex="3" type="text">
+					<input name="password" placeholder="Password" required="required" tabindex="4" type="password">
+					<input class="button" type="submit" value="Sign Up">
+					<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+					</fb:login-button>
+					<span
+    				class="g-signin"
+    				data-callback="signinCallback"
+    				data-clientid="381679982064-2es822nqq9hdr2ubeebonve5kq64p396.apps.googleusercontent.com"
+    				data-cookiepolicy="single_host_origin"
+    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
+    				data-scope="https://www.googleapis.com/auth/plus.login">
+ 				 	</span>
+					
+				</form>
+				<form method="post" action="Register" id="second">
+					<input name="email" placeholder="Email" required="required" tabindex="3" type="text">
+					<input name="password" placeholder="Password" required="required" tabindex="4" type="password">
+					<input class="button" type="submit" required="required" value="Sign In">
+					<fb:login-button scope="public_profile,email" onclick="checkLoginState();">
+					</fb:login-button>
+					<span
+    				class="g-signin"
+    				data-callback="signinCallback"
+    				data-clientid="381679982064-2es822nqq9hdr2ubeebonve5kq64p396.apps.googleusercontent.com"
+    				data-cookiepolicy="single_host_origin"
+    				data-requestvisibleactions="http://schemas.google.com/AddActivity"
+    				data-scope="https://www.googleapis.com/auth/plus.login">
+ 				 	</span>
+					
+				</form>
+				<form style="display: none" method="post" action="fbGoogleLogin" id="fb_login">
+					<input type="text" id="fb_name" name="name"/>
+					<input type="text" id="fb_lastName" name="lastname"/>
+					<input type="text" id="fb_email" name="email"/>
+				</form>
+				<form style="display: none" method="post" action="fbGoogleLogin" id="gp_login">
+					<input type="text" id="g_name" name="name"/>
+					<input type="text" id="g_lastName" name="lastname"/>
+					<input type="text" id="g_email" name="email"/>
+				</form>				
+			</div>
+		</div>
+			<div id="trans">
+				<ul id="latest_transactions">
+				</ul>
+			</div>
+
+	</div>
+</div>
+<!-- end page -->
+
+
+<!-- start footer -->
+<div id="footer">
+	<p class="legal">
+</div>
+
+<!-- end footer -->
+
+
+</body>
+</html>
