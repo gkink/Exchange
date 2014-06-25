@@ -38,10 +38,6 @@ public class QueryExecutor {
 
 			res = stm.executeQuery(selectQuery);
 
-<<<<<<< HEAD
-			res = stm.executeQuery(selectQuery);
-=======
->>>>>>> origin/master
 
 		} catch (SQLException e) {
 			System.out.println("Exception occured when executing Select query");
@@ -89,23 +85,4 @@ public class QueryExecutor {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
-	public void closeVariables(){
-		try {
-			stm.close();
-			con.close();
-		} catch (SQLException e) {
-			System.out.println("Exception occured when closing connection");
-			e.printStackTrace();
-		}
-	}
-	public void closeStatement(){
-		try {
-			stm.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-=======
->>>>>>> origin/master
 }

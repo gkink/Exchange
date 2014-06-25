@@ -19,7 +19,33 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="default.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="GuestMode/js.js"></script>
+<script type="text/javascript">
+		var xml;
+		var xmlHt;
+		function searchFunction(){
+			var searchValue = document.getElementById("iteminput").value;
+			if(searchValue !== ""){
+				xml = new XMLHttpRequest();
+				xml.open("post", "guestItemSearch?item=" + document.getElementById("iteminput").value, true);
+				xml.onreadystatechange = readyStateHandler;
+				xml.send();				
+			}else{
+				document.getElementById("searchContent").innerHTML = "";				
+			}
+		}
 
+		function readyStateHandler(){
+			if(xml.readyState === 4 && xml.status === 200){
+				document.getElementById("searchContent").innerHTML = xml.responseText;
+			}
+		}
+
+		function readyforTransactios(){
+			
+		}
+	</script>
 <!-- Beginning of compulsory code below -->
 
 </head>
@@ -36,7 +62,7 @@
 	
 		<form id="searchform" name="search" method="get" action="">
 			<fieldset>
-				<input type="text" name="s" id="s" size="15" value="" placeholder="Search" />
+				<input type="text" name="s" id="s" size="15" onkeyup="searchFunction()" onkeydown="searchFunction()" placeholder="Search for an item" />
 				<input type="submit" id="x" value="Search" />
 			</fieldset>
 		</form>
@@ -51,7 +77,10 @@
 <form action="Transactions.jsp">
     <input type="submit" value="My Transactions" class="Trans">
 </form>
-
+<div>
+				<ul id="searchContent">
+				</ul>
+			</div>
 
 </div>
 <!-- end menu -->
@@ -142,7 +171,7 @@
                    }
            }
                function generateElem(id, name){
-                   var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
+                   var href = "ItemsHave.jsp?id=" + id;
                    return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
            }
                
@@ -180,7 +209,7 @@
                    }
            }
                function generateElement(id, name){
-                   var href = "http://localhost:8080/Exchange/cycle.jsp?id=" + id;
+                   var href = "ItemsHave.jsp?id=" + id;
                    return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
            }
                
@@ -224,7 +253,7 @@
 			                   }
 			           }
 			               function generateElem1(id, name){
-			                   var href = "http://localhost:8080/Exchange/itemsNeed.jsp?id=" + id;
+			                   var href = "ItemsNeed.jsp?id=" + id;
 			                   return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
 			           }
 			               
@@ -276,7 +305,7 @@
 			                   }
 			           }
 			               function generateElem2(id, name){
-			                   var href = "http://localhost:8080/Exchange/item.jsp?id=" + id;
+			                   var href = "ItemsHave.jsp?id=" + id;
 			                   return  "<p><a href= \" " + href + " \" >" + name + "</a></p>"; 
 			           }
 			               

@@ -175,7 +175,8 @@ public class User {
 	}
 
 	public boolean userRegistered(){
-		ResultSet rs = executor.selectResult(queryGenerator.getUserByEverything(firstName, lastName, email, password));
+		String query = queryGenerator.getUserByEverything(firstName, lastName, email, password);
+		ResultSet rs = executor.selectResult(query);
 
 		int id = 0;
 		int ranking = 0;

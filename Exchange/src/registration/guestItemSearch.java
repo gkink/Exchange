@@ -67,7 +67,7 @@ public class guestItemSearch extends HttpServlet {
 			out.println("<p>Nothing found for word " + itemKeyword + "</p>");
 		else{
 			for(ItemsHaveObject item: items){
-				String href = "http://localhost:8080/Exchange/item.jsp?id=" + item.getItemId();
+				String href = "http://localhost:8080/Exchange/ItemsHave.jsp?itemId=" + item.getItemId() + "&guest=yes";
 				out.println("<li><a href=" + toHref(href) + ">" + item.getItemName() + "</a></li>");
 			}
 		}

@@ -67,9 +67,9 @@ public class Cycle implements CycleInterface{
 			ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
 
 			Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
-			list.add(curr);	
+			list.add(curr);
 		}
-
+	}
 
 	/**
 	 * @param executor

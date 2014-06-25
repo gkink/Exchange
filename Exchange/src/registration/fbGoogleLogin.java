@@ -65,9 +65,10 @@ public class fbGoogleLogin extends HttpServlet {
 		
 		User curr =  new User(executor, queryGenerator, firstName, lastName, email, password);
 		String redirectUrl = "NewHomepage.jsp";
-		if(curr.userRegistered())
+		if(curr.userRegistered()){
 			ses.setAttribute("User", curr.getId());
-		else if(curr.emailInUse())
+			System.out.println(curr.getId());
+		}else if(curr.emailInUse())
 			redirectUrl = "guest.jsp?error=email";
 		else
 			curr.addToUsers();

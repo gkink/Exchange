@@ -77,12 +77,7 @@ public class ItemContainer {
 	
 	private void prepareList(String query){
 		ResultSet rs= executor.selectResult(query);
-<<<<<<< HEAD
-		ParseAndInitItems(type, rs);
-		executor.closeVariables();
-=======
 		parseResultSet(rs);
->>>>>>> origin/master
 	}
 	
 	private void parseResultSet(ResultSet rs){	

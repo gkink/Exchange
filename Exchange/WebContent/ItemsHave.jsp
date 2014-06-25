@@ -45,7 +45,7 @@
 	ItemsHaveObject item =  new ItemsHaveObject(generator, executor, itemId);
 
 	if(!guest){
-		int userId = (int)request.getSession().getAttribute("User");
+		Integer userId = (Integer)request.getSession().getAttribute("User");
 		usersItem = userId == item.getItemOwner();
 	}
 	if(usersItem)
