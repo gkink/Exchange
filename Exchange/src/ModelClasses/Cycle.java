@@ -26,13 +26,7 @@ public class Cycle implements CycleInterface{
 		this.id = id;
 		userIdCont =  new ArrayList<Integer>();
 		itemIdCont =  new ArrayList<Integer>();
-<<<<<<< HEAD
 
-
-=======
-		
-		
->>>>>>> origin/master
 		initList();
 	}
 
@@ -58,22 +52,16 @@ public class Cycle implements CycleInterface{
 				e.printStackTrace();
 			}
 		}
-<<<<<<< HEAD
+
 
 		addElemsToList();
 	}
 
-=======
-		
-		addElemsToList();
-	}
-	
->>>>>>> origin/master
 	private void addElemsToList(){
 		for(int i = 0 ; i < userIdCont.size() ; i++){
 			int userid = userIdCont.get(i);
 			int itemid =  itemIdCont.get(i);
-<<<<<<< HEAD
+
 
 			User user = new User(executor, queryGenerator, userid);
 			ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
@@ -82,17 +70,6 @@ public class Cycle implements CycleInterface{
 			list.add(curr);	
 		}
 
-=======
-			
-			User user = new User(executor, queryGenerator, userid);
-			ItemsHaveObject item = new ItemsHaveObject(queryGenerator, executor, itemid);
-			
-			Pair<User, ItemsHaveObject> curr = new Pair<User, ItemsHaveObject>(user, item);
-			list.add(curr);	
-		}
-		
->>>>>>> origin/master
-	}
 
 	/**
 	 * @param executor
@@ -153,11 +130,7 @@ public class Cycle implements CycleInterface{
 		ResultSet rs =  executor.selectResult(query);
 
 		int accept = 0;
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> origin/master
 		try {
 			while(rs.next())
 				accept =  rs.getInt("accept");
@@ -171,17 +144,10 @@ public class Cycle implements CycleInterface{
 				e.printStackTrace();
 			}
 		}
-<<<<<<< HEAD
 
 		return accept == 1;
 	}
 
-=======
-		
-		return accept == 1;
-	}
-	
->>>>>>> origin/master
 	public int generateHash(){
 		Collections.sort(userIdCont);
 		int curr = userIdCont.get(0);
@@ -191,23 +157,13 @@ public class Cycle implements CycleInterface{
 
 		return curr;
 	}
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> origin/master
 	private int cantorFunction(int first, int second){
 		int firstElem, secondElem;
 		firstElem = first + second;
 		secondElem = firstElem + 1;
-<<<<<<< HEAD
 
 		return firstElem*secondElem%HashKey + second%HashKey;
 	}
 }
-=======
-		
-		return firstElem*secondElem%HashKey + second%HashKey;
-	}
-}
->>>>>>> origin/master
+

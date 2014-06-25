@@ -26,12 +26,8 @@ public class CycleContainer {
 		this.executor = executor;
 		this.generator =  generator;
 		idList = new ArrayList<Integer>();
-<<<<<<< HEAD
 		cycles=new ArrayList<Cycle>();
-=======
-		cycles = new ArrayList<Cycle>();
->>>>>>> origin/master
-		
+
 		initList(userID);
 	}
 	
