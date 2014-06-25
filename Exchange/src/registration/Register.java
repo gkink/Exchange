@@ -84,7 +84,7 @@ public class Register extends HttpServlet {
 		}
 
 		curr.addToUsers();
-		RequestDispatcher dp = request.getRequestDispatcher("SuccessfullRegister.html");
-		dp.forward(request, response);
+		request.getSession().setAttribute("User", curr.getId());
+		response.sendRedirect("NewHomepage.jsp");
 	}
 }
