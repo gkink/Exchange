@@ -8,7 +8,7 @@ var xmlHt;
 
 function searchFunction(){
 	xml = new XMLHttpRequest();
-	xml.open("post", "guestItemSearch", true);
+	xml.open("post", "ItemSearchForUser", true);
 	xml.onreadystatechange = readyStateHandler;
 	xml.send();				
 }

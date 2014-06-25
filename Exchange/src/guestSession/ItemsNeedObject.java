@@ -25,10 +25,7 @@ public class ItemsNeedObject implements ItemInterface  {
 		this.exe=exe;
 		ResultSet rs= exe.selectResult(gen.getItemSelectQuery("itemsNeed", ID));
 		parseAndinit(rs);
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -38,10 +35,7 @@ public class ItemsNeedObject implements ItemInterface  {
 				this.keyWords = rs.getString("keywords");
 				this.userId = rs.getInt("userId");
 			}
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
 		} catch (SQLException e) {
 			System.out.println("Exception occured when parcing through the resultSet");
 			//e.printStackTrace();

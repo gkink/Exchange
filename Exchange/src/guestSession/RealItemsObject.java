@@ -2,19 +2,13 @@ package guestSession;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
-=======
-import java.util.concurrent.Executor;
-
->>>>>>> origin/master
 import dbClasses.DBqueryGenerator;
 import dbClasses.QueryExecutor;
 
 public class RealItemsObject{
-<<<<<<< HEAD
-=======
+
 	private int UserWantId;
->>>>>>> origin/master
+
 	private int itemID;
 	private int userId;
 	private int ID;
@@ -26,10 +20,7 @@ public class RealItemsObject{
 		this.executor=executor;
 		ResultSet rs= executor.selectResult(generator.getItemSelectQuery("realItems", ID));
 		parseAndinit(rs);
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
 	}
 	private void parseAndinit(ResultSet rs){	
 		try {
@@ -50,10 +41,7 @@ public class RealItemsObject{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-<<<<<<< HEAD
-			
-=======
->>>>>>> origin/master
+
 		}
 	}
 	public RealItemsObject(DBqueryGenerator generator, QueryExecutor executor,
@@ -77,16 +65,11 @@ public class RealItemsObject{
 		ID=executor.executeQuery(generator.getRealItemInsertQuery(userId, itemID));
 	}
 	public void delete(){
-<<<<<<< HEAD
+
 		executor.executeQuery(generator.getItemDeleteQuery("realItems", ID));
 	}
 
 
 	
 }
-=======
-	 	executor.executeQuery(generator.getItemDeleteQuery("realItems", ID));
-	}
 
-}
->>>>>>> origin/master
